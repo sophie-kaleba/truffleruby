@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class Sproxybase < Benchmark
+class CallBaseline < Benchmark
     def initialize()
       @p = Point.new(1,1)
       @arr1 = [
@@ -43,7 +43,7 @@ class Sproxybase < Benchmark
     end
   
     def benchmark
-      [loop1(@arr1), loop2(@arr2)]
+      [loop1(@arr1), nil, loop1(@arr2)]
     end
   
     def loop1(an_array)
@@ -63,7 +63,7 @@ class Sproxybase < Benchmark
     end
     
     def verify_result(result)
-      1000 === result[0] && 1000 === result[1]
+      1000 === result[0] && 1000 === result[2]
     end
   end
   
