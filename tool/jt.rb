@@ -784,6 +784,7 @@ module Commands
           --igv-full      dump all Graal graphs to graal_dumps/ (-Dgraal.Dump=Truffle:2)
           --igv-network   dump to IGV directly through the network (-Dgraal.PrintGraph=Network)
           --infopoints    show source location for each node in IGV
+          -- splitting    display splitting summary
           --fg            disable background compilation
           --trace         show compilation information on stdout
           --jdebug        start the Java debugger server on port 8000
@@ -1022,6 +1023,10 @@ module Commands
       when '--igv-network'
         truffleruby_compiler!
         vm_args << '--vm.Dgraal.PrintGraph=Network'
+      when '--splitting'
+        truffleruby_compiler!
+        vm_args << '--vm.Dpolyglot.engine.TraceSplittingSummary=true'
+        vm_args << '--vm.Dpolyglot.engine.TraceSplitting=true'
       when '--exec'
         options[:use_exec] = true
       when /^--vm\./
