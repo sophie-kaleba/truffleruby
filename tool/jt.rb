@@ -741,7 +741,9 @@ module Commands
           --asm           show assembly
           --igv           dump select Graal graphs to graal_dumps/ (-Dgraal.Dump=Truffle:1)
           --igv-full      dump all Graal graphs to graal_dumps/ (-Dgraal.Dump=Truffle:2)
+          --igv-simple    dump all Graal graphs to graal_dumps/ (-Dgraal.Dump=Truffle:2) - simpler for seafoam rendering
           --infopoints    show source location for each node in IGV
+          -- splitting    display splitting summary
           --fg            disable background compilation
           --trace         show compilation information on stdout
           --jdebug        run a JDWP debug server on port 8000
@@ -794,6 +796,7 @@ module Commands
                                        jt benchmark bench/mri/bm_vm1_not.rb --use-cache
       jt profile                                    profiles an application, including the TruffleRuby runtime, and generates a flamegraph
       jt igv                                        launches IdealGraphVisualizer
+      jt splitting                                  displays splitting summary
       jt next                                       tell you what to work on next (give you a random core library spec)
       jt install [jvmci|eclipse]                    install [the right JVMCI JDK | Eclipse] in the parent directory
       jt docker                                     build a Docker image - see doc/contributor/docker.md
@@ -968,6 +971,24 @@ module Commands
         truffleruby_compiler!
         vm_args << (arg == '--igv-full' ? '--vm.Dgraal.Dump=Truffle:2' : '--vm.Dgraal.Dump=Truffle:1')
         vm_args << '--vm.Dgraal.PrintBackendCFG=false'
+      when '--igv-simple'
+        truffleruby_compiler!
+        vm_args << '--vm.Dgraal.Dump=Truffle:2'
+        vm_args << '--vm.Dgraal.PartialUnroll=false'
+        vm_args << '--vm.Dgraal.LoopPeeling=false' 
+        vm_args << '--vm.Dgraal.FullUnroll=false'
+        vm_args << '--vm.Dgraal.LoopUnswitch=false' 
+        vm_args << '--engine.Inlining=false'
+        vm_args << '--engine.OSR=false'
+        vm_args << '--vm.Dgraal.PrintGraphWithSchedule=true'
+        vm_args << '--vm.Dgraal.PrintBackendCFG=true'
+        #vm_args << '--vm.Dgraal.OptLoopTransform=false' 
+        vm_args << '--vm.Dgraal.OptScheduleOutOfLoops=false' 
+        #vm_args << '--vm.Dgraal.VectorizeLoops=false'
+      when '--splitting'
+        truffleruby_compiler!
+        vm_args << '--vm.Dpolyglot.engine.TraceSplittingSummary=true'
+        vm_args << '--vm.Dpolyglot.engine.TraceSplitting=true'
       when '--exec'
         options[:use_exec] = true
       when '--'
