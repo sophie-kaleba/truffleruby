@@ -157,6 +157,18 @@ public abstract class VMPrimitiveNodes {
 
     }
 
+    @Primitive(name = "phase_enabled?")
+    public abstract static class SwitchPhaseNode extends PrimitiveArrayArgumentsNode {
+
+        @Specialization
+        protected long switchPhase(long phaseID, boolean enabled) {
+            if (enabled) {
+                getContext().phaseID = (int) phaseID;
+            }
+            return phaseID;
+        }
+    }
+
     @Primitive(name = "vm_builtin_method?")
     public abstract static class IsBuiltinMethodNode extends PrimitiveArrayArgumentsNode {
 

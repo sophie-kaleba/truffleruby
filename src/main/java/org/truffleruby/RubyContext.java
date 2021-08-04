@@ -99,6 +99,8 @@ import sun.misc.SignalHandler;
 
 public class RubyContext {
 
+    public static int phaseID = 0;
+
     private final RubyLanguage language;
     @CompilationFinal private TruffleLanguage.Env env;
     @CompilationFinal private PrintStream outStream;
