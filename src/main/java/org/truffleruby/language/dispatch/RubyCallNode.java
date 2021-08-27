@@ -54,7 +54,8 @@ public class RubyCallNode extends RubyContextSourceNode implements AssignableNod
     private final boolean isSafeNavigation;
     private final boolean isAttrAssign;
 
-    @Child private DispatchNode dispatch;
+    @Child private DispatchNode dispatch0;
+    @Child private DispatchNode dispatch1;
     @Child private ArrayToObjectArrayNode toObjectArrayNode;
     @Child private DefinedNode definedNode;
 
@@ -130,12 +131,24 @@ public class RubyCallNode extends RubyContextSourceNode implements AssignableNod
 
     public Object executeWithArgumentsEvaluated(VirtualFrame frame, Object receiverObject, Object blockObject,
             Object[] argumentsObjects) {
-        if (dispatch == null) {
+        Object returnValue = null;
+        String ss = (this.getSourceSection() != null) ? this.getSourceSection().toString() : "NULL";
+        if (dispatch0 == null && getContext().phaseID == 0) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            dispatch = insert(DispatchNode.create(dispatchConfig));
+            dispatch0 = insert(DispatchNode.create(dispatchConfig));
+            getContext().logger.info("[Phase 0] Initializing dispatch node for "+methodName+". @: "+ss);
+        }
+        else if (dispatch1 == null && getContext().phaseID == 1) {
+            CompilerDirectives.transferToInterpreterAndInvalidate();
+            dispatch1 = insert(DispatchNode.create(dispatchConfig));
         }
 
-        final Object returnValue = dispatch.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
+        if (getContext().phaseID == 0) {
+            returnValue = dispatch0.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
+        }
+        else if (getContext().phaseID == 1) {
+            returnValue = dispatch1.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
+        }
         if (isAttrAssign) {
             assert argumentsObjects[argumentsObjects.length - 1] != null;
             return argumentsObjects[argumentsObjects.length - 1];
