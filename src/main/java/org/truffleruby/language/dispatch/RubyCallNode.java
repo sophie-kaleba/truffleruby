@@ -146,7 +146,12 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         if (dispatch == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            dispatch = insert(DispatchNode.create(dispatchConfig));
+            dispatch0 = insert(DispatchNode.create(dispatchConfig));
+            getContext().logger.info("[Phase 0] Initializing dispatch node for "+methodName+". @: "+ss);
+        }
+        else if (dispatch1 == null && getContext().phaseID == 1) {
+            CompilerDirectives.transferToInterpreterAndInvalidate();
+            dispatch1 = insert(DispatchNode.create(dispatchConfig));
         }
 
         final Object returnValue = dispatch.dispatch(frame, receiverObject, methodName, rubyArgs,
