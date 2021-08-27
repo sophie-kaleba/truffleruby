@@ -1,3 +1,5 @@
+# truffleruby_primitives: true
+
 # This code is derived from the SOM benchmarks, see AUTHORS.md file.
 #
 # Copyright (c) 2015-2016 Stefan Marr <git@stefan-marr.de>
@@ -19,7 +21,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-puts Dir.pwd
 require './bench/phase-micro/callbaseline'
 
 class CallPhase < CallBaseline 
@@ -30,7 +31,9 @@ class CallPhase < CallBaseline
         loop1(@arr1)
         @arr1 = @arr2
         # TODO - here insert a phase switch
+        Primitive.phase_enabled? 1,true
       end
+      Primitive.phase_enabled? 0,true
       [1000, nil, 1000]
     end
   
