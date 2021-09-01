@@ -1088,7 +1088,16 @@ public class ParserSupport {
                     name.toJavaStringUncached(),
                     blockPass.getArgsNode(),
                     blockPass,
-                    isLazy(callType));
+                    isLazy(callType), false);
+        }
+        else if (callType.bytesEqual(RopeConstants.DOT_PHASE)) {
+            return new CallParseNode(
+                    position(receiver, argsNode),
+                    receiver,
+                    name.getJavaString(),
+                    argsNode,
+                    iter,
+                    isLazy(callType), true);
         }
 
         return new CallParseNode(
@@ -1097,7 +1106,7 @@ public class ParserSupport {
                 name.toJavaStringUncached(),
                 argsNode,
                 iter,
-                isLazy(callType));
+                isLazy(callType), false);
 
     }
 
