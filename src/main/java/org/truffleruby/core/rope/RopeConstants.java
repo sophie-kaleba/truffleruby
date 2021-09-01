@@ -69,6 +69,7 @@ public class RopeConstants {
     public static final Rope DOT = ascii(".");
     public static final Rope DOT_DOT = ascii("..");
     public static final Rope DOT_DOT_DOT = ascii("...");
+    public static final Rope DOT_PHASE = ascii(".~");
     public static final Rope DOLLAR_BANG = ascii("$!");
     public static final Rope DOLLAR_ZERO = ascii("$0");
     public static final Rope EQ = ascii("=");
