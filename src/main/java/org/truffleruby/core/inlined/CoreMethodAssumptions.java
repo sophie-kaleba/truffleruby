@@ -176,6 +176,10 @@ public class CoreMethodAssumptions {
             }
         }
 
+        if (callParameters.isPhaseSensitive()) {
+            return new RubyCallNode.RubyPhaseCallNode(callParameters);
+        }
+
         if (n == 1) {
             switch (callParameters.getMethodName()) {
                 case "!":
