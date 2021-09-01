@@ -41,7 +41,7 @@ import static org.truffleruby.language.dispatch.DispatchConfiguration.PROTECTED;
 
 public class RubyCallNode extends RubyContextSourceNode implements AssignableNode {
 
-    private final String methodName;
+    protected final String methodName;
 
     @Child private RubyNode receiver;
     @Child private RubyNode block;
@@ -49,13 +49,12 @@ public class RubyCallNode extends RubyContextSourceNode implements AssignableNod
     @Children private final RubyNode[] arguments;
 
     private final boolean isSplatted;
-    private final DispatchConfiguration dispatchConfig;
+    protected final DispatchConfiguration dispatchConfig;
     private final boolean isVCall;
     private final boolean isSafeNavigation;
-    private final boolean isAttrAssign;
+    protected final boolean isAttrAssign;
 
-    @Child private DispatchNode dispatch0;
-    @Child private DispatchNode dispatch1;
+    @Child private DispatchNode dispatch;
     @Child private ArrayToObjectArrayNode toObjectArrayNode;
     @Child private DefinedNode definedNode;
 
@@ -131,24 +130,13 @@ public class RubyCallNode extends RubyContextSourceNode implements AssignableNod
 
     public Object executeWithArgumentsEvaluated(VirtualFrame frame, Object receiverObject, Object blockObject,
             Object[] argumentsObjects) {
-        Object returnValue = null;
-        String ss = (this.getSourceSection() != null) ? this.getSourceSection().toString() : "NULL";
-        if (dispatch0 == null && getContext().phaseID == 0) {
-            CompilerDirectives.transferToInterpreterAndInvalidate();
-            dispatch0 = insert(DispatchNode.create(dispatchConfig));
-            getContext().logger.info("[Phase 0] Initializing dispatch node for "+methodName+". @: "+ss);
-        }
-        else if (dispatch1 == null && getContext().phaseID == 1) {
-            CompilerDirectives.transferToInterpreterAndInvalidate();
-            dispatch1 = insert(DispatchNode.create(dispatchConfig));
-        }
 
-        if (getContext().phaseID == 0) {
-            returnValue = dispatch0.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
+        if (dispatch == null) {
+            CompilerDirectives.transferToInterpreterAndInvalidate();
+            dispatch = insert(DispatchNode.create(dispatchConfig));
         }
-        else if (getContext().phaseID == 1) {
-            returnValue = dispatch1.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
-        }
+        Object returnValue = dispatch.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
+
         if (isAttrAssign) {
             assert argumentsObjects[argumentsObjects.length - 1] != null;
             return argumentsObjects[argumentsObjects.length - 1];
@@ -279,6 +267,46 @@ public class RubyCallNode extends RubyContextSourceNode implements AssignableNod
             }
 
             return coreStrings().METHOD.createInstance(context);
+        }
+    }
+
+    public static final class RubyPhaseCallNode extends RubyCallNode {
+
+        @Child private DispatchNode dispatch0;
+        @Child private DispatchNode dispatch1;
+
+        public RubyPhaseCallNode(RubyCallNodeParameters parameters) {
+            super(parameters);
+        }
+
+        @Override
+        public Object executeWithArgumentsEvaluated(VirtualFrame frame, Object receiverObject, Object blockObject,
+                                                    Object[] argumentsObjects) {
+            Object returnValue = null;
+            String ss = (this.getSourceSection() != null) ? this.getSourceSection().toString() : "NULL";
+            if (dispatch0 == null && getContext().phaseID == 0) {
+                CompilerDirectives.transferToInterpreterAndInvalidate();
+                dispatch0 = insert(DispatchNode.create(dispatchConfig));
+                getContext().logger.info("[Phase 0] Initializing dispatch node for "+methodName+". @: "+ss);
+            }
+            else if (dispatch1 == null && getContext().phaseID == 1) {
+                CompilerDirectives.transferToInterpreterAndInvalidate();
+                dispatch1 = insert(DispatchNode.create(dispatchConfig));
+            }
+
+            if (getContext().phaseID == 0) {
+                returnValue = dispatch0.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
+            }
+            else if (getContext().phaseID == 1) {
+                returnValue = dispatch1.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
+            }
+            if (isAttrAssign) {
+                assert argumentsObjects[argumentsObjects.length - 1] != null;
+                return argumentsObjects[argumentsObjects.length - 1];
+            } else {
+                assert returnValue != null;
+                return returnValue;
+            }
         }
     }
 }
