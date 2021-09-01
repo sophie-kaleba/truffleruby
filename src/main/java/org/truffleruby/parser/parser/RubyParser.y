@@ -150,6 +150,7 @@ public class RubyParser {
 %token <Rope> tANDOP tOROP   /* && and || */
 %token <Rope> tMATCH tNMATCH /* =~ and !~ */
 %token <Rope> tDOT           /* Is just '.' in ruby and not a token */
+%token <Rope> tDOT_PHASE     /* .~ */
 %token <Rope> tDOT2 tDOT3    /* .. and ... */
 %token <Rope> tBDOT2 tBDOT3    /* (.. and (... */
 %token <Rope> tAREF tASET    /* [] and []= */
@@ -2784,6 +2785,9 @@ call_op         : tDOT {
                 }
                 | tANDDOT {
                     $$ = $1;
+                }
+                | tDOT_PHASE {
+                     $$ = $1;
                 }
 
 call_op2        : call_op
