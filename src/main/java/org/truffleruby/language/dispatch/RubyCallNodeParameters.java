@@ -22,6 +22,7 @@ public class RubyCallNodeParameters {
     private final boolean isVCall;
     private final boolean isSafeNavigation;
     private final boolean isAttrAssign;
+    private final boolean isPhaseSensitive;
 
     public RubyCallNodeParameters(
             RubyNode receiver,
@@ -30,7 +31,7 @@ public class RubyCallNodeParameters {
             RubyNode[] arguments,
             boolean isSplatted,
             boolean ignoreVisibility) {
-        this(receiver, methodName, block, arguments, isSplatted, ignoreVisibility, false, false, false);
+        this(receiver, methodName, block, arguments, isSplatted, ignoreVisibility, false, false, false, false);
     }
 
     public RubyCallNodeParameters(
@@ -42,7 +43,8 @@ public class RubyCallNodeParameters {
             boolean ignoreVisibility,
             boolean isVCall,
             boolean isSafeNavigation,
-            boolean isAttrAssign) {
+            boolean isAttrAssign,
+            boolean isPhaseSensitive) {
         this.receiver = receiver;
         this.methodName = methodName;
         this.block = block;
@@ -52,6 +54,7 @@ public class RubyCallNodeParameters {
         this.isVCall = isVCall;
         this.isSafeNavigation = isSafeNavigation;
         this.isAttrAssign = isAttrAssign;
+        this.isPhaseSensitive = isPhaseSensitive;
     }
 
     public RubyCallNodeParameters withReceiverAndArguments(RubyNode receiver, RubyNode[] arguments, RubyNode block) {
@@ -64,7 +67,8 @@ public class RubyCallNodeParameters {
                 ignoreVisibility,
                 isVCall,
                 isSafeNavigation,
-                isAttrAssign);
+                isAttrAssign,
+                isPhaseSensitive);
     }
 
     public RubyCallNodeParameters withBlock(RubyNode block) {
@@ -106,5 +110,7 @@ public class RubyCallNodeParameters {
     public boolean isAttrAssign() {
         return isAttrAssign;
     }
+
+    public boolean isPhaseSensitive() { return isPhaseSensitive; }
 
 }
