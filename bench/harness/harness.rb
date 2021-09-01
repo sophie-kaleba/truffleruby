@@ -53,10 +53,7 @@ class Run
   end
 
   def load_benchmark_suite(benchmark_name)
-    puts Dir.getwd
-    puts "#{@benchmark_path}#{benchmark_name.downcase}.rb"
     files = Dir.glob("#{@benchmark_path}#{benchmark_name.downcase}.rb")
-    puts files
     if !files.empty?
       benchmark_file = benchmark_name.downcase
     else
