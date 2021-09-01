@@ -62,6 +62,7 @@ import org.jcodings.Encoding;
 import org.jcodings.specific.USASCIIEncoding;
 import org.jcodings.specific.UTF8Encoding;
 import org.truffleruby.RubyContext;
+import org.truffleruby.RubyLanguage;
 import org.truffleruby.SuppressFBWarnings;
 import org.truffleruby.collections.ByteArrayBuilder;
 import org.truffleruby.core.DummyNode;
@@ -1701,6 +1702,15 @@ public class RubyLexer implements MagicCommentHandler {
             pushback(c);
             yaccValue = TStringConstants.DOT_DOT;
             return isBeg ? RubyParser.tBDOT2 : RubyParser.tDOT2;
+        }
+
+        pushback(c);
+        if ((c = nextc()) == '~') {
+            /* phase annotation */
+            // TODO - check whether the state needs to be changed
+            setState(EXPR_DOT);
+            yaccValue = RopeConstants.DOT_PHASE;
+            return RubyParser.tDOT_PHASE;
         }
 
         pushback(c);
