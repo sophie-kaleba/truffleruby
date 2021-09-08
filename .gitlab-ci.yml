@@ -19,4 +19,4 @@ benchmark_job:
   allow_failure: true
   script:
     - ${JT} build --env jvm-ce
-    - rebench --experiment="CI ID $CI_PIPELINE_ID" "--branch="$CI_COMMIT_REF_NAME" -c rebench.conf phase-micro
+    - rebench --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf phase-micro
