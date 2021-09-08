@@ -31,12 +31,13 @@ class Sproxybase < Benchmark
       ProxyD.new(@p),
       ProxyE.new(@p),
       ProxyF.new(@p),
-      ProxyG.new(@p)
+      ProxyG.new(@p),
+      ProxyH.new(@p)
     ]
 
-    @arr2 = [@p, @p, @p, @p, @p, @p, @p, @p]
+    @arr2 = [@p, @p, @p, @p, @p, @p, @p, @p, @p]
 
-    for i in 1..992 do
+    for i in 1..991 do
       @arr1.push(@p)
       @arr2.push(@p)
     end
@@ -150,6 +151,16 @@ class ProxyF
 end
 
 class ProxyG 
+  def initialize(p)
+    @p = p
+  end
+
+  def get_x() 
+    @p.get_x()
+  end
+end
+
+class ProxyH 
   def initialize(p)
     @p = p
   end
