@@ -1,0 +1,22 @@
+stages:
+  - build-and-test
+  - benchmark
+
+variables:
+  JT: bin/jt
+
+build_and_test_job:
+  stage: build-and-test
+  tags: [benchmarks]
+  script:
+    - ${JT} build --env jvm-ce
+    - ${JT} --use jvm-ce test fast
+    - ${JT} --use jvm-ce test unittest
+
+benchmark_job:
+  stage: benchmark
+  tags: [benchmarks]
+  allow_failure: true
+  script:
+    - ${JT} build --env jvm-ce
+    - rebench --experiment="CI ID $CI_PIPELINE_ID" "--branch="$CI_COMMIT_REF_NAME" -c rebench.conf phase-micro
