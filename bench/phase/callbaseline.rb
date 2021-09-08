@@ -40,6 +40,8 @@ class CallBaseline < Benchmark
         @arr1.push(@p)
         @arr2.push(@p)
       end
+
+      puts @p.~get_x()
     end
   
     def benchmark

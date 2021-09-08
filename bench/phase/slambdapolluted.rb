@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class Slambdabase < Benchmark
+class Slambdapolluted < Benchmark
   def initialize()
     @block = lambda { 61 }
     @arr1 = Array.new(1000)
@@ -35,11 +35,12 @@ class Slambdabase < Benchmark
     @arr1[4] = lambda { 65 }
     @arr1[5] = lambda { 66 }
     @arr1[6] = lambda { 67 }
-    #@arr1[7] = lambda { 68 }
+    @arr1[7] = lambda { 68 }
+    @arr1[8] = lambda { 69 }
   end
 
   def benchmark
-    [loop1(@arr1), loop2(@arr2)]
+    [loop1(@arr1), loop1(@arr2)]
   end
 
   def loop1(an_array)
@@ -59,6 +60,6 @@ class Slambdabase < Benchmark
   end
   
   def verify_result(result)
-    63021 === result[0] && 63000 === result[1]
+    63036 === result[0] && 63000 === result[1]
   end
 end

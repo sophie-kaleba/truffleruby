@@ -45,7 +45,6 @@ class Run
 
   def initialize(name)
     @name             = name
-    @benchmark_path   = './bench/**/'
     @benchmark_suite  = load_benchmark_suite(name)
     @total            = 0
     @num_iterations   = 1
@@ -53,15 +52,15 @@ class Run
   end
 
   def load_benchmark_suite(benchmark_name)
-    files = Dir.glob("#{@benchmark_path}#{benchmark_name.downcase}.rb")
-    if !files.empty?
+    if File.exist?("#{File.dirname(__FILE__)}/#{benchmark_name.downcase}.rb")
       benchmark_file = benchmark_name.downcase
     else
       # fallback, for benchmark files that use
       # Ruby naming conventions instead of classic names
       benchmark_file = benchmark_name.gsub(/([a-z])([A-Z])/) { "#{$1}-#{$2}" }.downcase
     end
-    unless require(files[0])
+    puts benchmark_file
+    unless require_relative(benchmark_file)
       raise "failed loading #{benchmark_file}"
     end
     Object.const_get(benchmark_name)

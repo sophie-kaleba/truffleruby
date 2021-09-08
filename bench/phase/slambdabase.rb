@@ -20,129 +20,46 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class Sproxypolluted < Benchmark
+class Slambdabase < Benchmark
   def initialize()
-    @p = Point.new(1,1)
-    @arr1 = [
-      ProxyA.new(@p),
-      ProxyB.new(@p),
-      ProxyC.new(@p),
-      ProxyD.new(@p),
-      ProxyE.new(@p),
-      ProxyF.new(@p),
-      ProxyG.new(@p)
-    ]
-
-    @arr2 = [@p, @p, @p, @p, @p, @p, @p]
-
-    for i in 1..993 do
-      @arr1.push(@p)
-      @arr2.push(@p)
-    end
+    @block = lambda { 61 }
+    @arr1 = Array.new(1000)
+    @arr1.fill(@block)
+  
+    @arr2 = Array.new(1000)
+    @arr2.fill(@block)
+  
+    @arr1[1] = lambda { 62 }
+    @arr1[2] = lambda { 63 }
+    @arr1[3] = lambda { 64 }
+    @arr1[4] = lambda { 65 }
+    @arr1[5] = lambda { 66 }
+    @arr1[6] = lambda { 67 }
+    @arr1[7] = lambda { 68 }
+    @arr1[8] = lambda { 69 }
   end
 
   def benchmark
-    [loop1(@arr1), loop1(@arr2)]
+    [loop1(@arr1), loop2(@arr2)]
   end
 
   def loop1(an_array)
     sum = 0
-    an_array.each do |p|
-      sum += p.get_x()
+    an_array.each do |f|
+      sum += f.call() + 2
     end
     sum 
   end
 
   def loop2(an_array)
     sum = 0
-    an_array.each do |p|
-      sum += p.get_x()
+    an_array.each do |f|
+      sum += f.call() + 2
     end
     sum
   end
   
   def verify_result(result)
-    1000 === result[0] && 1000 === result[1]
-  end
-end
-
-class Point 
-  def initialize(x,y)
-    @x = x
-    @y = y
-  end
-
-  def get_x() 
-    @x
-  end
-end
-
-class ProxyA 
-  def initialize(p)
-    @p = p
-  end
-
-  def get_x() 
-    @p.get_x()
-  end
-end
-
-class ProxyB 
-  def initialize(p)
-    @p = p
-  end
-
-  def get_x() 
-    @p.get_x()
-  end
-end
-
-class ProxyC 
-  def initialize(p)
-    @p = p
-  end
-
-  def get_x() 
-    @p.get_x()
-  end
-end
-
-class ProxyD 
-  def initialize(p)
-    @p = p
-  end
-
-  def get_x() 
-    @p.get_x()
-  end
-end
-
-class ProxyE 
-  def initialize(p)
-    @p = p
-  end
-
-  def get_x() 
-    @p.get_x()
-  end
-end
-
-class ProxyF
-  def initialize(p)
-    @p = p
-  end
-
-  def get_x() 
-    @p.get_x()
-  end
-end
-
-class ProxyG 
-  def initialize(p)
-    @p = p
-  end
-
-  def get_x() 
-    @p.get_x()
+    63036 === result[0] && 63000 === result[1]
   end
 end
