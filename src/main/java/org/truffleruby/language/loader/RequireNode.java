@@ -144,7 +144,6 @@ public abstract class RequireNode extends RubyBaseNode {
         final ReentrantLockFreeingMap<String> fileLocks = getContext().getFeatureLoader().getFileLocks();
         final ConcurrentMap<String, Boolean> patchFiles = getContext().getCoreLibrary().getPatchFiles();
         final ConcurrentMap<String, String> originalRequires = getContext().getCoreLibrary().getOriginalRequires();
-
         String relativeFeature = originalFeature;
         if (new File(originalFeature).isAbsolute()) {
             Object relativeFeatureString = relativeFeatureNode

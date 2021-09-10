@@ -185,6 +185,8 @@ Bug fixes:
 * Fixed `Range#step` to return correct class with begin-less range (@ccocchi, #2516).
 * Fixed exception creation when an `Errno` is sub-classed (@bjfish, #2521).
 * Fixed `String#[]=` to use the negotiated encoding (@bjfish, #2545).
+* Fix `File.utime` to use nanoseconds (#2448).
+* Capture the intercepted feature path during patching to reuse during patch require (#2441).
 
 Compatibility:
 
