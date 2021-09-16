@@ -19,7 +19,7 @@
 # THE SOFTWARE.
 #$LOAD_PATH.unshift Dir.children("./bench")
 
-class Benchmark
+class Benchmarks
   def inner_benchmark_loop(inner_iterations)
     inner_iterations.times do
       return false unless verify_result(benchmark)
@@ -59,7 +59,6 @@ class Run
       # Ruby naming conventions instead of classic names
       benchmark_file = benchmark_name.gsub(/([a-z])([A-Z])/) { "#{$1}-#{$2}" }.downcase
     end
-    puts benchmark_file
     unless require_relative(benchmark_file)
       raise "failed loading #{benchmark_file}"
     end
