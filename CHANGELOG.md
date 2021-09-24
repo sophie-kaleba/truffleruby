@@ -248,6 +248,9 @@ Performance:
 * Remove unnecessary work in negotiating the encoding to use in a Regexp match (#2522, @nirvdrum).
 * Add new fast paths for encoding negotiation between strings with different encodings, but which match common default cases (#2522, @nirvdrum).
 * Reduce footprint by removing unnecessary nodes for accessing the `FrameOnStackMarker` (#2530, @smarr).
+* Regexp objects are now interned in a similar way to symbols.
+* Improve performance of regexps using POSIX bracket expressions (e.g., `[[:lower:]]`) matching against ASCII-only strings (#2447).
+* `String#sub`, `sub!`, `gsub`, and `gsub!` have been refactored for better performance.
 
 Changes:
 
