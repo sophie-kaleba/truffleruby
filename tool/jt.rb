@@ -2091,6 +2091,9 @@ module Commands
     args = remaining_args
     app_args = []
 
+    vm_args, remaining_args, _parsed_options = ruby_options({}, args)
+    args = remaining_args
+
     until args.empty?
       arg = args.shift
       case arg
