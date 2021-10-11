@@ -280,6 +280,16 @@ public abstract class SymbolNodes {
         }
     }
 
+    @CoreMethod(names = "name")
+    public abstract static class NameNode extends CoreMethodArrayArgumentsNode {
+
+        @Specialization
+        protected ImmutableRubyString toS(RubySymbol symbol) {
+            return symbol.getName(getLanguage());
+        }
+
+    }
+
     @CoreMethod(names = { "__allocate__", "__layout_allocate__" }, constructor = true, visibility = Visibility.PRIVATE)
     public abstract static class AllocateNode extends UnaryCoreMethodNode {
         @Specialization
