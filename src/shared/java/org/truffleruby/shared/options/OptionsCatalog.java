@@ -236,6 +236,13 @@ public class OptionsCatalog {
             .usageSyntax("-1")
             .build();
 
+    public static final OptionDescriptor BACKTRACE_LIMIT = OptionDescriptor
+            .newBuilder(BACKTRACE_LIMIT_KEY, "ruby.backtrace-limit")
+            .help("limit the maximum length of backtrace")
+            .category(OptionCategory.USER)
+            .stability(OptionStability.STABLE)
+            .build();
+
     public static final OptionDescriptor NO_HOME_PROVIDED = OptionDescriptor
             .newBuilder(NO_HOME_PROVIDED_KEY, "ruby.no-home-provided")
             .help("set to true to explicitly state that no home is provided (silences the warnings)")
