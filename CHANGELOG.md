@@ -265,6 +265,8 @@ Compatibility:
 * Integer#zero? overrides Numeric#zero? for optimization (#2453).
 * Default `Kernel#eval` source file and line to `(eval):1` like CRuby 3 (#2453).
 * Add `GC.auto_compact` accessors for compatibility (#2453).
+* Update accessing a class variable from the top-level scope to be a `RuntimeError` (#2453, @bjfish).
+* Update interpolated strings to not be frozen (#2453).
 
 Performance:
 
