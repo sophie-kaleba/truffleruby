@@ -274,6 +274,7 @@ Compatibility:
 * Handle `Kernel#clone(freeze: true)` (#2512, @andrykonchin).
 * Relax `Fiber#transfer` limitation (#2453).
 * Relax `Fiber#transfer` limitations (#2453).
+* Implement `Fiber#blocking?` like CRuby 3 (#2453, @aardvark179).
 
 Performance:
 
