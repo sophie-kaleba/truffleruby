@@ -273,6 +273,7 @@ Compatibility:
 * Implement all `StringScanner` methods (#2520, @eregon).
 * Handle `Kernel#clone(freeze: true)` (#2512, @andrykonchin).
 * Relax `Fiber#transfer` limitation (#2453).
+* Relax `Fiber#transfer` limitations (#2453).
 
 Performance:
 
