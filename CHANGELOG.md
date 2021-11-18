@@ -277,6 +277,10 @@ Compatibility:
 * Implement `Fiber#blocking?` like CRuby 3 (#2453, @aardvark179).
 * Sort by default for `Dir.{glob,[]}` and add `sort:` keyword argument (#2523, @Strech).
 * Implement `rb_str_locktmp` and `rb_str_unlocktmp` (#2524, @bjfish).
+* Update `Kernel#instance_variables` to return insertion order (@bjfish).
+* Fixed `rb_path2class()` to not error for a module (#2511, @eregon).
+* Update `Kernel#print` to print `$_` when no arguments are given (#2531, @bjfish).
+* Add category kwarg to Kernel.warn and Warning.warn (#2533, @Strech).
 
 Performance:
 
