@@ -152,6 +152,7 @@ Compatibility:
 * Update `IO.readlines` to ignore negative limit parameters (#2625 , @bjfish).
 * Update `Math.sqrt` to raise a `Math::DomainError` for negative numbers (#2621, @bjfish).
 * Update `Enumerable#inject` to raise an `ArgumentError` if no block or symbol are given (#2626, @bjfish).
+* Implement more correct conversion of array elements by `Array#pack`(#2503, #2504, @aardvark179).
 
 Performance:
 
