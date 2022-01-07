@@ -244,37 +244,38 @@ Compatibility:
 * Use compensated summation for `{Array,Enumerable}#sum` when floating point values are included.
 * `Module#attr_*` methods now return an array of method names (#2498, @gogainda).
 * Fixed `Socket#(local|remote)_address` to retrieve family and type from the file descriptor (#2444, @larskanis).
-* Add `Thread.ignore_deadlock` accessor (#2453).
+* Add `Thread.ignore_deadlock` accessor (#2453, @bjfish).
 * Allow `Hash#transform_keys` to take a hash argument (@ccocchi, #2464).
-* Add `Enumerable#grep{_v}` optimization for `Regexp` (#2453).
-* Update `IO#write` to accept multiple arguments (#2501).
+* Add `Enumerable#grep{_v}` optimization for `Regexp` (#2453, @bjfish).
+* Update `IO#write` to accept multiple arguments (#2501, @bjfish).
 * Do not warn when uninitialized instance variable is accessed (#2502, @andrykonchin).
 * Remove `TRUE`, `FALSE`, and `NIL` constants like CRuby 3.0 (#2505, @andrykonchin).
 * `Symbol#to_proc` now returns a lambda like in Ruby 3 (#2508, @andrykonchin).
 * `Kernel#lambda` now warns if called without a literal block (#2500, @andrykonchin).
 * Implement Hash#except (#2463, @wildmaples).
-* Remove special `$SAFE` global and related C API methods (#2453).
+* Remove special `$SAFE` global and related C API methods (#2453, @bjfish).
 * Assigning to a numbered parameter raises `SyntaxError` (#2506, @andrykonchin).
-* Implement `--backtrace-limit` option (#2453).
-* Update `String` methods to return `String` instances when called on a subclass (#2453).
-* Update `String#encode` to support the `:fallback` option (#1391).
+* Implement `--backtrace-limit` option (#2453, @bjfish).
+* Update `String` methods to return `String` instances when called on a subclass (#2453, @bjfish).
+* Update `String#encode` to support the `:fallback` option (#1391, @aardvark179).
 * `Module#alias_method` now returns the defined alias as a symbol(#2499, @gogainda).
-* Implement `Symbol#name` (#2453).
-* Update `Module#{public, protected, private, public_class_method, private_class_method}` and top-level `private` and `public` methods to accept single array argument with a list of method names (#2453).
-* Constants deprecated by `Module#deprecate_constant` only warn if `Warning[:deprecated]` is `true`.
+* Implement `Symbol#name` (#2453, @bjfish).
+* Update `Module#{public, protected, private, public_class_method, private_class_method}` and top-level `private` and `public` methods to accept single array argument with a list of method names (#2453, @bjfish).
+* Constants deprecated by `Module#deprecate_constant` only warn if `Warning[:deprecated]` is `true` (@eregon).
 * All Array methods now return Array instances and not subclasses (#2510, @Strech).
-* Integer#zero? overrides Numeric#zero? for optimization (#2453).
-* Default `Kernel#eval` source file and line to `(eval):1` like CRuby 3 (#2453).
-* Add `GC.auto_compact` accessors for compatibility (#2453).
+* Integer#zero? overrides Numeric#zero? for optimization (#2453, @bjfish).
+* Default `Kernel#eval` source file and line to `(eval):1` like CRuby 3 (#2453, @aardvark179).
+* Add `GC.auto_compact` accessors for compatibility (#2453, @bjfish).
 * Update accessing a class variable from the top-level scope to be a `RuntimeError` (#2453, @bjfish).
-* Update interpolated strings to not be frozen (#2453).
+* Update interpolated strings to not be frozen (#2453, @bjfish).
 * Add `WERRORFLAG` to `RbConfig` (#2519, @bjfish).
 * Update `MatchData` methods to return `String` instances when called on a subclass (#2453, @bjfish).
-* Implement `Proc#{==,eql?}` (#2453).
+* Implement `Proc#{==,eql?}` (#2453, @bjfish).
 * Implement all `StringScanner` methods (#2520, @eregon).
 * Handle `Kernel#clone(freeze: true)` (#2512, @andrykonchin).
 * Relax `Fiber#transfer` limitation (#2453).
 * Relax `Fiber#transfer` limitations (#2453).
+* Relax `Fiber#transfer` limitations (#2453, @bjfish).
 * Implement `Fiber#blocking?` like CRuby 3 (#2453, @aardvark179).
 * Sort by default for `Dir.{glob,[]}` and add `sort:` keyword argument (#2523, @Strech).
 * Implement `rb_str_locktmp` and `rb_str_unlocktmp` (#2524, @bjfish).
@@ -285,6 +286,10 @@ Compatibility:
 * Implement `GC.{measure_total_time, total_time}` and update `GC.stat` to update provided hash (#2535, @bjfish).
 * Implement `Array#slice` with `ArithmeticSequence` (#2526, @ccocchi).
 * Update `Hash#each` to consistently yield a 2-element array (#2453).
+* Update `Hash#each` to consistently yield a 2-element array (#2453, @bjfish).
+* Remove `Hash#{__store__, index}` methods for compatibility (#2546, @bjfish).
+* Implement more correct conversion of array elements by `Array#pack` (#2503, #2504, @aardvark179).
+* Update `String#split` to raise a `RangeError` when `limit` is larger than `int` (@bjfish).
 
 Performance:
 
