@@ -180,6 +180,16 @@ public abstract class VMPrimitiveNodes {
         }
     }
 
+    @Primitive(name = "monitor_calls")
+    public abstract static class MonitorCallsNode extends PrimitiveArrayArgumentsNode {
+
+        @Specialization
+        protected boolean monitorCalls(boolean doMonitor) {
+            getContext().monitorCalls = doMonitor;
+            return doMonitor;
+        }
+    }
+
     @Primitive(name = "vm_builtin_method?")
     public abstract static class IsBuiltinMethodNode extends PrimitiveArrayArgumentsNode {
 
