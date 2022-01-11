@@ -17,6 +17,8 @@ import com.oracle.truffle.api.nodes.DirectCallNode;
 import com.oracle.truffle.api.nodes.NodeCost;
 import com.oracle.truffle.api.profiles.BranchProfile;
 import com.oracle.truffle.api.profiles.ConditionProfile;
+import com.oracle.truffle.api.source.SourceSection;
+import org.truffleruby.RubyContext;
 import org.truffleruby.core.array.ArrayUtils;
 import org.truffleruby.core.cast.ToSymbolNode;
 import org.truffleruby.core.exception.ExceptionOperations.ExceptionFormatter;
@@ -25,6 +27,7 @@ import org.truffleruby.core.proc.RubyProc;
 import org.truffleruby.core.symbol.RubySymbol;
 import org.truffleruby.language.FrameAndVariablesSendingNode;
 import org.truffleruby.language.Nil;
+import org.truffleruby.language.RubyDynamicObject;
 import org.truffleruby.language.RubyRootNode;
 import org.truffleruby.language.control.RaiseException;
 import org.truffleruby.language.methods.CallForeignMethodNode;
@@ -135,7 +138,26 @@ public class DispatchNode extends FrameAndVariablesSendingNode implements Dispat
         }
 
         final Object callerFrameOrVariables = getFrameOrStorageIfRequired(frame);
-        return callNode.execute(frame, callerFrameOrVariables, method, receiver, block, arguments);
+        Object result = callNode.execute(frame, callerFrameOrVariables, method, receiver, block, arguments);
+
+        if (RubyContext.monitorCalls) {
+            if (receiver instanceof RubyDynamicObject) {
+                getContext().logger.info(methodName + "\t" + ((RubyDynamicObject) receiver).getMetaClass().getName() + "\t" + getSourceSectionAbbrv(method.getSharedMethodInfo().getSourceSection()) + "\t" + method.getCallTarget().hashCode() + "\t" + method.isBuiltIn());
+            } else {
+                // The object is immutable, or a Java primitive type
+                getContext().logger.info(methodName + "\t" + receiver.getClass().toString() + "\t" + getSourceSectionAbbrv(method.getSharedMethodInfo().getSourceSection()) + "\t" + method.getCallTarget().hashCode() + "\t" + method.isBuiltIn());
+            }
+        }
+
+        return result;
+    }
+
+    public static String getSourceSectionAbbrv(final SourceSection source) {
+        String result = "NA";
+        if (source != null) {
+            result = source.getSource().getName() + ":" + source.getStartLine() + ":"
+                    + source.getStartColumn() + ":" + source.getCharLength();}
+        return result;
     }
 
     private Object callMethodMissing(
