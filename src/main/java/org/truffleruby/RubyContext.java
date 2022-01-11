@@ -100,6 +100,7 @@ import sun.misc.SignalHandler;
 public class RubyContext {
 
     public static int phaseID = 0;
+    public static boolean monitorCalls = false;
 
     private final RubyLanguage language;
     @CompilationFinal private TruffleLanguage.Env env;
