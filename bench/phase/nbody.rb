@@ -9,7 +9,7 @@ PI            = 3.141592653589793
 SOLAR_MASS    = 4.0 * PI * PI
 DAYS_PER_YEAR = 365.24
 
-class NBody < Benchmark
+class NBody < Benchmarks
   def inner_benchmark_loop(inner_iterations)
     system = NBodySystem.new
 

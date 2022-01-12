@@ -41,7 +41,7 @@
 
 # http://benchmarksgame.alioth.debian.org/u64q/program.php?test=mandelbrot&lang=yarv&id=3
 
-class Mandelbrot < Benchmark
+class Mandelbrot < Benchmarks
   def inner_benchmark_loop(inner_iterations)
     verify_result(mandelbrot(inner_iterations), inner_iterations)
   end

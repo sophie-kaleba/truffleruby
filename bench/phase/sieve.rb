@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class Sieve < Benchmark
+class Sieve < Benchmarks
   def benchmark
     flags = Array.new(5000, true)
     sieve(flags, 5000)

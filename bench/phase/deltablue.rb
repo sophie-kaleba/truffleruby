@@ -30,7 +30,7 @@
 # .. _`V8's source code`: (http://code.google.com/p/v8/source/browse/branches/bleeding_edge/benchmarks/deltablue.js)
 require_relative 'som'
 
-class DeltaBlue < Benchmark
+class DeltaBlue < Benchmarks
   def inner_benchmark_loop(inner_iterations)
     Planner.chain_test(inner_iterations)
     Planner.projection_test(inner_iterations)

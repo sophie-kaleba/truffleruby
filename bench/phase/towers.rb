@@ -30,7 +30,7 @@ class TowersDisk
   end
 end
 
-class Towers < Benchmark
+class Towers < Benchmarks
   def initialize
     @piles = nil
     @moves_done = 0
