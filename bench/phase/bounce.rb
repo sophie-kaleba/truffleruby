@@ -22,7 +22,7 @@
 
 require_relative 'som'
 
-class Bounce < Benchmark
+class Bounce < Benchmarks
   def benchmark
     random = Random.new
     ball_count = 100

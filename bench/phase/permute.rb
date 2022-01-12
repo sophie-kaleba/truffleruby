@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class Permute < Benchmark
+class Permute < Benchmarks
   def initialize
     @count = 0
     @v     = nil

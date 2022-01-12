@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class CallBaseline < Benchmark
+class CallBaseline < Benchmarks
     def initialize()
       @p = Point.new(1,1)
       @arr1 = [

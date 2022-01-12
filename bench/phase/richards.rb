@@ -30,7 +30,7 @@ DATA_SIZE = 4
 
 TRACING = false
 
-class Richards < Benchmark
+class Richards < Benchmarks
   def benchmark
     Scheduler.new.start
   end

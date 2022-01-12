@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class List < Benchmark
+class List < Benchmarks
   def benchmark
     result = tail(make_list(15),
                   make_list(10),

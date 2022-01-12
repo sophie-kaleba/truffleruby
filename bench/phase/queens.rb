@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class Queens < Benchmark
+class Queens < Benchmarks
   def initialize
     @free_maxs  = nil
     @free_rows  = nil

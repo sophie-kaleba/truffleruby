@@ -1,3 +1,5 @@
+# truffleruby_primitives: true
+
 # Copyright (c) 2015-2016 Stefan Marr <git@stefan-marr.de>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -73,11 +75,13 @@ class Run
   end
 
   def measure(bench)
+   # Primitive.monitor_calls true
     start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :nanosecond)
     unless bench.inner_benchmark_loop(@inner_iterations)
       raise 'Benchmark failed with incorrect result'
     end
     end_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :nanosecond)
+ #   Primitive.monitor_calls false
 
     run_time = (end_time - start_time) / 1000
     print_result(run_time)

@@ -14,7 +14,7 @@
 #         limitations under the License.
 require_relative 'som'
 
-class Havlak < Benchmark
+class Havlak < Benchmarks
   def inner_benchmark_loop(inner_iterations)
     verify_result(LoopTesterApp.new.main(inner_iterations,
                                          50, 10, 10, 5),

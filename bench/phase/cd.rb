@@ -804,7 +804,7 @@ class Simulator
   end
 end
 
-class CD < Benchmark
+class CD < Benchmarks
   def benchmark(num_aircrafts)
     num_frames = 200
     simulator  = Simulator.new(num_aircrafts)
