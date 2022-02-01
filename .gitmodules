@@ -1,1 +1,4 @@
 
+[submodule "required_gems"]
+	path = bench/railsbench/bundle
+	url = git@github.com:sophie-kaleba/required_gems.git
