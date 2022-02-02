@@ -4,9 +4,7 @@ stages:
 
 variables:
   JT: bin/jt
-
-before_script:
-  - git submodule update --init
+  GIT_SUBMODULE_STRATEGY: normal
 
 build_and_test_job:
   stage: build-and-test
