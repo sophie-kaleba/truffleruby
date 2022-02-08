@@ -139,7 +139,7 @@ public class DispatchNode extends FrameAndVariablesSendingNode implements Dispat
 
         final Object callerFrameOrVariables = getFrameOrStorageIfRequired(frame);
         Object result = callNode.execute(frame, callerFrameOrVariables, method, receiver, block, arguments);
-
+        
         if (RubyContext.monitorCalls) {
             if (receiver instanceof RubyDynamicObject) {
                 getContext().logger.info(methodName + "\t" + ((RubyDynamicObject) receiver).getMetaClass().getName() + "\t" + getSourceSectionAbbrv(method.getSharedMethodInfo().getSourceSection()) + "\t" + method.getCallTarget().hashCode() + "\t" + method.isBuiltIn());
