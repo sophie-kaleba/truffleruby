@@ -850,6 +850,7 @@ module Commands
       jt idea                                        generates IntelliJ projects
       jt format                                      run eclipse code formatter
       jt graalvm-home                                prints the GraalVM home of the RUBY_SELECTOR
+      jt splitting                                   displays splitting summary
 
       you can also put --build or --rebuild in front of any command to build or rebuild first
 
