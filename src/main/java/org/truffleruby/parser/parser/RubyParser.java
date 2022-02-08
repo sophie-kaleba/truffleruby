@@ -4023,6 +4023,7 @@ states[672] = (support, lexer, yyVal, yyVals, yyTop) -> {
 };
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 // line 2835 "RubyParser.y"
 =======
 <<<<<<< HEAD
@@ -4031,6 +4032,9 @@ states[672] = (support, lexer, yyVal, yyVals, yyTop) -> {
 // line 2823 "RubyParser.y"
 >>>>>>> fb8c9c6dcd (rebuild the parser after adding the phase annotation)
 >>>>>>> 18ab6412a7 (rebuild the parser after adding the phase annotation)
+=======
+// line 2826 "RubyParser.y"
+>>>>>>> 891c12d80b (Fix badly merged file after update to 3.0.2)
 
     /** The parse method use an lexer stream and parse it to an AST node 
      * structure
@@ -4048,6 +4052,7 @@ states[672] = (support, lexer, yyVal, yyVals, yyTop) -> {
 // CheckStyle: stop generated
 // @formatter:on
 <<<<<<< HEAD
+<<<<<<< HEAD
 // line 10926 "-"
 =======
 <<<<<<< HEAD
@@ -4056,3 +4061,6 @@ states[672] = (support, lexer, yyVal, yyVals, yyTop) -> {
 // line 11032 "-"
 >>>>>>> fb8c9c6dcd (rebuild the parser after adding the phase annotation)
 >>>>>>> 18ab6412a7 (rebuild the parser after adding the phase annotation)
+=======
+// line 10879 "-"
+>>>>>>> 891c12d80b (Fix badly merged file after update to 3.0.2)

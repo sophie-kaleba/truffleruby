@@ -306,8 +306,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         }
 
         @Override
-        public Object executeWithArgumentsEvaluated(VirtualFrame frame, Object receiverObject, Object blockObject,
-                                                    Object[] argumentsObjects) {
+        public Object executeWithArgumentsEvaluated(VirtualFrame frame, Object receiverObject, Object[] rubyArgs) {
             Object returnValue = null;
             String ss = (this.getSourceSection() != null) ? this.getSourceSection().toString() : "NULL";
             if (dispatch0 == null && getContext().phaseID == 0) {
@@ -321,16 +320,18 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
             }
 
             if (getContext().phaseID == 0) {
-                returnValue = dispatch0.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
+                returnValue = dispatch0.dispatch(frame, receiverObject, methodName, rubyArgs);
             }
             else if (getContext().phaseID == 1) {
-                returnValue = dispatch1.dispatch(frame, receiverObject, methodName, blockObject, argumentsObjects);
+                returnValue = dispatch1.dispatch(frame, receiverObject, methodName, rubyArgs);
             }
+
             if (isAttrAssign) {
-                assert argumentsObjects[argumentsObjects.length - 1] != null;
-                return argumentsObjects[argumentsObjects.length - 1];
+                final Object value = rubyArgs[rubyArgs.length - 1];
+                assert RubyGuards.assertIsValidRubyValue(value);
+                return value;
             } else {
-                assert returnValue != null;
+                assert RubyGuards.assertIsValidRubyValue(returnValue);
                 return returnValue;
             }
         }
