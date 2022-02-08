@@ -6,10 +6,16 @@ variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
 
+.scripts:
+   ensure-git-dependencies: &GIT_DEPS |
+     git -C ../graal fetch --all || true
+     git -C ../mx pull || true
+
 build_and_test_job:
   stage: build-and-test
   tags: [benchmarks]
   script:
+    - *GIT_DEPS
     - ${JT} build --sforceimports --env jvm-ce
     - ${JT} --use jvm-ce test fast
     - ${JT} --use jvm-ce test unittest
