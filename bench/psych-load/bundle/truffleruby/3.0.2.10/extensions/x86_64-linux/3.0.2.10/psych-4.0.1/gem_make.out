@@ -1,0 +1,21 @@
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/psych-load/bundle/truffleruby/3.0.2.10/gems/psych-4.0.1/ext/psych
+/home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/bin/truffleruby -I /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/lib/mri -r ./siteconf20220413-31083-i6zwjo.rb extconf.rb
+checking for yaml.h... yes
+checking for yaml_get_version() in -lyaml... yes
+creating Makefile
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/psych-load/bundle/truffleruby/3.0.2.10/gems/psych-4.0.1/ext/psych
+make DESTDIR\= clean
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/psych-load/bundle/truffleruby/3.0.2.10/gems/psych-4.0.1/ext/psych
+make DESTDIR\=
+compiling psych.c
+compiling psych_emitter.c
+compiling psych_parser.c
+compiling psych_to_ruby.c
+compiling psych_yaml_tree.c
+linking shared-object psych.so
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/psych-load/bundle/truffleruby/3.0.2.10/gems/psych-4.0.1/ext/psych
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 psych.so ./.gem.20220413-31083-ekkvmf
