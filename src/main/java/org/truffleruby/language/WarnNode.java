@@ -52,7 +52,7 @@ public class WarnNode extends RubyBaseNode {
         }
         if (callWarnNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            callWarnNode = insert(DispatchNode.create());
+            callWarnNode = insert(DispatchNode.create(this.getSourceSection()));
         }
 
         callWarn(getContext(), sourceSection, message, this, fromJavaStringNode, callWarnNode);

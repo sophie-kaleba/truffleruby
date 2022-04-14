@@ -66,7 +66,7 @@ public abstract class ErrnoErrorNode extends RubyBaseNode {
         assert extraMessage instanceof RubyString || extraMessage instanceof ImmutableRubyString;
         if (formatMessageNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            formatMessageNode = insert(DispatchNode.create());
+            formatMessageNode = insert(DispatchNode.create(this.getSourceSection()));
         }
         return (RubyString) formatMessageNode.call(
                 getContext().getCoreLibrary().truffleExceptionOperationsModule,

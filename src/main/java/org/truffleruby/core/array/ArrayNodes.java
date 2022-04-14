@@ -1293,7 +1293,7 @@ public abstract class ArrayNodes {
         protected Object callToAry(Object object) {
             if (toAryNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                toAryNode = insert(DispatchNode.create());
+                toAryNode = insert(DispatchNode.create(this.getSourceSection()));
             }
             return toAryNode.call(object, "to_ary");
         }
@@ -1336,7 +1336,7 @@ public abstract class ArrayNodes {
     @ReportPolymorphism
     public abstract static class InjectNode extends YieldingCoreMethodNode {
 
-        @Child private DispatchNode dispatch = DispatchNode.create(PUBLIC);
+        @Child private DispatchNode dispatch = DispatchNode.create(PUBLIC, this.getSourceSection());
 
         // Uses block
 

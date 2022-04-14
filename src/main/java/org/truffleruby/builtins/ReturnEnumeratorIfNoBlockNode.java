@@ -40,7 +40,7 @@ public class ReturnEnumeratorIfNoBlockNode extends RubyContextSourceNode {
         if (noBlockProfile.profile(block == nil)) {
             if (toEnumNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                toEnumNode = insert(DispatchNode.create());
+                toEnumNode = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             if (methodSymbol == null) {

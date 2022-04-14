@@ -43,7 +43,7 @@ public abstract class ToNumberWithCoercionNode extends FormatNode {
     protected Object toDouble(VirtualFrame frame, Object value) {
         if (floatNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            floatNode = insert(DispatchNode.create());
+            floatNode = insert(DispatchNode.create(this.getSourceSection()));
         }
 
         return floatNode.call(getContext().getCoreLibrary().kernelModule, "Float", value);

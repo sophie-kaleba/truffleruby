@@ -114,7 +114,7 @@ public abstract class SplatCastNode extends RubyContextSourceNode {
     private Object callToA(Object nil) {
         if (toA == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            toA = insert(DispatchNode.create(PRIVATE_RETURN_MISSING));
+            toA = insert(DispatchNode.create(PRIVATE_RETURN_MISSING, this.getSourceSection()));
         }
         return toA.call(nil, "to_a");
     }

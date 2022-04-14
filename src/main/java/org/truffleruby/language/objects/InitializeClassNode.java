@@ -67,7 +67,7 @@ public abstract class InitializeClassNode extends RubyBaseNode {
     private void triggerInheritedHook(RubyClass subClass, RubyClass superClass) {
         if (inheritedNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            inheritedNode = insert(DispatchNode.create());
+            inheritedNode = insert(DispatchNode.create(this.getSourceSection()));
         }
         inheritedNode.call(superClass, "inherited", subClass);
     }

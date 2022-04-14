@@ -23,7 +23,7 @@ public class KernelGetsNode extends RubyContextSourceNode {
     public Object execute(VirtualFrame frame) {
         if (callGetsNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            callGetsNode = insert(DispatchNode.create());
+            callGetsNode = insert(DispatchNode.create(this.getSourceSection()));
         }
         return callGetsNode.callWithFrame(frame, coreLibrary().kernelModule, "gets");
     }

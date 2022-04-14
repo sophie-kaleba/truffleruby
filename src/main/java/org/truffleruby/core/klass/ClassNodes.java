@@ -243,7 +243,7 @@ public abstract class ClassNodes {
     @CoreMethod(names = "allocate")
     public abstract static class AllocateInstanceNode extends CoreMethodArrayArgumentsNode {
 
-        @Child private DispatchNode allocateNode = DispatchNode.create();
+        @Child private DispatchNode allocateNode = DispatchNode.create(this.getSourceSection());
 
         @Specialization(guards = "!rubyClass.isSingleton")
         protected Object newInstance(RubyClass rubyClass) {

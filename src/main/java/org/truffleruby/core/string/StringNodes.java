@@ -318,7 +318,7 @@ public abstract class StringNodes {
             if (respondToNode.executeDoesRespondTo(b, coreSymbols().TO_STR, false)) {
                 if (objectEqualNode == null) {
                     CompilerDirectives.transferToInterpreterAndInvalidate();
-                    objectEqualNode = insert(DispatchNode.create());
+                    objectEqualNode = insert(DispatchNode.create(this.getSourceSection()));
                 }
 
                 if (booleanCastNode == null) {

@@ -147,7 +147,7 @@ public abstract class RangeNodes {
         protected Object eachObject(RubyObjectRange range, RubyProc block) {
             if (eachInternalCall == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                eachInternalCall = insert(DispatchNode.create());
+                eachInternalCall = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             return eachInternalCall.callWithBlock(range, "each_internal", block);
@@ -260,7 +260,7 @@ public abstract class RangeNodes {
         protected Object stepFallback(VirtualFrame frame, Object range, Object step, Object block) {
             if (stepInternalCall == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                stepInternalCall = insert(DispatchNode.create());
+                stepInternalCall = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             if (RubyGuards.wasNotProvided(step)) {
@@ -341,7 +341,7 @@ public abstract class RangeNodes {
         protected Object boundedToA(RubyObjectRange range) {
             if (toAInternalCall == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                toAInternalCall = insert(DispatchNode.create());
+                toAInternalCall = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             return toAInternalCall.call(range, "to_a_internal");

@@ -56,7 +56,7 @@ public abstract class ToFNode extends RubyBaseNode {
             @Cached BranchProfile errorProfile) {
         if (toFNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            toFNode = insert(DispatchNode.create());
+            toFNode = insert(DispatchNode.create(this.getSourceSection()));
         }
 
         final Object coerced;

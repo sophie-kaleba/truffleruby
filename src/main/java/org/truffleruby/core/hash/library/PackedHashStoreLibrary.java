@@ -539,7 +539,7 @@ public class PackedHashStoreLibrary {
         private boolean callEqual(Object receiver, Object key) {
             if (equalNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                equalNode = insert(DispatchNode.create());
+                equalNode = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             if (booleanCastNode == null) {

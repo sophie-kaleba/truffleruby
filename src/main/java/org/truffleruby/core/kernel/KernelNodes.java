@@ -196,7 +196,7 @@ public abstract class KernelNodes {
         private boolean areEqual(Object left, Object right) {
             if (equalNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                equalNode = insert(DispatchNode.create());
+                equalNode = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             if (booleanCastNode == null) {
@@ -1282,7 +1282,7 @@ public abstract class KernelNodes {
     @CoreMethod(names = "p", isModuleFunction = true, required = 1)
     public abstract static class DebugPrintNode extends CoreMethodArrayArgumentsNode {
 
-        @Child private DispatchNode callInspectNode = DispatchNode.create();
+        @Child private DispatchNode callInspectNode = DispatchNode.create(this.getSourceSection());
 
         @Specialization
         protected Object p(VirtualFrame frame, Object value) {

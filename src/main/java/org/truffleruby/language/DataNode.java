@@ -38,7 +38,7 @@ public class DataNode extends RubyContextSourceNode {
 
         if (callHelperNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            callHelperNode = insert(DispatchNode.create());
+            callHelperNode = insert(DispatchNode.create(this.getSourceSection()));
         }
 
         final String path = getPath();

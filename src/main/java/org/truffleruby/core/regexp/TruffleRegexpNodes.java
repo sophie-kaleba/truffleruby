@@ -281,7 +281,7 @@ public class TruffleRegexpNodes {
         @Child StringAppendPrimitiveNode appendNode = StringAppendPrimitiveNode.create();
         @Child AsTruffleStringNode asTruffleStringNode = AsTruffleStringNode.create();
         @Child ToSNode toSNode = ToSNode.create();
-        @Child DispatchNode copyNode = DispatchNode.create();
+        @Child DispatchNode copyNode = DispatchNode.create(this.getSourceSection());
         @Child private SameOrEqualNode sameOrEqualNode = SameOrEqualNode.create();
         private final RubyStringLibrary rubyStringLibrary = RubyStringLibrary.create();
         private final RubyStringLibrary regexpStringLibrary = RubyStringLibrary.create();
@@ -409,7 +409,7 @@ public class TruffleRegexpNodes {
         DispatchNode getWarnOnFallbackNode() {
             if (warnOnFallbackNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                warnOnFallbackNode = insert(DispatchNode.create());
+                warnOnFallbackNode = insert(DispatchNode.create(this.getSourceSection()));
             }
             return warnOnFallbackNode;
         }
@@ -962,7 +962,7 @@ public class TruffleRegexpNodes {
             if (getContext().getOptions().WARN_TRUFFLE_REGEX_MATCH_FALLBACK) {
                 if (warnOnFallbackNode == null) {
                     CompilerDirectives.transferToInterpreterAndInvalidate();
-                    warnOnFallbackNode = insert(DispatchNode.create());
+                    warnOnFallbackNode = insert(DispatchNode.create(this.getSourceSection()));
                 }
 
                 warnOnFallbackNode.call(
@@ -1026,7 +1026,7 @@ public class TruffleRegexpNodes {
         private Object dupString(Object string) {
             if (stringDupNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                stringDupNode = insert(DispatchNode.create());
+                stringDupNode = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             return stringDupNode.call(string, "dup");
@@ -1035,7 +1035,7 @@ public class TruffleRegexpNodes {
 
     public abstract static class MatchNode extends RubyBaseNode {
 
-        @Child private DispatchNode dupNode = DispatchNode.create();
+        @Child private DispatchNode dupNode = DispatchNode.create(this.getSourceSection());
 
         public static MatchNode create() {
             return MatchNodeGen.create();

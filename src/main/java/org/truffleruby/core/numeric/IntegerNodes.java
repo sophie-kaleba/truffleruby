@@ -1955,7 +1955,7 @@ public abstract class IntegerNodes {
         protected Object downto(Object from, Object to, RubyProc block) {
             if (downtoInternalCall == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                downtoInternalCall = insert(DispatchNode.create());
+                downtoInternalCall = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             return downtoInternalCall.callWithBlock(from, "downto_internal", block, to);
@@ -2031,7 +2031,7 @@ public abstract class IntegerNodes {
         protected Object upto(Object from, Object to, RubyProc block) {
             if (uptoInternalCall == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                uptoInternalCall = insert(DispatchNode.create());
+                uptoInternalCall = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             return uptoInternalCall.callWithBlock(from, "upto_internal", block, to);

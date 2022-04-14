@@ -57,7 +57,7 @@ public abstract class GetTimeZoneNode extends RubyBaseNode {
         TZ_UNCHANGED.invalidate();
     }
 
-    @Child private DispatchNode lookupEnvNode = DispatchNode.create();
+    @Child private DispatchNode lookupEnvNode = DispatchNode.create(this.getSourceSection());
 
     public abstract TimeZoneAndName executeGetTimeZone();
 

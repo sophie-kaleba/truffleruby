@@ -1317,7 +1317,7 @@ public class CExtNodes {
         private Object callToS(Object object) {
             if (toSCall == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                toSCall = insert(DispatchNode.create());
+                toSCall = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             return toSCall.call(object, "to_s");

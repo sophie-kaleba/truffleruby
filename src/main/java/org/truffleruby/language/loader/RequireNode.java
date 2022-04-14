@@ -53,10 +53,10 @@ import com.oracle.truffle.api.source.SourceSection;
 public abstract class RequireNode extends RubyBaseNode {
 
     @Child private IndirectCallNode callNode = IndirectCallNode.create();
-    @Child private DispatchNode isInLoadedFeatures = DispatchNode.create();
+    @Child private DispatchNode isInLoadedFeatures = DispatchNode.create(this.getSourceSection());
     @Child private BooleanCastNode booleanCastNode = BooleanCastNode.create();
-    @Child private DispatchNode addToLoadedFeatures = DispatchNode.create();
-    @Child private DispatchNode relativeFeatureNode = DispatchNode.create();
+    @Child private DispatchNode addToLoadedFeatures = DispatchNode.create(this.getSourceSection());
+    @Child private DispatchNode relativeFeatureNode = DispatchNode.create(this.getSourceSection());
 
     @Child private WarningNode warningNode;
 

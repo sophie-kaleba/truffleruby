@@ -42,7 +42,7 @@ public class EnumeratorSizeNode extends RubyContextSourceNode {
         if (noBlockProfile.profile(block == nil)) {
             if (toEnumWithSize == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                toEnumWithSize = insert(DispatchNode.create());
+                toEnumWithSize = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             final Object self = RubyArguments.getSelf(frame);

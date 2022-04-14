@@ -18,20 +18,20 @@ import com.oracle.truffle.api.frame.Frame;
 import com.oracle.truffle.api.interop.TruffleObject;
 import com.oracle.truffle.api.nodes.DenyReplace;
 import com.oracle.truffle.api.nodes.DirectCallNode;
+import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeCost;
 import com.oracle.truffle.api.profiles.ConditionProfile;
+import com.oracle.truffle.api.source.Source;
 import com.oracle.truffle.api.source.SourceSection;
 import org.truffleruby.RubyContext;
-import org.truffleruby.core.array.ArrayUtils;
 import org.truffleruby.core.cast.ToSymbolNode;
 import org.truffleruby.core.exception.ExceptionOperations.ExceptionFormatter;
 import org.truffleruby.core.hash.RubyHash;
 import org.truffleruby.core.klass.RubyClass;
 import org.truffleruby.core.symbol.RubySymbol;
 import org.truffleruby.language.FrameAndVariablesSendingNode;
-import org.truffleruby.language.RubyGuards;
-import org.truffleruby.language.Nil;
 import org.truffleruby.language.RubyDynamicObject;
+import org.truffleruby.language.RubyGuards;
 import org.truffleruby.language.RubyRootNode;
 import org.truffleruby.language.arguments.ArgumentsDescriptor;
 import org.truffleruby.language.arguments.EmptyArgumentsDescriptor;
@@ -63,12 +63,20 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
     public static final DispatchConfiguration PRIVATE_RETURN_MISSING = DispatchConfiguration.PRIVATE_RETURN_MISSING;
     public static final DispatchConfiguration PUBLIC_RETURN_MISSING = DispatchConfiguration.PUBLIC_RETURN_MISSING;
 
+    public static DispatchNode create(DispatchConfiguration config, SourceSection parentSourceSection) {
+        return new DispatchNode(config, parentSourceSection);
+    }
+
     public static DispatchNode create(DispatchConfiguration config) {
-        return new DispatchNode(config);
+        return new DispatchNode(config, null);
     }
 
     public static DispatchNode create() {
-        return new DispatchNode(DispatchConfiguration.PRIVATE);
+        return new DispatchNode(DispatchConfiguration.PRIVATE, null);
+    }
+
+    public static DispatchNode create(SourceSection parentSourceSection) {
+        return new DispatchNode(DispatchConfiguration.PRIVATE, parentSourceSection);
     }
 
     public static DispatchNode getUncached(DispatchConfiguration config) {
@@ -81,6 +89,7 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
     }
 
     public final DispatchConfiguration config;
+    public static SourceSection callNodeSourceSection;
 
     @Child protected MetaClassNode metaclassNode;
     @Child protected LookupMethodNode methodLookup;
@@ -105,7 +114,7 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         this.methodMissing = methodMissing;
     }
 
-    protected DispatchNode(DispatchConfiguration config) {
+    protected DispatchNode(DispatchConfiguration config, SourceSection parentSourceSection) {
         this(
                 config,
                 MetaClassNode.create(),
@@ -371,7 +380,7 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
             CompilerDirectives.transferToInterpreterAndInvalidate();
             // #method_missing ignores refinements on CRuby: https://bugs.ruby-lang.org/issues/13129
             callMethodMissing = insert(
-                    DispatchNode.create(DispatchConfiguration.PRIVATE_RETURN_MISSING_IGNORE_REFINEMENTS));
+                    DispatchNode.create(DispatchConfiguration.PRIVATE_RETURN_MISSING_IGNORE_REFINEMENTS, this.getSourceSection()));
         }
         return callMethodMissing;
     }
@@ -424,7 +433,7 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
 
         static {
             for (DispatchConfiguration config : DispatchConfiguration.values()) {
-                UNCACHED_NODES[config.ordinal()] = new Uncached(config);
+                UNCACHED_NODES[config.ordinal()] = new Uncached(config, null);
             }
         }
 

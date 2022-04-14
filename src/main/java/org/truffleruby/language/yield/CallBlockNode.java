@@ -9,6 +9,8 @@
  */
 package org.truffleruby.language.yield;
 
+import com.oracle.truffle.api.source.SourceSection;
+import org.truffleruby.RubyContext;
 import org.truffleruby.core.proc.ProcOperations;
 import org.truffleruby.core.proc.RubyProc;
 import org.truffleruby.language.RubyBaseNode;
@@ -106,6 +108,17 @@ public abstract class CallBlockNode extends RubyBaseNode {
                 blockArgument,
                 descriptor,
                 arguments);
+    }
+
+    public String getSourceSectionAbbrv(SourceSection source) {
+        String result = "NA";
+
+        if (source != null) {
+            result = source.getSource().getPath() + ":" + source.getStartLine() + ":"
+                    + source.getStartColumn() + ":" + source.getCharLength();
+        }
+
+        return result;
     }
 
     protected DirectCallNode createBlockCallNode(RootCallTarget callTarget) {

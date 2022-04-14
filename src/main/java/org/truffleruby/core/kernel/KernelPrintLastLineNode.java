@@ -26,7 +26,7 @@ public class KernelPrintLastLineNode extends RubyContextSourceNode {
     public Object execute(VirtualFrame frame) {
         if (callPrintNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            callPrintNode = insert(DispatchNode.create());
+            callPrintNode = insert(DispatchNode.create(this.getSourceSection()));
         }
         if (readGlobalVariableNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();

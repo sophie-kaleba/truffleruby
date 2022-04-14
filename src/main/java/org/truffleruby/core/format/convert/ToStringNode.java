@@ -124,7 +124,7 @@ public abstract class ToStringNode extends FormatNode {
             @Cached RubyStringLibrary libString) {
         if (toSNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            toSNode = insert(DispatchNode.create(PRIVATE_RETURN_MISSING));
+            toSNode = insert(DispatchNode.create(PRIVATE_RETURN_MISSING, this.getSourceSection()));
         }
 
         final Object value = toSNode.call(array, "to_s");
@@ -170,7 +170,7 @@ public abstract class ToStringNode extends FormatNode {
     private DispatchNode getToStrNode() {
         if (toStrNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            toStrNode = insert(DispatchNode.create(PRIVATE_RETURN_MISSING));
+            toStrNode = insert(DispatchNode.create(PRIVATE_RETURN_MISSING, this.getSourceSection()));
         }
         return toStrNode;
     }

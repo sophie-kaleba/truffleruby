@@ -70,7 +70,7 @@ public class CallSuperMethodNode extends FrameAndVariablesSendingNode {
             LiteralCallNode literalCallNode) {
         if (callMethodMissingNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            callMethodMissingNode = insert(DispatchNode.create());
+            callMethodMissingNode = insert(DispatchNode.create(this.getSourceSection()));
         }
         return callMethodMissingNode.callWithDescriptor(receiver, "method_missing", block, descriptor, arguments,
                 literalCallNode);

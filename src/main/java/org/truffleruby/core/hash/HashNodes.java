@@ -123,7 +123,7 @@ public abstract class HashNodes {
         private Object fallback(RubyClass hashClass, Object[] args) {
             if (fallbackNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                fallbackNode = insert(DispatchNode.create());
+                fallbackNode = insert(DispatchNode.create(this.getSourceSection()));
             }
             return fallbackNode.call(hashClass, "_constructor_fallback", args);
         }
@@ -206,7 +206,7 @@ public abstract class HashNodes {
         public Object accept(Frame frame, Object hash, Object key) {
             if (callDefaultNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                callDefaultNode = insert(DispatchNode.create());
+                callDefaultNode = insert(DispatchNode.create(this.getSourceSection()));
             }
             return callDefaultNode.call(hash, "default", key);
         }

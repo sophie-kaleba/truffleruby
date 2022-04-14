@@ -33,7 +33,7 @@ public class ConcatHashLiteralNode extends RubyContextSourceNode {
         final RubyHash hash = HashOperations.newEmptyHash(getContext(), getLanguage());
         if (hashMergeNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            hashMergeNode = insert(DispatchNode.create());
+            hashMergeNode = insert(DispatchNode.create(this.getSourceSection()));
         }
         for (int i = 0; i < children.length; i++) {
             hashMergeNode.call(hash, "merge!", children[i].execute(frame));

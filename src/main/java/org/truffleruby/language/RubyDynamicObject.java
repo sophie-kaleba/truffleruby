@@ -57,6 +57,7 @@ import com.oracle.truffle.api.profiles.BranchProfile;
 import com.oracle.truffle.api.profiles.ConditionProfile;
 import com.oracle.truffle.api.utilities.TriState;
 import org.truffleruby.language.objects.shared.SharedObjects;
+import org.truffleruby.shared.TruffleRuby;
 
 /** All Ruby DynamicObjects extend this. */
 @ExportLibrary(RubyLibrary.class)

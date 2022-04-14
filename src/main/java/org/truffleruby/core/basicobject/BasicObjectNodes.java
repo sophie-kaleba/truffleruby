@@ -99,7 +99,7 @@ public abstract class BasicObjectNodes {
     @CoreMethod(names = "!=", required = 1)
     public abstract static class NotEqualNode extends CoreMethodArrayArgumentsNode {
 
-        @Child private DispatchNode equalNode = DispatchNode.create();
+        @Child private DispatchNode equalNode = DispatchNode.create(this.getSourceSection());
         @Child private BooleanCastNode booleanCastNode = BooleanCastNode.create();
 
         @Specialization

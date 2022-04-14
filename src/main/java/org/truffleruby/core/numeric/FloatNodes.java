@@ -166,8 +166,8 @@ public abstract class FloatNodes {
             if (complexProfile.profile(base < 0 && exponent != Math.round(exponent))) {
                 if (complexConvertNode == null) {
                     CompilerDirectives.transferToInterpreterAndInvalidate();
-                    complexConvertNode = insert(DispatchNode.create());
-                    complexPowNode = insert(DispatchNode.create());
+                    complexConvertNode = insert(DispatchNode.create(this.getSourceSection()));
+                    complexPowNode = insert(DispatchNode.create(this.getSourceSection()));
                 }
 
                 final Object aComplex = complexConvertNode.call(coreLibrary().complexClass, "convert", base, 0);
@@ -379,7 +379,7 @@ public abstract class FloatNodes {
         protected Object equal(VirtualFrame frame, double a, Object b) {
             if (fallbackCallNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                fallbackCallNode = insert(DispatchNode.create());
+                fallbackCallNode = insert(DispatchNode.create(this.getSourceSection()));
             }
 
             return fallbackCallNode.call(a, "equal_fallback", b);

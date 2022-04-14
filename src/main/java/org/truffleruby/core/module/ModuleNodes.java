@@ -2092,7 +2092,7 @@ public abstract class ModuleNodes {
 
         @Child private NameToJavaStringNode nameToJavaStringNode = NameToJavaStringNode.create();
         @Child private TypeNodes.CheckFrozenNode raiseIfFrozenNode = TypeNodes.CheckFrozenNode.create();
-        @Child private DispatchNode methodRemovedNode = DispatchNode.create();
+        @Child private DispatchNode methodRemovedNode = DispatchNode.create(this.getSourceSection());
 
         @Specialization
         protected RubyModule removeMethods(RubyModule module, Object[] names) {
