@@ -1,0 +1,18 @@
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/mail/bundle/truffleruby/3.0.2.10/gems/digest-3.1.0/ext/digest/sha2
+/home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/bin/truffleruby -I /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/lib/mri -r ./siteconf20220413-28831-188m3w.rb extconf.rb
+checking for u_int8_t... yes
+checking for sys/cdefs.h... yes
+creating Makefile
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/mail/bundle/truffleruby/3.0.2.10/gems/digest-3.1.0/ext/digest/sha2
+make DESTDIR\= clean
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/mail/bundle/truffleruby/3.0.2.10/gems/digest-3.1.0/ext/digest/sha2
+make DESTDIR\=
+compiling sha2init.c
+compiling sha2.c
+linking shared-object digest/sha2.so
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/mail/bundle/truffleruby/3.0.2.10/gems/digest-3.1.0/ext/digest/sha2
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 sha2.so ./.gem.20220413-28831-swb61l/digest
