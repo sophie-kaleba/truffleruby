@@ -1,5 +1,6 @@
 # Adapted from the yjit-benchmark, available @ https://github.com/Shopify/yjit-bench/tree/main/benchmarks/railsbench
 $LOAD_PATH.unshift "#{__dir__}/../railsbench"
+require "#{__dir__}/../bundle/bundler/setup"
 require_relative '../../tool/jt.rb'
 
 class BlogRailsRoutes < Benchmarks 

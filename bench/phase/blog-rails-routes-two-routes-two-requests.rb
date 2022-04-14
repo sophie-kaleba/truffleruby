@@ -40,7 +40,7 @@ class BlogRailsRoutesTwoRoutesTwoRequests < Benchmarks
       for a in 1..100 do
           env = Rack::MockRequest::env_for("http://localhost/posts", :method => "POST", :params => {post:{body: "This is a blog post body", title: "This is a blog post title", published: false}})
           response_array = @app.call(env)
-          unless response_array.first == 302
+          unless response_array.first == 422
             raise "HTTP response is #{response_array.first} instead of 200. Is the benchmark app properly set up? See README.md."
           end
       end

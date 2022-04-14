@@ -27,7 +27,7 @@ class BlogRailsRoutesTwoRoutes < Benchmarks
       # The app mutates `env`, so we need to create one every time.
       # visit each of the visit_count routes, through a GET request
       @visiting_routes.each do |path|
-          for i in 1..300 do     
+          for i in 1..100 do     
             env = Rack::MockRequest::env_for("http://localhost#{path}")
             response_array = @app.call(env)
             unless response_array.first == 200  
