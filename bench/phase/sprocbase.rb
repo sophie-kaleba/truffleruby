@@ -20,27 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class Slambdapolluted < Benchmark
+class Sprocbase < Benchmarks
   def initialize()
-    @block = lambda { 61 }
     @arr1 = Array.new(1000)
+
+    @block = Proc.new { 61 }
     @arr1.fill(@block)
-  
-    @arr2 = Array.new(1000)
-    @arr2.fill(@block)
-  
-    @arr1[1] = lambda { 62 }
-    @arr1[2] = lambda { 63 }
-    @arr1[3] = lambda { 64 }
-    @arr1[4] = lambda { 65 }
-    @arr1[5] = lambda { 66 }
-    @arr1[6] = lambda { 67 }
-    @arr1[7] = lambda { 68 }
-    @arr1[8] = lambda { 69 }
-  end
+    end
 
   def benchmark
-    [loop1(@arr1), loop1(@arr2)]
+    loop1(@arr1)
   end
 
   def loop1(an_array)
@@ -50,16 +39,8 @@ class Slambdapolluted < Benchmark
     end
     sum 
   end
-
-  def loop2(an_array)
-    sum = 0
-    an_array.each do |f|
-      sum += f.call() + 2
-    end
-    sum
-  end
   
   def verify_result(result)
-    63036 === result[0] && 63000 === result[1]
+    1000 * (61+2) === result
   end
 end

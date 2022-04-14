@@ -1,5 +1,3 @@
-# This code is derived from the SOM benchmarks, see AUTHORS.md file.
-#
 # Copyright (c) 2015-2016 Stefan Marr <git@stefan-marr.de>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,13 +18,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-class Slambdabase < Benchmarks
+class Slambdamega < Benchmarks
   def initialize()
     @arr1 = Array.new(1000)
 
     @block = lambda { 61 }
     @arr1.fill(@block)
-    end
+  
+    @arr1[1] = lambda { 62 }
+    @arr1[2] = lambda { 63 }
+    @arr1[3] = lambda { 64 }
+    @arr1[4] = lambda { 65 }
+    @arr1[5] = lambda { 66 }
+    @arr1[6] = lambda { 67 }
+    @arr1[7] = lambda { 68 }
+    @arr1[8] = lambda { 69 }
+  end
 
   def benchmark
     loop1(@arr1)
@@ -41,6 +48,6 @@ class Slambdabase < Benchmarks
   end
   
   def verify_result(result)
-    1000 * (61+2) === result
+    63036 === result
   end
 end
