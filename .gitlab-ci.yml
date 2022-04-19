@@ -21,16 +21,14 @@ before_script:
      EOF
     
    download-variants: &DOWNLOAD_TR |
-     sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-jvm.tar.lz4
-     sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-native-libgraal.tar.lz4
+     sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-jvm-ce.tar.lz4
   
    install-on-tmpfs: &INSTALL_ON_TMP |
      export PROJECT_FOLDER=$(pwd)
      rm -Rf /tmp/truffleruby
      mkdir -p /tmp/truffleruby
      cd /tmp/truffleruby
-     tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-jvm.tar.lz4
-     tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-native-libgraal.tar.lz4
+     tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-jvm-ce.tar.lz4
 
 build_and_test_job:
   stage: build-and-test
@@ -39,7 +37,7 @@ build_and_test_job:
     - export VARIANT=jvm-ce
     - ${JT} build --sforceimports --env ${VARIANT}
     - ${JT} --use ${VARIANT} test fast
-    - ${JT} --use ${VARIANT} test unittest
+    # - ${JT} --use ${VARIANT} test unittest
   
     - *PACKAGE_TR
     - *UPLOAD_GP
