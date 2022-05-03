@@ -17,9 +17,12 @@ import com.oracle.truffle.api.nodes.EncapsulatingNodeReference;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
 import com.oracle.truffle.api.profiles.BranchProfile;
+import com.oracle.truffle.api.source.SourceSection;
+import com.oracle.truffle.api.utilities.AlwaysValidAssumption;
 import org.truffleruby.RubyContext;
 import org.truffleruby.builtins.CoreMethodNodeManager;
 import org.truffleruby.core.inlined.AlwaysInlinedMethodNode;
+import org.truffleruby.core.klass.RubyClass;
 import org.truffleruby.language.RubyBaseNode;
 
 import com.oracle.truffle.api.Assumption;
@@ -50,7 +53,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
     /** Callers should use {@link RubyArguments#assertFrameArguments} unless they use {@code RubyArguments#pack}.
      * {@code literalCallNode} is only non-null if this was called splatted with a ruby2_keyword Hash. */
     public abstract Object execute(Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
-            LiteralCallNode literalCallNode);
+            LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass);
 
     @Specialization(
             guards = {
@@ -113,6 +116,10 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
                 throw RubyCheckArityRootNode.checkArityError(cachedArity, given, alwaysInlinedNode);
             }
 
+   //         if (RubyContext.monitorCalls) {
+                // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
+                getContext().logger.info(method.getName() + "\t" + (metaclass == null ? "NA" : metaclass.getMetaSimpleName()) + "\t" + getSourceSectionAbbrv(dispatchNode) + "\t" + method.getCallTarget().getTargetID() + "\t" + method.isBuiltIn() + "\t" + method.getDeclaringModule().getName());
+    //        }
             return alwaysInlinedNode.execute(frame, receiver, RubyArguments.repackForCall(rubyArgs), cachedCallTarget);
         } catch (RaiseException e) {
             exceptionProfile.enter();
@@ -130,6 +137,20 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
         } else {
             throw e;
         }
+    }
+
+    public String getSourceSectionAbbrv(DispatchNode dispatchNode) {
+        String result = "NA";
+
+        if (dispatchNode != null) {
+            SourceSection source = dispatchNode.getParentSourceSection();
+            if (source != null) {
+                result = source.getSource().getPath() + ":" + source.getStartLine() + ":"
+                        + source.getStartColumn() + ":" + source.getCharLength();
+            }
+        }
+
+        return result;
     }
 
     @Specialization(guards = "method.alwaysInlined()", replaces = "alwaysInlined")

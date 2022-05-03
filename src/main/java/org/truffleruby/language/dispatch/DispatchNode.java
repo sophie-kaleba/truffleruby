@@ -290,6 +290,10 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         return dispatch(frame, receiver, methodName, rubyArgs);
     }
 
+    public SourceSection getParentSourceSection() {
+        return parentSourceSection;
+    }
+
     public final Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs) {
         return dispatch(frame, receiver, methodName, rubyArgs, null);
     }
