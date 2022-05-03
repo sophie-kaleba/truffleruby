@@ -40,7 +40,7 @@ build_and_test_job:
     # - ${JT} --use ${VARIANT} test unittest
   
     - *PACKAGE_TR
-    - *UPLOAD_GP
+    - *UPLOAD_TR
 
 benchmark1:
   stage: benchmark
