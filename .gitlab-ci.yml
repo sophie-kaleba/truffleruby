@@ -7,9 +7,6 @@ variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
 
-before_script:
-  - git submodule update --init
-
 .scripts:
    package-truffleruby: &PACKAGE_TR |
      tar -I lz4 -cf ${PROJECT_FOLDER}/truffleruby-${VARIANT}.tar.lz4 truffleruby-${VARIANT}
