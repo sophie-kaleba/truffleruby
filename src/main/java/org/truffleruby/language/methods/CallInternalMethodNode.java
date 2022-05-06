@@ -9,6 +9,7 @@
  */
 package org.truffleruby.language.methods;
 
+import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.HostCompilerDirectives.InliningCutoff;
 import com.oracle.truffle.api.frame.Frame;
@@ -55,6 +56,13 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
     public abstract Object execute(Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
             LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass);
 
+    private void logCalls(InternalMethod method, DispatchNode dispatchNode, RubyClass metaclass, CallTarget currentCallTarget) {
+        if (RubyContext.monitorCalls) {
+            // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
+            getContext().logger.info(method.getName() + "\t" + (metaclass == null ? "NA" : metaclass.getMetaSimpleName()) + "\t" + getSourceSectionAbbrv(dispatchNode) + "\t" + currentCallTarget.getTargetID() + "\t" + method.isBuiltIn() + "\t" + method.getDeclaringModule().getName());
+        }
+    }
+
     @Specialization(
             guards = {
                     "isSingleContext()",
@@ -70,8 +78,13 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
         if (literalCallNode != null) {
             literalCallNode.copyRuby2KeywordsHash(rubyArgs, cachedMethod.getSharedMethodInfo());
         }
-
-        return callNode.call(RubyArguments.repackForCall(rubyArgs));
+        
+        try {
+            return callNode.call(RubyArguments.repackForCall(rubyArgs));
+        }
+        finally {
+            logCalls(method, dispatchNode, metaclass, callNode.getCurrentCallTarget());
+        }
     }
 
     @InliningCutoff
@@ -83,7 +96,12 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             literalCallNode.copyRuby2KeywordsHash(rubyArgs, method.getSharedMethodInfo());
         }
 
-        return indirectCallNode.call(method.getCallTarget(), RubyArguments.repackForCall(rubyArgs));
+        try {
+            return indirectCallNode.call(method.getCallTarget(), RubyArguments.repackForCall(rubyArgs));
+        }
+        finally {
+            logCalls(method, dispatchNode, metaclass, method.getCallTarget());
+        }
     }
 
     @Specialization(
@@ -116,10 +134,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
                 throw RubyCheckArityRootNode.checkArityError(cachedArity, given, alwaysInlinedNode);
             }
 
-   //         if (RubyContext.monitorCalls) {
-                // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
-                getContext().logger.info(method.getName() + "\t" + (metaclass == null ? "NA" : metaclass.getMetaSimpleName()) + "\t" + getSourceSectionAbbrv(dispatchNode) + "\t" + method.getCallTarget().getTargetID() + "\t" + method.isBuiltIn() + "\t" + method.getDeclaringModule().getName());
-    //        }
+            logCalls(method, dispatchNode, metaclass, method.getCallTarget());
             return alwaysInlinedNode.execute(frame, receiver, RubyArguments.repackForCall(rubyArgs), cachedCallTarget);
         } catch (RaiseException e) {
             exceptionProfile.enter();
