@@ -10,7 +10,7 @@ variables:
 .scripts:
    install-remote-graal-branch: &INSTALL_REMOTE_BRANCH |
      cd ../graal
-     git remote add skgraal https://github.com/sophie-kaleba/truffle || true
+     git config remote.skgraal.url >&- || git remote add skgraal https://github.com/sophie-kaleba/truffle
      cd ${PROJECT_FOLDER}
 
    ensure-git-dependencies: &GIT_DEPS |
