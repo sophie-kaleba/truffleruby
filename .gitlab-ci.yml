@@ -8,6 +8,10 @@ variables:
   GIT_SUBMODULE_STRATEGY: normal
 
 .scripts:
+   ensure-git-dependencies: &GIT_DEPS |
+     git -C ../graal fetch --all || true
+     git -C ../mx pull || true
+
    package-truffleruby: &PACKAGE_TR |
      tar -I lz4 -cf ${PROJECT_FOLDER}/truffleruby-${VARIANT}.tar.lz4 truffleruby-${VARIANT}
 
