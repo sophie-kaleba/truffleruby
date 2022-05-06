@@ -8,6 +8,10 @@ variables:
   GIT_SUBMODULE_STRATEGY: normal
 
 .scripts:
+   install-remote-graal-branch: &INSTALL_REMOTE_BRANCH |
+     cd ../graal
+     git remote add skgraal https://github.com/sophie-kaleba/truffle || true
+
    ensure-git-dependencies: &GIT_DEPS |
      git -C ../graal fetch --all || true
      git -C ../mx pull || true
@@ -35,6 +39,8 @@ build_and_test_job:
   stage: build-and-test
   tags: [yuria]
   script:
+    - *INSTALL_REMOTE_BRANCH
+    - *GIT_DEPS
     - export VARIANT=jvm-ce
     - ${JT} build --sforceimports --env ${VARIANT}
     - ${JT} --use ${VARIANT} test fast
