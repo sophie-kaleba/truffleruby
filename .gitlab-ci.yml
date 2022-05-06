@@ -11,6 +11,7 @@ variables:
    install-remote-graal-branch: &INSTALL_REMOTE_BRANCH |
      cd ../graal
      git remote add skgraal https://github.com/sophie-kaleba/truffle || true
+     cd ${PROJECT_FOLDER}
 
    ensure-git-dependencies: &GIT_DEPS |
      git -C ../graal fetch --all || true
