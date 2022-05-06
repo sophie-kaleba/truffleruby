@@ -8,9 +8,13 @@ variables:
   GIT_SUBMODULE_STRATEGY: normal
 
 .scripts:
+   prep-path: &PREP_PATH |
+     export PROJECT_FOLDER=$(pwd)
+     export PATH=${PROJECT_FOLDER}/bin:${PATH}
+
    install-remote-graal-branch: &INSTALL_REMOTE_BRANCH |
      cd ../graal
-     git remote set-url skgraal https://github.com/sophie-kaleba/truffle.git
+     git config remote.skgraal.url >&- || git remote add skgraal https://github.com/sophie-kaleba/truffle.git
      cd ../benchmark-runs-tr
 
    ensure-git-dependencies: &GIT_DEPS |
@@ -18,6 +22,10 @@ variables:
      git -C ../mx pull || true
 
    package-truffleruby: &PACKAGE_TR |
+     export RESULT_HOME=$(dirname $(jt --use ${VARIANT} graalvm-home))
+     cd ${RESULT_HOME}
+     mv $(basename $(jt --use ${VARIANT} graalvm-home)) truffleruby-${VARIANT}
+     rm -Rf truffleruby-${VARIANT}/legal truffleruby-${VARIANT}/lib/visualvm truffleruby-${VARIANT}/lib/jfr truffleruby-${VARIANT}/tools truffleruby-${VARIANT}/include truffleruby-${VARIANT}/lib/llvm
      tar -I lz4 -cf ${PROJECT_FOLDER}/truffleruby-${VARIANT}.tar.lz4 truffleruby-${VARIANT}
 
    upload-truffleruby: &UPLOAD_TR |
@@ -42,6 +50,8 @@ build_and_test_job:
   script:
     - *INSTALL_REMOTE_BRANCH
     - *GIT_DEPS
+    - *PREP_PATH
+    
     - export VARIANT=jvm-ce
     - ${JT} build --sforceimports --env ${VARIANT}
     - ${JT} --use ${VARIANT} test fast
