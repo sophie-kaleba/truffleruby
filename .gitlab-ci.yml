@@ -75,7 +75,7 @@ benchmark1:
     - *GIT_TR
     - *INSTALL_ON_TMP
 
-    - cd truffleruby.aux
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all
     - git checkout ${WORKING_BRANCH}
 
@@ -92,7 +92,7 @@ benchmark2:
     - *GIT_TR
     - *INSTALL_ON_TMP
 
-    - cd truffleruby.aux
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all
     - git checkout ${WORKING_BRANCH}
 
@@ -109,7 +109,7 @@ benchmark3:
     - *GIT_TR
     - *INSTALL_ON_TMP
 
-    - cd truffleruby.aux
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all
     - git checkout ${WORKING_BRANCH}
 
@@ -123,8 +123,8 @@ report-completion:
   script:
     - *GIT_TR
 
-    - cd truffleruby.aux
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all
     - git checkout ${WORKING_BRANCH}
-    
+
     - rebench --experiment="CI ID $CI_PIPELINE_ID" --report-completion rebench.conf
