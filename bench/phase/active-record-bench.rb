@@ -1,7 +1,11 @@
 $LOAD_PATH.unshift "#{__dir__}/../activerecord"
-require "#{__dir__}/../activerecord/bundle/bundler/setup"
+#require "#{__dir__}/../activerecord/bundle/bundler/setup"
 require "securerandom"
-require "active_record"
+
+Dir.chdir("#{__dir__}/../activerecord") do
+  JT.rubyce(*%w[-S bundle install])
+  require "active_record"
+end
 
 class ActiveRecordBench < Benchmarks 
 

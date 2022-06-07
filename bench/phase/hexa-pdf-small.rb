@@ -47,7 +47,6 @@ class HexaPdfSmall < Benchmarks
 
     Dir["/tmp/hexapdf-result*.pdf"].each do |file|
       sz = File.stat(file).size
-      puts "################################################################################### "+sz.to_s
       raise "Incorrect size #{sz} for file #{file} (expected #{@EXPECTED_SIZE})!" unless sz == @EXPECTED_SIZE
       FileUtils.rm file
     end
