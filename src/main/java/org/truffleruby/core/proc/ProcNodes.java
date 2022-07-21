@@ -196,12 +196,6 @@ public abstract class ProcNodes {
         @Specialization
         protected Object call(Frame callerFrame, RubyProc proc, Object[] rubyArgs, RootCallTarget target,
                 @Cached CallBlockNode callBlockNode) {
-//            if (RubyContext.monitorCalls) {
-//                // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
-//                String ss = getSourceSectionAbbrv(this.getSourceSection());
-//                int receiver = proc.callTarget.hashCode();
-//                getContext().logger.info("[ProcNodes]"+ "\t" +target.hashCode() + "\t" + target.toString() + "\t" + receiver + "\t" + ss + "\t" + proc.hashCode() + "\t" + "block" + "\t" + receiver );
-//            }
             return callBlockNode.executeCallBlock(
                     proc.declarationContext,
                     proc,
