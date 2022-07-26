@@ -57,9 +57,9 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass);
 
     private void logCalls(InternalMethod method, DispatchNode dispatchNode, RubyClass metaclass, CallTarget currentCallTarget) {
-        if (RubyContext.monitorCalls || getContext().getOptions().MONITOR_CALLS) {
+        if (getContext().monitorCalls) {
             // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
-            getContext().logger.info(method.getName() + "\t" + (metaclass == null ? "NA" : metaclass.getMetaSimpleName()) + "\t" + getSourceSectionAbbrv(dispatchNode) + "\t" + currentCallTarget.getTargetID() + "\t" + method.isBuiltIn() + "\t" + method.getDeclaringModule().getName());
+            getContext().logger.info(getContext().stage + "\t" + method.getName() + "\t" + (metaclass == null ? "NA" : metaclass.getMetaSimpleName()) + "\t" + getSourceSectionAbbrv(dispatchNode) + "\t" + currentCallTarget.getTargetID() + "\t" + method.isBuiltIn() + "\t" + method.getDeclaringModule().getName());
         }
     }
 

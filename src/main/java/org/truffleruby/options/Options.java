@@ -196,6 +196,8 @@ public class Options {
     public final boolean METHODMISSING_ALWAYS_INLINE;
     /** --monitor-calls=false */
     public final boolean MONITOR_CALLS;
+    /** --monitor-startup=false */
+    public final boolean MONITOR_CALLS_STARTUP;
     /** --regexp-instrument-match=false */
     public final boolean REGEXP_INSTRUMENT_MATCH;
     /** --regexp-instrument-match-detailed=false */
@@ -298,6 +300,7 @@ public class Options {
         METHODMISSING_ALWAYS_CLONE = options.hasBeenSet(OptionsCatalog.METHODMISSING_ALWAYS_CLONE_KEY) ? options.get(OptionsCatalog.METHODMISSING_ALWAYS_CLONE_KEY) : CLONE_DEFAULT;
         METHODMISSING_ALWAYS_INLINE = options.hasBeenSet(OptionsCatalog.METHODMISSING_ALWAYS_INLINE_KEY) ? options.get(OptionsCatalog.METHODMISSING_ALWAYS_INLINE_KEY) : INLINE_DEFAULT;
         MONITOR_CALLS = options.get(OptionsCatalog.MONITOR_CALLS_KEY);
+        MONITOR_CALLS_STARTUP = options.get(OptionsCatalog.MONITOR_CALLS_STARTUP_KEY);
         REGEXP_INSTRUMENT_MATCH = options.get(OptionsCatalog.REGEXP_INSTRUMENT_MATCH_KEY);
         REGEXP_INSTRUMENT_MATCH_DETAILED = options.get(OptionsCatalog.REGEXP_INSTRUMENT_MATCH_DETAILED_KEY);
         REGEXP_INSTRUMENT_OUTPUT_FORMAT = options.get(OptionsCatalog.REGEXP_INSTRUMENT_OUTPUT_FORMAT_KEY);
@@ -481,6 +484,8 @@ public class Options {
                 return METHODMISSING_ALWAYS_INLINE;
             case "ruby.monitor-calls":
                 return MONITOR_CALLS;
+            case "ruby.monitor-startup":
+                return MONITOR_CALLS_STARTUP;
             case "ruby.regexp-instrument-match":
                 return REGEXP_INSTRUMENT_MATCH;
             case "ruby.regexp-instrument-match-detailed":

@@ -97,7 +97,8 @@ import sun.misc.SignalHandler;
 public class RubyContext {
 
     public static int phaseID = 0;
-    public static boolean monitorCalls = false;
+    public static String stage = "STARTUP";
+    public boolean monitorCalls;
 
     private final RubyLanguage language;
     @CompilationFinal private TruffleLanguage.Env env;
@@ -179,6 +180,7 @@ public class RubyContext {
         preInitializationManager = preInitializing ? new PreInitializationManager() : null;
 
         options = createOptions(env, language.options);
+        monitorCalls = getOptions().MONITOR_CALLS_STARTUP;
 
         warningCategoryDeprecated = new AssumedValue<>(options.WARN_DEPRECATED);
         warningCategoryExperimental = new AssumedValue<>(options.WARN_EXPERIMENTAL);

@@ -67,11 +67,11 @@ public abstract class CallBlockNode extends RubyBaseNode {
     }
 
     private void logCalls(String method, RubyProc block, CallTarget currentCallTarget) {
-        if (RubyContext.monitorCalls || getContext().getOptions().MONITOR_CALLS) {
+        if (getContext().monitorCalls) {
             int ctaddress = block.callTarget.getTargetID();
             String receiver = block.callTarget.toString()+"@"+ctaddress;
             // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
-            getContext().logger.info(method+"yield|call|[]" + "\t" + receiver + "\t" + this.hashCode() + "\t" + currentCallTarget.getTargetID() + "\t" + block.type + "\t" + receiver);
+            getContext().logger.info(getContext().stage + "\t" + method + "yield|call|[]" + "\t" + receiver + "\t" + this.hashCode() + "\t" + currentCallTarget.getTargetID() + "\t" + block.type + "\t" + receiver);
         }
     }
 

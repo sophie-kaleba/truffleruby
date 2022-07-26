@@ -234,6 +234,7 @@ INTERNAL: # Options for debugging the TruffleRuby implementation
     METHODMISSING_ALWAYS_CLONE: [method-missing-always-clone, boolean, CLONE_DEFAULT, 'Always clone #method_missing']
     METHODMISSING_ALWAYS_INLINE: [method-missing-always-inline, boolean, INLINE_DEFAULT, 'Always inline #method_missing']
     MONITOR_CALLS: [monitor-calls, boolean, false, 'Monitor calls and closures']
+    MONITOR_CALLS_STARTUP: [monitor-startup, boolean, false, 'Monitor calls and closures, before user code is loaded']
 
     # Instrumentation to debug performance
     REGEXP_INSTRUMENT_CREATION: [regexp-instrument-creation, boolean, false, Enable instrumentation to gather stats on regexp creation]
