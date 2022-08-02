@@ -231,70 +231,69 @@ public class RubyParser {
   public static final int tMATCH = 326;
   public static final int tNMATCH = 327;
   public static final int tDOT = 328;
-  public static final int tDOT_PHASE = 329;
-  public static final int tDOT2 = 330;
-  public static final int tDOT3 = 331;
-  public static final int tBDOT2 = 332;
-  public static final int tBDOT3 = 333;
-  public static final int tAREF = 334;
-  public static final int tASET = 335;
-  public static final int tLSHFT = 336;
-  public static final int tRSHFT = 337;
-  public static final int tANDDOT = 338;
-  public static final int tCOLON2 = 339;
-  public static final int tCOLON3 = 340;
-  public static final int tOP_ASGN = 341;
-  public static final int tASSOC = 342;
-  public static final int tLPAREN = 343;
-  public static final int tLPAREN2 = 344;
-  public static final int tRPAREN = 345;
-  public static final int tLPAREN_ARG = 346;
-  public static final int tLBRACK = 347;
-  public static final int tRBRACK = 348;
-  public static final int tLBRACE = 349;
-  public static final int tLBRACE_ARG = 350;
-  public static final int tSTAR = 351;
-  public static final int tSTAR2 = 352;
-  public static final int tAMPER = 353;
-  public static final int tAMPER2 = 354;
-  public static final int tTILDE = 355;
-  public static final int tPERCENT = 356;
-  public static final int tDIVIDE = 357;
-  public static final int tPLUS = 358;
-  public static final int tMINUS = 359;
-  public static final int tLT = 360;
-  public static final int tGT = 361;
-  public static final int tPIPE = 362;
-  public static final int tBANG = 363;
-  public static final int tCARET = 364;
-  public static final int tLCURLY = 365;
-  public static final int tRCURLY = 366;
-  public static final int tBACK_REF2 = 367;
-  public static final int tSYMBEG = 368;
-  public static final int tSTRING_BEG = 369;
-  public static final int tXSTRING_BEG = 370;
-  public static final int tREGEXP_BEG = 371;
-  public static final int tWORDS_BEG = 372;
-  public static final int tQWORDS_BEG = 373;
-  public static final int tSTRING_DBEG = 374;
-  public static final int tSTRING_DVAR = 375;
-  public static final int tSTRING_END = 376;
-  public static final int tLAMBDA = 377;
-  public static final int tLAMBEG = 378;
-  public static final int tNTH_REF = 379;
-  public static final int tBACK_REF = 380;
-  public static final int tSTRING_CONTENT = 381;
-  public static final int tINTEGER = 382;
-  public static final int tIMAGINARY = 383;
-  public static final int tFLOAT = 384;
-  public static final int tRATIONAL = 385;
-  public static final int tREGEXP_END = 386;
-  public static final int tSYMBOLS_BEG = 387;
-  public static final int tQSYMBOLS_BEG = 388;
-  public static final int tDSTAR = 389;
-  public static final int tSTRING_DEND = 390;
-  public static final int tLABEL_END = 391;
-  public static final int tLOWEST = 392;
+  public static final int tDOT2 = 329;
+  public static final int tDOT3 = 330;
+  public static final int tBDOT2 = 331;
+  public static final int tBDOT3 = 332;
+  public static final int tAREF = 333;
+  public static final int tASET = 334;
+  public static final int tLSHFT = 335;
+  public static final int tRSHFT = 336;
+  public static final int tANDDOT = 337;
+  public static final int tCOLON2 = 338;
+  public static final int tCOLON3 = 339;
+  public static final int tOP_ASGN = 340;
+  public static final int tASSOC = 341;
+  public static final int tLPAREN = 342;
+  public static final int tLPAREN2 = 343;
+  public static final int tRPAREN = 344;
+  public static final int tLPAREN_ARG = 345;
+  public static final int tLBRACK = 346;
+  public static final int tRBRACK = 347;
+  public static final int tLBRACE = 348;
+  public static final int tLBRACE_ARG = 349;
+  public static final int tSTAR = 350;
+  public static final int tSTAR2 = 351;
+  public static final int tAMPER = 352;
+  public static final int tAMPER2 = 353;
+  public static final int tTILDE = 354;
+  public static final int tPERCENT = 355;
+  public static final int tDIVIDE = 356;
+  public static final int tPLUS = 357;
+  public static final int tMINUS = 358;
+  public static final int tLT = 359;
+  public static final int tGT = 360;
+  public static final int tPIPE = 361;
+  public static final int tBANG = 362;
+  public static final int tCARET = 363;
+  public static final int tLCURLY = 364;
+  public static final int tRCURLY = 365;
+  public static final int tBACK_REF2 = 366;
+  public static final int tSYMBEG = 367;
+  public static final int tSTRING_BEG = 368;
+  public static final int tXSTRING_BEG = 369;
+  public static final int tREGEXP_BEG = 370;
+  public static final int tWORDS_BEG = 371;
+  public static final int tQWORDS_BEG = 372;
+  public static final int tSTRING_DBEG = 373;
+  public static final int tSTRING_DVAR = 374;
+  public static final int tSTRING_END = 375;
+  public static final int tLAMBDA = 376;
+  public static final int tLAMBEG = 377;
+  public static final int tNTH_REF = 378;
+  public static final int tBACK_REF = 379;
+  public static final int tSTRING_CONTENT = 380;
+  public static final int tINTEGER = 381;
+  public static final int tIMAGINARY = 382;
+  public static final int tFLOAT = 383;
+  public static final int tRATIONAL = 384;
+  public static final int tREGEXP_END = 385;
+  public static final int tSYMBOLS_BEG = 386;
+  public static final int tQSYMBOLS_BEG = 387;
+  public static final int tDSTAR = 388;
+  public static final int tSTRING_DEND = 389;
+  public static final int tLABEL_END = 390;
+  public static final int tLOWEST = 391;
   public static final int yyErrorCode = 256;
 
   /** number of final state.
@@ -445,7 +444,7 @@ public class RubyParser {
      0,     1,     2,     2,     0,     1,     1,     1,     1,     1,
      2,     0,     0,
     }, yyDefRed = {
-//yyDefRed 1143
+//yyDefRed 1142
      1,     0,     0,     0,   369,   370,     0,     0,   315,     0,
      0,     0,   340,   343,     0,     0,     0,   366,   367,   371,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
@@ -545,79 +544,45 @@ public class RubyParser {
      0,   615,   461,   422,     0,   420,   458,     0,     0,    39,
      0,     0,     0,   559,   353,   561,   360,   563,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-   316,     0,   374,     0,     0,     0,     0,     0,     0,     0,
-     0,     0,     0,   347,   376,   341,   375,   344,     0,     0,
-     0,     0,     0,     0,     0,     0,     0,   637,     0,     0,
-     0,   293,   636,   328,   662,     0,     0,   275,   277,   332,
-    20,     0,     9,    30,     0,   226,     0,     0,    14,     0,
-     0,     0,     0,     0,     0,     0,     0,     0,   511,     0,
-   487,   490,     0,   495,     0,     0,     0,   595,   592,   591,
-   590,   593,   601,   610,   589,     0,   622,   621,   626,   625,
-   611,   596,     0,     0,     0,   619,   436,     0,     0,   586,
-   608,     0,   568,   599,   594,     0,     0,     0,   588,     0,
-     0,   492,     0,   496,     0,   455,     0,   454,     0,     0,
-   440,     0,     0,   447,     0,     0,     0,     0,     0,     0,
-   279,     0,   446,   278,     0,     0,     0,     0,     0,     0,
-     0,     0,     0,     0,    87,     0,     0,     0,     0,     0,
-     0,     0,     0,     0,   134,     0,     0,   632,     0,     0,
-     0,   362,   146,   471,     0,     0,   472,     0,     0,   379,
-     0,   377,     0,     0,     0,     0,     0,     0,     0,     0,
-   346,   348,     0,     0,     0,     0,     0,     0,   639,   298,
-   288,     0,     0,   331,     0,   321,   271,    91,     0,   512,
-   516,   517,   518,   509,   519,   489,   491,   498,     0,   571,
-     0,     0,   432,     0,     0,   383,     0,   385,     0,   623,
-   627,     0,   584,     0,   579,     0,   582,     0,   565,   612,
-   613,     0,   566,   602,     0,   567,   494,   500,     0,   418,
-     0,     0,     0,    43,   224,    42,   225,    66,     0,   663,
-    40,   222,    41,   223,    64,   444,   443,    46,     0,     0,
-     0,     0,     0,     0,     0,     0,     0,    34,    59,     0,
-     0,     0,   453,   357,     0,     0,     0,     0,     0,     0,
-   474,   380,     0,    10,   476,     0,   338,     0,   339,     0,
-   297,     0,     0,     0,   350,     0,   276,    18,   513,     0,
-     0,     0,     0,     0,     0,     0,     0,   598,     0,   569,
-   597,     0,     0,   600,   587,     0,   620,     0,   609,   628,
-     0,     0,   615,   461,   422,     0,   420,   458,     0,     0,
-    39,     0,     0,     0,   559,   353,   561,   360,   563,     0,
-     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-     0,     0,     0,     0,     0,   473,     0,   475,     0,     0,
-   463,   462,   464,   342,   345,     0,   514,   434,     0,   439,
-   438,   384,     0,     0,     0,   386,     0,   585,     0,   577,
-     0,   575,     0,   580,   583,   564,     0,     0,     0,   417,
-   606,     0,     0,   400,     0,   617,     0,     0,     0,     0,
-   355,     0,     0,     0,     0,     0,     0,     0,   466,   465,
-   467,     0,     0,   428,     0,   426,   429,     0,     0,     0,
-     0,     0,     0,     0,     0,     0,   415,     0,     0,   410,
-     0,   397,     0,   413,   421,   398,     0,     0,     0,     0,
-     0,   399,   363,     0,     0,     0,     0,     0,   468,   378,
-   351,     0,     0,   425,     0,     0,   578,     0,   573,   576,
-   581,     0,   401,   423,     0,     0,   607,     0,     0,     0,
-   618,   324,     0,     0,     0,   515,   427,     0,     0,     0,
-   416,     0,   407,     0,   405,   396,     0,   411,   414,     0,
-     0,   574,     0,     0,     0,     0,   409,     0,   403,   406,
-   412,     0,   404,
+     0,     0,     0,     0,   473,     0,   475,     0,     0,   463,
+   462,   464,   342,   345,     0,   514,   434,     0,   439,   438,
+   384,     0,     0,     0,   386,     0,   585,     0,   577,     0,
+   575,     0,   580,   583,   564,     0,     0,     0,   417,   606,
+     0,     0,   400,     0,   617,     0,     0,     0,     0,   355,
+     0,     0,     0,     0,     0,     0,     0,   466,   465,   467,
+     0,     0,   428,     0,   426,   429,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,   415,     0,     0,   410,     0,
+   397,     0,   413,   421,   398,     0,     0,     0,     0,     0,
+   399,   363,     0,     0,     0,     0,     0,   468,   378,   351,
+     0,     0,   425,     0,     0,   578,     0,   573,   576,   581,
+     0,   401,   423,     0,     0,   607,     0,     0,     0,   618,
+   324,     0,     0,     0,   515,   427,     0,     0,     0,   416,
+     0,   407,     0,   405,   396,     0,   411,   414,     0,     0,
+   574,     0,     0,     0,     0,   409,     0,   403,   406,   412,
+     0,   404,
     }, yyDgoto = {
 //yyDgoto 204
-     1,   350,    69,    70,   670,   591,   592,   208,   437,   731,
-   732,   446,   733,   734,   195,    71,    72,    73,    74,    75,
-   353,   352,    76,   539,   355,    77,    78,   712,    79,    80,
-   438,    81,    82,    83,    84,   626,   448,   449,   311,   312,
-    86,    87,    88,    89,   313,   229,   301,   811,  1001,  1049,
-   812,   919,    91,   490,   923,   593,   639,   287,    92,   772,
-    93,    94,   616,   617,   735,   210,   843,   231,   848,   849,
-   548,  1027,   966,   878,   799,   618,    96,    97,   280,   463,
-   661,   805,   319,   232,   314,   594,   546,   545,   737,   738,
-   856,   550,   551,   100,   101,   862,  1066,  1102,   949,   740,
-  1030,  1031,   741,   325,   493,   283,   102,   530,  1032,   481,
-   284,   482,   868,   742,   424,   401,   633,   554,   552,   103,
-   104,   649,   233,   211,   212,   743,  1054,   939,   852,   358,
-   316,  1035,   268,   494,   857,   858,  1055,   197,   744,   399,
-   486,   766,   106,   107,   108,   745,   746,   747,   748,   642,
-   411,   950,   269,   270,   111,   112,     2,   238,   239,   512,
-   502,   487,   647,   523,   288,   213,   317,   318,   699,   452,
-   241,   665,   824,   242,   825,   675,  1005,   791,   453,   789,
-   643,   443,   645,   646,   917,   750,   880,   359,   716,   715,
-   549,   555,   758,   553,   756,   709,   708,   839,   938,  1006,
-  1052,   790,   800,   442,
+     1,   350,    69,    70,   669,   590,   591,   208,   436,   730,
+   731,   445,   732,   733,   195,    71,    72,    73,    74,    75,
+   353,   352,    76,   538,   355,    77,    78,   711,    79,    80,
+   437,    81,    82,    83,    84,   625,   447,   448,   311,   312,
+    86,    87,    88,    89,   313,   229,   301,   810,  1000,  1048,
+   811,   918,    91,   489,   922,   592,   638,   287,    92,   771,
+    93,    94,   615,   616,   734,   210,   842,   231,   847,   848,
+   547,  1026,   965,   877,   798,   617,    96,    97,   280,   462,
+   660,   804,   319,   232,   314,   593,   545,   544,   736,   737,
+   855,   549,   550,   100,   101,   861,  1065,  1101,   948,   739,
+  1029,  1030,   740,   325,   492,   283,   102,   529,  1031,   480,
+   284,   481,   867,   741,   423,   401,   632,   553,   551,   103,
+   104,   648,   233,   211,   212,   742,  1053,   938,   851,   358,
+   316,  1034,   268,   493,   856,   857,  1054,   197,   743,   399,
+   485,   765,   106,   107,   108,   744,   745,   746,   747,   641,
+   410,   949,   269,   270,   111,   112,     2,   238,   239,   511,
+   501,   486,   646,   522,   288,   213,   317,   318,   698,   451,
+   241,   664,   823,   242,   824,   674,  1004,   790,   452,   788,
+   642,   442,   644,   645,   916,   749,   879,   359,   715,   714,
+   548,   554,   757,   552,   755,   708,   707,   838,   937,  1005,
+  1051,   789,   799,   441,
     }, yySindex = {
 //yySindex 1142
      0,     0, 19966, 21549,     0,     0, 19321, 19717,     0, 22728,
@@ -639,7 +604,7 @@ public class RubyParser {
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-     0,     0,     0,     0,     0,  -151,     0,     0,     0,     0,
+     0,     0,     0,     0,     0,  -105,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
    562,     0,     0, 20230,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,   298, 20230,  -131,   107,
@@ -751,9 +716,9 @@ public class RubyParser {
  10916,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-     0,  1256,  1603,  1823,  3034,     0,     0,     0,     0,     0,
-     0,     0,     0,  3544,  4054,  4564,  5074,     0,     0,     0,
-  5542,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+     0,  1484,  2710,  3091,  5126,     0,     0,     0,     0,     0,
+     0,     0,     0,  5592,  6041,  6550,  7058,     0,     0,     0,
+  7566,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
@@ -775,7 +740,7 @@ public class RubyParser {
      0,     0,     0,     0,     0,     0,     0,     0,     0,  3589,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-     0,     0,     0,     0, 11371, 11546,     0,     0,     0,     0,
+     0,     0,     0,     0, 11027, 11164,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,     0,    40,     0,     0,     0,     0,
      0,     0,     0,     0,   139,   268,   273,     0,     0,     0,
@@ -854,25 +819,25 @@ public class RubyParser {
    130,     0,
     }, yyGindex = {
 //yyGindex 204
-     0,     0,    -5,     0,  -353,     0,    19,     5,  -266,    55,
-     0,     0,     0,   -87,     0,     0,     0,  1131,     0,     0,
-   933,  1148,     0,  -270,     0,     0,     0,   657,     0,    -3,
-  1121,  -340,   205,     0,   140,     0,    21,   150,     0,    39,
-   314,  2050,     4,    12,   744,    23,    -2,  -457,     0,     0,
-   220,     0,     0,   696,     0,   126,     0,    22,  1266,   675,
-     0,     0,  -375,  -291,  -707,     0,     0,    33,  -123,   724,
-     0,     0,     0,   524,   366,  -307,   -72,    30,  1321,  -445,
-   285,     0,     0,  1232,  1031,    74,     0,     0,  6875,   423,
-  -740,     0,     0,     0,     0,   175,  2352,   329,   322,   421,
-   217,     0,     0,     0,    16,  -433,     0,  -447,   223,  -243,
-  -416,     0,  -403,  4403,   -73,   521,  -590,   669,   907,  1286,
-   -18,   258,  1411,     0,   -22,   -76,     0,  -801,     0,     0,
-  -159,  -881,     0,  -335,  -848,   458,   211,     0,  -952,  1231,
-    66,  -579,  -258,     0,    18,  -749,  3383,   782,  -279,   -70,
-     0,  -195,   850,  1100,     0,     0,     0,   -29,   113,     0,
-     0,    -9,     0,  -265,     0,     0,     0,     0,     0,  -228,
-     0,  -428,     0,     0,     0,     0,     0,     0,    42,     0,
-     0,     0,     0,     0,     0,  1002,     0,     0,     0,     0,
+     0,     0,     3,     0,  -218,     0,    14,    22,  -365,  -113,
+     0,     0,     0,   318,     0,     0,     0,  1128,     0,     0,
+   930,  1151,     0,  -280,     0,     0,     0,   666,     0,    16,
+  1100,  -286,   -38,     0,    98,     0,   437,   391,     0,    30,
+    94,  2110,     4,    23,   695,    77,    -2,  -406,     0,     0,
+   182,     0,     0,   628,     0,    48,     0,   -15,  1224,   634,
+     0,     0,  -320,   509,  -800,     0,     0,   296,  -457,   691,
+     0,     0,     0,   484,   338,  -359,   -91,   -20,   385,  -435,
+   267,     0,     0,  1250,    87,   103,     0,     0, 11855,   405,
+  -737,     0,     0,     0,     0,   218,  2401,   278,  -437,   407,
+   202,     0,     0,     0,    64,  -428,     0,  -413,   205,  -258,
+  -423,     0,    86,  1970,   -72,   513,  -245,   658,   894,  1281,
+    13,   251,  1553,     0,    -5,  -364,     0,  -821,     0,     0,
+  -186,  -862,     0,  -368,  -879,   446,   219,     0,  -929,  1227,
+   917,  -577,  -269,     0,    31,  -814,  1186,   398,  -262,   -74,
+     0,  -531,   937,  1088,     0,     0,     0,    21,   -26,     0,
+     0,   -23,     0,  -282,     0,     0,     0,     0,     0,  -232,
+     0,  -373,     0,     0,     0,     0,     0,     0,    15,     0,
+     0,     0,     0,     0,     0,  1841,     0,     0,     0,     0,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
      0,     0,     0,     0,
     };
@@ -917,7 +882,7 @@ public class RubyParser {
     "keyword__ENCODING__","keyword_do_lambda","tIDENTIFIER","tFID",
     "tGVAR","tIVAR","tCONSTANT","tCVAR","tLABEL","tCHAR","unary+",
 "unary-","tUMINUS_NUM","'**'","'<=>'","'=='","'==='","'!='","'>='",
-"'<='","'&&'","'||'","'=~'","'!~'","'.'","tDOT_PHASE","'..'","'...'",
+"'<='","'&&'","'||'","'=~'","'!~'","'.'","'..'","'...'",
     "tBDOT2","tBDOT3","'[]'","'[]='","'<<'","'>>'","'&.'",
 "'::'","':: at EXPR_BEG'","tOP_ASGN","'=>'","'('","'( arg'",
 "')'","'['","'{'","'{ arg'","'['","'[ args'",
@@ -4022,19 +3987,7 @@ states[672] = (support, lexer, yyVal, yyVals, yyTop) -> {
     return yyVal;
 };
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
 // line 2835 "RubyParser.y"
-=======
-<<<<<<< HEAD
-// line 2826 "RubyParser.y"
-=======
-// line 2823 "RubyParser.y"
->>>>>>> fb8c9c6dcd (rebuild the parser after adding the phase annotation)
->>>>>>> 18ab6412a7 (rebuild the parser after adding the phase annotation)
-=======
-// line 2826 "RubyParser.y"
->>>>>>> 891c12d80b (Fix badly merged file after update to 3.0.2)
 
     /** The parse method use an lexer stream and parse it to an AST node 
      * structure
@@ -4051,16 +4004,4 @@ states[672] = (support, lexer, yyVal, yyVals, yyTop) -> {
 }
 // CheckStyle: stop generated
 // @formatter:on
-<<<<<<< HEAD
-<<<<<<< HEAD
 // line 10926 "-"
-=======
-<<<<<<< HEAD
-// line 10879 "-"
-=======
-// line 11032 "-"
->>>>>>> fb8c9c6dcd (rebuild the parser after adding the phase annotation)
->>>>>>> 18ab6412a7 (rebuild the parser after adding the phase annotation)
-=======
-// line 10879 "-"
->>>>>>> 891c12d80b (Fix badly merged file after update to 3.0.2)
