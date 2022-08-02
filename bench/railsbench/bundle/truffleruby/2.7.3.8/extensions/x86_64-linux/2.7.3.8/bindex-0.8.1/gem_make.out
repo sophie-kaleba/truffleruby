@@ -1,0 +1,14 @@
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/2.7.3.8/gems/bindex-0.8.1/ext/skiptrace
+/home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_92F985B265_JAVA11/graalvm-92f985b265-java11-21.3.0-dev/languages/ruby/bin/truffleruby -I /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_92F985B265_JAVA11/graalvm-92f985b265-java11-21.3.0-dev/languages/ruby/lib/mri -r ./siteconf20220207-2552-1db5izt.rb extconf.rb
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/2.7.3.8/gems/bindex-0.8.1/ext/skiptrace
+make "DESTDIR=" clean
+make: Nothing to be done for 'clean'.
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/2.7.3.8/gems/bindex-0.8.1/ext/skiptrace
+make "DESTDIR="
+make: Nothing to be done for 'all'.
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/2.7.3.8/gems/bindex-0.8.1/ext/skiptrace
+make "DESTDIR=" install
+make: Nothing to be done for 'install'.

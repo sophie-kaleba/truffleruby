@@ -1,0 +1,26 @@
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/puma-5.6.1/ext/puma_http11
+/home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/bin/truffleruby -I /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/lib/mri -r ./siteconf20220208-32085-zj6e1o.rb extconf.rb
+using OpenSSL pkgconfig (openssl.pc)
+checking for openssl/bio.h... yes
+checking for DTLS_method() in openssl/ssl.h... yes
+checking for TLS_server_method() in openssl/ssl.h... no
+checking for SSL_CTX_set_min_proto_version(NULL, 0) in openssl/ssl.h... no
+checking for X509_STORE_up_ref()... no
+checking for SSL_CTX_set_ecdh_auto(NULL, 0) in openssl/ssl.h... yes
+checking for SSL_get1_peer_certificate() in openssl/ssl.h... no
+checking for Random.bytes... yes
+creating Makefile
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/puma-5.6.1/ext/puma_http11
+make DESTDIR\= clean
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/puma-5.6.1/ext/puma_http11
+make DESTDIR\=
+compiling http11_parser.c
+compiling mini_ssl.c
+compiling puma_http11.c
+linking shared-object puma/puma_http11.so
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/puma-5.6.1/ext/puma_http11
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 puma_http11.so ./.gem.20220208-32085-gcludc/puma

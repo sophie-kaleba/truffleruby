@@ -1,0 +1,14 @@
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/ffi-1.15.5/ext/ffi_c
+/home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/bin/truffleruby -I /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/lib/mri -r ./siteconf20220208-32085-26knzv.rb extconf.rb
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/ffi-1.15.5/ext/ffi_c
+make DESTDIR\= clean
+make: *** No rule to make target 'clean'. Stop.
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/ffi-1.15.5/ext/ffi_c
+make DESTDIR\=
+make: Nothing to be done for 'all'.
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/ffi-1.15.5/ext/ffi_c
+make DESTDIR\= install
+make: Nothing to be done for 'install'.
