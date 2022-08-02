@@ -246,18 +246,7 @@ public abstract class FiberNodes {
                 errorProfile.enter();
                 throw new RaiseException(
                         getContext(),
-                        coreExceptions().fiberError("attempt to raise a resuming fiber", this));
-            } else if (fiber.status == RubyFiber.FiberStatus.SUSPENDED && !fiber.yielding) {
-                final RubyThread currentThread = getLanguage().getCurrentThread();
-                final RubyFiber currentFiber = currentThread.getCurrentFiber();
-                return getTransferNode().executeTransferControlTo(
-                        currentThread,
-                        currentFiber,
-                        fiber,
-                        FiberOperation.RAISE,
-                        new Object[]{ exception });
-            } else {
-                return getResumeNode().executeResume(FiberOperation.RAISE, fiber, new Object[]{ exception });
+                        coreExceptions().fiberError("cannot raise exception on unborn fiber", this));
             }
 
             if (fiber.status == FiberStatus.SUSPENDED && !fiber.yielding) {
