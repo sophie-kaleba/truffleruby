@@ -229,28 +229,6 @@ public abstract class ProcNodes {
         }
     }
 
-    @CoreMethod(names = { "==", "eql?" }, required = 1)
-    public abstract static class EqualNode extends CoreMethodArrayArgumentsNode {
-
-        @Specialization
-        protected boolean equal(RubyProc self, Object otherObj,
-                @Cached LogicalClassNode logicalClassNode,
-                @Cached ConditionProfile classProfile,
-                @Cached ConditionProfile lambdaProfile) {
-            if (classProfile.profile(logicalClassNode.execute(self) != logicalClassNode.execute(otherObj))) {
-                return false;
-            }
-            final RubyProc other = (RubyProc) otherObj;
-
-            if (lambdaProfile.profile(self.isLambda() != other.isLambda())) {
-                return false;
-            }
-
-            return self.callTarget == other.callTarget &&
-                    self.declarationFrame == other.declarationFrame;
-        }
-    }
-
     @CoreMethod(names = "lambda?")
     public abstract static class LambdaNode extends CoreMethodArrayArgumentsNode {
 
