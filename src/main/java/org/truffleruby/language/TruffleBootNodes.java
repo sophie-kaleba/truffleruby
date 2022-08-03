@@ -108,7 +108,7 @@ public abstract class TruffleBootNodes {
         @Child TopLevelRaiseHandler topLevelRaiseHandler = new TopLevelRaiseHandler();
         @Child DispatchNode checkSyntax = DispatchNode.create(this.getSourceSection());
         @Child IndirectCallNode callNode = IndirectCallNode.create();
-        @Child DispatchNode requireNode = DispatchNode.create();
+        @Child DispatchNode requireNode = DispatchNode.create(this.getSourceSection());
         @Child TruffleString.FromJavaStringNode fromJavaStringNode = TruffleString.FromJavaStringNode.create();
 
         @TruffleBoundary
