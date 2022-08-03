@@ -608,8 +608,7 @@ public class BodyTranslator extends Translator {
                 ignoreVisibility,
                 isVCall,
                 node.isLazy(),
-                isAttrAssign,
-                node.isPhaseSensitive());
+                isAttrAssign);
         RubyNode translated = Translator.withSourceSection(
                 enclosingSourceSection,
                 language.coreMethodAssumptions.createCallNode(callParameters, environment));

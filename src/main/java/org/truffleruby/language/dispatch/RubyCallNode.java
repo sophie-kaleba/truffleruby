@@ -147,12 +147,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         if (dispatch == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            dispatch0 = insert(DispatchNode.create(dispatchConfig));
-            getContext().logger.info("[Phase 0] Initializing dispatch node for "+methodName+". @: "+ss);
-        }
-        else if (dispatch1 == null && getContext().phaseID == 1) {
-            CompilerDirectives.transferToInterpreterAndInvalidate();
-            dispatch1 = insert(DispatchNode.create(dispatchConfig));
+            dispatch = insert(DispatchNode.create(dispatchConfig));
         }
 
         final Object returnValue = dispatch.dispatch(frame, receiverObject, methodName, rubyArgs,
@@ -294,47 +289,6 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
             }
 
             return FrozenStrings.METHOD;
-        }
-    }
-
-    public static final class RubyPhaseCallNode extends RubyCallNode {
-
-        @Child private DispatchNode dispatch0;
-        @Child private DispatchNode dispatch1;
-
-        public RubyPhaseCallNode(RubyCallNodeParameters parameters) {
-            super(parameters);
-        }
-
-        @Override
-        public Object executeWithArgumentsEvaluated(VirtualFrame frame, Object receiverObject, Object[] rubyArgs) {
-            Object returnValue = null;
-            String ss = (this.getSourceSection() != null) ? this.getSourceSection().toString() : "NULL";
-            if (dispatch0 == null && getContext().phaseID == 0) {
-                CompilerDirectives.transferToInterpreterAndInvalidate();
-                dispatch0 = insert(DispatchNode.create(dispatchConfig, this.getSourceSection()));
-                getContext().logger.info("[Phase 0] Initializing dispatch node for "+methodName+". @: "+ss);
-            }
-            else if (dispatch1 == null && getContext().phaseID == 1) {
-                CompilerDirectives.transferToInterpreterAndInvalidate();
-                dispatch1 = insert(DispatchNode.create(dispatchConfig, this.getSourceSection()));
-            }
-
-            if (getContext().phaseID == 0) {
-                returnValue = dispatch0.dispatch(frame, receiverObject, methodName, rubyArgs);
-            }
-            else if (getContext().phaseID == 1) {
-                returnValue = dispatch1.dispatch(frame, receiverObject, methodName, rubyArgs);
-            }
-
-            if (isAttrAssign) {
-                final Object value = rubyArgs[rubyArgs.length - 1];
-                assert RubyGuards.assertIsValidRubyValue(value);
-                return value;
-            } else {
-                assert RubyGuards.assertIsValidRubyValue(returnValue);
-                return returnValue;
-            }
         }
     }
 }

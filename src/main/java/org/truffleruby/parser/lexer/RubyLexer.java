@@ -1705,15 +1705,6 @@ public class RubyLexer implements MagicCommentHandler {
         }
 
         pushback(c);
-        if ((c = nextc()) == '~') {
-            /* phase annotation */
-            // TODO - check whether the state needs to be changed
-            setState(EXPR_DOT);
-            yaccValue = RopeConstants.DOT_PHASE;
-            return RubyParser.tDOT_PHASE;
-        }
-
-        pushback(c);
         if (Character.isDigit(c)) {
             compile_error(
                     SyntaxException.PID.FLOAT_MISSING_ZERO,
