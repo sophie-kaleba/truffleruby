@@ -426,7 +426,7 @@ public class BodyTranslator extends Translator {
                 node.getName(),
                 node.getArgsNode(),
                 null,
-                node.isLazy(), false);
+                node.isLazy());
 
         copyNewline(node, callNode);
         final RubyNode actualCall = translateCallNode(callNode, node.isSelf(), false, true);

@@ -45,7 +45,6 @@ public class CallParseNode extends ParseNode implements INameNode, IArgumentNode
     protected ParseNode iterNode;
     private String name;
     private final boolean isLazy;
-    private final boolean isPhaseSensitive;
 
     public CallParseNode(
             SourceIndexLength position,
@@ -53,7 +52,7 @@ public class CallParseNode extends ParseNode implements INameNode, IArgumentNode
             String name,
             ParseNode argsNode,
             ParseNode iterNode) {
-        this(position, receiverNode, name, argsNode, iterNode, false, false);
+        this(position, receiverNode, name, argsNode, iterNode, false);
     }
 
     public CallParseNode(
@@ -62,8 +61,7 @@ public class CallParseNode extends ParseNode implements INameNode, IArgumentNode
             String name,
             ParseNode argsNode,
             ParseNode iterNode,
-            boolean isLazy,
-            boolean isPhaseSensitive) {
+            boolean isLazy) {
         super(position);
 
         assert receiverNode != null : "receiverNode is not null";
@@ -73,7 +71,6 @@ public class CallParseNode extends ParseNode implements INameNode, IArgumentNode
         this.argsNode = argsNode;
         this.iterNode = iterNode;
         this.isLazy = isLazy;
-        this.isPhaseSensitive = isPhaseSensitive;
     }
 
     @Override
@@ -128,8 +125,6 @@ public class CallParseNode extends ParseNode implements INameNode, IArgumentNode
     public ParseNode getReceiverNode() {
         return receiverNode;
     }
-
-    public boolean isPhaseSensitive() { return isPhaseSensitive; }
 
     public boolean isLazy() {
         return isLazy;
