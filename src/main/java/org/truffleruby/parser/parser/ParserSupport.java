@@ -158,6 +158,8 @@ public class ParserSupport {
             .usAsciiString(FORWARD_ARGS_KWREST_VAR);
     /** The local variable to store the block from ... in */
     public static final String FORWARD_ARGS_BLOCK_VAR = Layouts.TEMP_PREFIX + "forward_block";
+    public static final TruffleString FORWARD_ARGS_BLOCK_VAR_TSTRING = TStringUtils
+            .usAsciiString(FORWARD_ARGS_BLOCK_VAR);
 
     // Parser states:
     protected StaticScope currentScope;
@@ -436,7 +438,7 @@ public class ParserSupport {
     }
 
     public ParseNode getOperatorCallNode(ParseNode firstNode, TruffleString operator, ParseNode secondNode,
-            SourceIndexLength defaultPosition) {
+                                         SourceIndexLength defaultPosition) {
         if (defaultPosition != null) {
             firstNode = checkForNilNode(firstNode, defaultPosition);
             secondNode = checkForNilNode(secondNode, defaultPosition);
@@ -966,7 +968,7 @@ public class ParserSupport {
     }
 
     public WhenParseNode newWhenNode(SourceIndexLength position, ParseNode expressionNodes, ParseNode bodyNode,
-            ParseNode nextCase) {
+                                     ParseNode nextCase) {
         if (bodyNode == null) {
             bodyNode = NilImplicitParseNode.NIL;
         }
@@ -1013,7 +1015,7 @@ public class ParserSupport {
     }
 
     public InParseNode newInNode(SourceIndexLength position, ParseNode expressionNodes, ParseNode bodyNode,
-            ParseNode nextCase) {
+                                 ParseNode nextCase) {
         if (bodyNode == null) {
             bodyNode = NilImplicitParseNode.NIL;
         }
@@ -1023,7 +1025,7 @@ public class ParserSupport {
 
     // FIXME: Currently this is passing in position of receiver
     public ParseNode new_opElementAsgnNode(ParseNode receiverNode, TruffleString operatorName, ParseNode argsNode,
-            ParseNode valueNode) {
+                                           ParseNode valueNode) {
         SourceIndexLength position = lexer.tokline;  // FIXME: ruby_sourceline in new lexer.
 
         ParseNode newNode = new OpElementAsgnParseNode(
@@ -1044,8 +1046,8 @@ public class ParserSupport {
     }
 
     public ParseNode newOpAsgn(SourceIndexLength position, ParseNode receiverNode, TruffleString callType,
-            ParseNode valueNode,
-            TruffleString variableName, TruffleString operatorName) {
+                               ParseNode valueNode,
+                               TruffleString variableName, TruffleString operatorName) {
         return new OpAsgnParseNode(
                 position,
                 receiverNode,
@@ -1056,7 +1058,7 @@ public class ParserSupport {
     }
 
     public ParseNode newOpConstAsgn(SourceIndexLength position, ParseNode lhs, TruffleString operatorName,
-            ParseNode rhs) {
+                                    ParseNode rhs) {
         // FIXME: Maybe need to fixup position?
         if (lhs != null) {
             return new OpAsgnConstDeclParseNode(position, lhs, operatorName, rhs);
@@ -1070,12 +1072,12 @@ public class ParserSupport {
     }
 
     public ParseNode new_attrassign(SourceIndexLength position, ParseNode receiver, String name, ParseNode args,
-            boolean isLazy) {
+                                    boolean isLazy) {
         return new AttrAssignParseNode(position, receiver, name, args, isLazy);
     }
 
     public ParseNode new_call(ParseNode receiver, TruffleString callType, TruffleString name, ParseNode argsNode,
-            ParseNode iter) {
+                              ParseNode iter) {
         if (argsNode instanceof BlockPassParseNode) {
             if (iter != null) {
                 lexer.compile_error(PID.BLOCK_ARG_AND_BLOCK_GIVEN, "Both block arg and actual block given.");
@@ -1088,7 +1090,7 @@ public class ParserSupport {
                     name.toJavaStringUncached(),
                     blockPass.getArgsNode(),
                     blockPass,
-                    isLazy(callType), false);
+                    isLazy(callType));
         }
 
         return new CallParseNode(
@@ -1097,7 +1099,7 @@ public class ParserSupport {
                 name.toJavaStringUncached(),
                 argsNode,
                 iter,
-                isLazy(callType), false);
+                isLazy(callType));
 
     }
 
@@ -1406,7 +1408,7 @@ public class ParserSupport {
     }
 
     public ParseNode new_args(SourceIndexLength position, ListParseNode pre, ListParseNode optional,
-            RestArgParseNode rest, ListParseNode post, ArgsTailHolder tail) {
+                              RestArgParseNode rest, ListParseNode post, ArgsTailHolder tail) {
         ArgsParseNode argsNode;
         if (tail == null) {
             argsNode = new ArgsParseNode(position, pre, optional, rest, post, null);
@@ -1426,7 +1428,7 @@ public class ParserSupport {
     }
 
     public ArgsTailHolder new_args_tail(SourceIndexLength position, ListParseNode keywordArg,
-            TruffleString keywordRestArgNameRope, BlockArgParseNode blockArg) {
+                                        TruffleString keywordRestArgNameRope, BlockArgParseNode blockArg) {
         if (keywordRestArgNameRope == null) {
             return new ArgsTailHolder(position, keywordArg, null, blockArg);
         } else if (keywordRestArgNameRope == RubyLexer.Keyword.NIL.bytes) { // def m(**nil)
@@ -1534,6 +1536,11 @@ public class ParserSupport {
 
     public void warning(SourceIndexLength position, String message) {
         warnings.warning(file, position.toSourceSection(lexer.getSource()).getStartLine(), message);
+    }
+
+    public boolean local_id(String value) {
+        // FIXME: local_id_ref is more complicated and we just blanket look for a scope var of the same name.
+        return currentScope.isDefined(value) >= 0;
     }
 
     // ENEBO: Totally weird naming (in MRI is not allocated and is a local var name) [1.9]

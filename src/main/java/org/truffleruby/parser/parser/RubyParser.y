@@ -1383,6 +1383,13 @@ command_args    : /* none */ {
 block_arg       : tAMPER arg_value {
                     $$ = new BlockPassParseNode(support.getPosition($2), $2);
                 }
+		| tAMPER {
+		    if (!support.local_id(ParserSupport.FORWARD_ARGS_BLOCK_VAR)) {
+		        support.yyerror("no anonymous block parameter");
+		    }
+
+		    $$ = new BlockPassParseNode(lexer.tokline, new LocalVarParseNode(support.getPosition(null), 0, ParserSupport.FORWARD_ARGS_BLOCK_VAR));
+		}
 
 opt_block_arg   : ',' block_arg {
                     $$ = $2;
@@ -1455,7 +1462,7 @@ primary         : literal
                 | regexp
                 | words
                 | qwords
-                | symbols { 
+                | symbols {
                      $$ = $1; // FIXME: Why complaining without $$ = $1;
                 }
                 | qsymbols {
@@ -1482,7 +1489,7 @@ primary         : literal
                     $$ = lexer.getCmdArgumentState().getStack();
                     lexer.getCmdArgumentState().reset();
                 } stmt {
-                    lexer.setState(EXPR_ENDARG); 
+                    lexer.setState(EXPR_ENDARG);
                 } rparen {
                     lexer.getCmdArgumentState().reset($<Long>2.longValue());
                     $$ = $3;
@@ -1536,11 +1543,11 @@ primary         : literal
                 }
                 | fcall brace_block {
                     support.frobnicate_fcall_args($1, null, $2);
-                    $$ = $1;                    
+                    $$ = $1;
                 }
                 | method_call
                 | method_call brace_block {
-                    if ($1 != null && 
+                    if ($1 != null &&
                           $<BlockAcceptingParseNode>1.getIterNode() instanceof BlockPassParseNode) {
                           lexer.compile_error(PID.BLOCK_ARG_AND_BLOCK_GIVEN, "Both block arg and actual block given.");
                     }
@@ -1617,7 +1624,7 @@ primary         : literal
                     support.setIsInClass((($<Integer>4.intValue()) & 2) != 0);
                 }
                 | k_module cpath {
-                    if (support.isInDef()) { 
+                    if (support.isInDef()) {
                         support.yyerror("module definition in method body");
                     }
                     $$ = support.isInClass();
@@ -1647,7 +1654,7 @@ primary         : literal
                     lexer.setCurrentArg($<TruffleString>3);
                 }
                 | keyword_def singleton dot_or_colon {
-                    lexer.setState(EXPR_FNAME); 
+                    lexer.setState(EXPR_FNAME);
                     $$ = support.isInDef();
                     support.setInDef(true);
                } fname {
@@ -2015,7 +2022,7 @@ do_body         : {
                      support.popCurrentScope();
                     lexer.getCmdArgumentState().reset($<Long>2.longValue());
                 }
- 
+
 case_body       : keyword_when args then compstmt cases {
                     $$ = support.newWhenNode($1, $2, $4, $5);
                 }
@@ -2042,7 +2049,7 @@ opt_rescue      : keyword_rescue exc_list exc_var then compstmt opt_rescue {
                     $$ = new RescueBodyParseNode($1, $2, body, $6);
                 }
                 | {
-                    $$ = null; 
+                    $$ = null;
                 }
 
 exc_list        : arg_value {
@@ -2287,7 +2294,7 @@ dsym            : tSYMBEG xstring_contents tSTRING_END {
                 }
 
 numeric         : simple_numeric {
-                    $$ = $1;  
+                    $$ = $1;
                 }
                 | tUMINUS_NUM simple_numeric %prec tLOWEST {
                      $$ = support.negateNumeric($2);
@@ -2322,13 +2329,13 @@ var_ref         : /*mri:user_variable*/ tIDENTIFIER {
                 | tCVAR {
                     $$ = new ClassVarParseNode(lexer.tokline, support.symbolID($1));
                 } /*mri:user_variable*/
-                | /*mri:keyword_variable*/ keyword_nil { 
+                | /*mri:keyword_variable*/ keyword_nil {
                     $$ = new NilParseNode(lexer.tokline);
                 }
                 | keyword_self {
                     $$ = new SelfParseNode(lexer.tokline);
                 }
-                | keyword_true { 
+                | keyword_true {
                     $$ = new TrueParseNode((SourceIndexLength) $$);
                 }
                 | keyword_false {
@@ -2593,7 +2600,7 @@ f_block_kw      : f_label primary_value {
                 | f_label {
                     $$ = support.keyword_arg(lexer.getPosition(), support.assignableKeyword($1, RequiredKeywordArgumentValueParseNode.INSTANCE));
                 }
-             
+
 
 f_block_kwarg   : f_block_kw {
                     $$ = new ArrayParseNode($1.getPosition(), $1);
@@ -2663,7 +2670,7 @@ f_rest_arg      : restarg_mark tIDENTIFIER {
                     if (!support.is_local_id($2)) {
                         support.yyerror("rest argument must be local variable");
                     }
-                    
+
                     $$ = new RestArgParseNode(support.arg_var(support.shadowing_lvar($2)));
                 }
                 | restarg_mark {
@@ -2684,8 +2691,11 @@ f_block_arg     : blkarg_mark tIDENTIFIER {
                     if (!support.is_local_id($2)) {
                         support.yyerror("block argument must be local variable");
                     }
-                    
+
                     $$ = new BlockArgParseNode(support.arg_var(support.shadowing_lvar($2)));
+                }
+                | blkarg_mark {
+                    $$ = new BlockArgParseNode(support.arg_var(support.shadowing_lvar(ParserSupport.FORWARD_ARGS_BLOCK_VAR_TSTRING)));
                 }
 
 opt_f_block_arg : ',' f_block_arg {
@@ -2777,7 +2787,7 @@ operation2      : tIDENTIFIER  {
                 | op {
                     $$ = $1;
                 }
-                    
+
 operation3      : tIDENTIFIER {
                     $$ = $1;
                 }
@@ -2787,7 +2797,7 @@ operation3      : tIDENTIFIER {
                 | op {
                     $$ = $1;
                 }
-                    
+
 dot_or_colon    : tDOT {
                     $$ = $1;
                 }
@@ -2800,9 +2810,6 @@ call_op         : tDOT {
                 }
                 | tANDDOT {
                     $$ = $1;
-                }
-                | tDOT_PHASE {
-                     $$ = $1;
                 }
 
 call_op2        : call_op
