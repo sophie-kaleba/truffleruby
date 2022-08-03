@@ -19,7 +19,6 @@ import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
 import com.oracle.truffle.api.profiles.BranchProfile;
 import com.oracle.truffle.api.source.SourceSection;
-import com.oracle.truffle.api.utilities.AlwaysValidAssumption;
 import org.truffleruby.RubyContext;
 import org.truffleruby.builtins.CoreMethodNodeManager;
 import org.truffleruby.core.inlined.AlwaysInlinedMethodNode;
@@ -71,7 +70,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             assumptions = "getMethodAssumption(cachedMethod)", // to remove the inline cache entry when the method is redefined or removed
             limit = "getCacheLimit()")
     protected Object callCached(
-            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode,
+            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass,
             @Cached("method.getCallTarget()") RootCallTarget cachedCallTarget,
             @Cached("method") InternalMethod cachedMethod,
             @Cached("createCall(cachedMethod.getName(), cachedCallTarget)") DirectCallNode callNode) {
@@ -90,7 +89,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
     @InliningCutoff
     @Specialization(guards = "!method.alwaysInlined()", replaces = "callCached")
     protected Object callUncached(
-            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode,
+            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass,
             @Cached IndirectCallNode indirectCallNode) {
         if (literalCallNode != null) {
             literalCallNode.copyRuby2KeywordsHash(rubyArgs, method.getSharedMethodInfo());
@@ -112,7 +111,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             assumptions = "getMethodAssumption(cachedMethod)", // to remove the inline cache entry when the method is redefined or removed
             limit = "getCacheLimit()")
     protected Object alwaysInlined(
-            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode,
+            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass,
             @Cached("method.getCallTarget()") RootCallTarget cachedCallTarget,
             @Cached("method") InternalMethod cachedMethod,
             @Cached("createAlwaysInlinedMethodNode(cachedMethod)") AlwaysInlinedMethodNode alwaysInlinedNode,
@@ -170,20 +169,22 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
 
     @Specialization(guards = "method.alwaysInlined()", replaces = "alwaysInlined")
     protected Object alwaysInlinedUncached(
-            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode) {
+            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass) {
         return alwaysInlinedBoundary(
                 frame == null ? null : frame.materialize(),
                 method,
                 receiver,
                 rubyArgs,
                 literalCallNode,
-                isAdoptable());
+                isAdoptable(),
+                dispatchNode,
+                metaclass);
     }
 
     @TruffleBoundary // getUncachedAlwaysInlinedMethodNode(method) and arity are not PE constants
     private Object alwaysInlinedBoundary(
             MaterializedFrame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
-            LiteralCallNode literalCallNode, boolean cachedToUncached) {
+            LiteralCallNode literalCallNode, boolean cachedToUncached, DispatchNode dispatchNode, RubyClass metaclass) {
         EncapsulatingNodeReference encapsulating = null;
         Node prev = null;
         if (cachedToUncached) {
@@ -197,6 +198,8 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
                     receiver,
                     rubyArgs,
                     literalCallNode,
+                    dispatchNode,
+                    metaclass,
                     method.getCallTarget(),
                     method,
                     getUncachedAlwaysInlinedMethodNode(method),

@@ -89,7 +89,6 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
     }
 
     public final DispatchConfiguration config;
-    public static SourceSection callNodeSourceSection;
 
     @Child protected MetaClassNode metaclassNode;
     @Child protected LookupMethodNode methodLookup;
@@ -100,18 +99,21 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
 
     protected final ConditionProfile methodMissing;
     @CompilationFinal private boolean methodMissingMissingProfile;
+    protected final SourceSection parentSourceSection;
 
     protected DispatchNode(
             DispatchConfiguration config,
             MetaClassNode metaclassNode,
             LookupMethodNode methodLookup,
             CallInternalMethodNode callNode,
-            ConditionProfile methodMissing) {
+            ConditionProfile methodMissing,
+            SourceSection parentSourceSection) {
         this.config = config;
         this.metaclassNode = metaclassNode;
         this.methodLookup = methodLookup;
         this.callNode = callNode;
         this.methodMissing = methodMissing;
+        this.parentSourceSection = parentSourceSection;
     }
 
     protected DispatchNode(DispatchConfiguration config, SourceSection parentSourceSection) {
@@ -120,7 +122,8 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
                 MetaClassNode.create(),
                 LookupMethodNode.create(),
                 CallInternalMethodNode.create(),
-                ConditionProfile.create());
+                ConditionProfile.create(),
+                parentSourceSection);
     }
 
     public Object call(Object receiver, String method) {
@@ -333,7 +336,7 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         RubyArguments.setCallerData(rubyArgs, getFrameOrStorageIfRequired(frame));
 
         assert RubyArguments.assertFrameArguments(rubyArgs);
-        return callNode.execute(frame, method, receiver, rubyArgs, literalCallNode);
+        return callNode.execute(frame, method, receiver, rubyArgs, literalCallNode, this, metaclass);
     }
 
     @InliningCutoff
@@ -444,8 +447,8 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         public static final DispatchNode UNCACHED_METHOD_MISSING_NODE = DispatchNode
                 .getUncached(DispatchConfiguration.PRIVATE_RETURN_MISSING_IGNORE_REFINEMENTS);
 
-        protected Uncached(DispatchConfiguration config) {
-            super(config, null, null, null, null);
+        protected Uncached(DispatchConfiguration config, SourceSection parentSourceSection) {
+            super(config, null, null, null, null, parentSourceSection);
         }
 
         @Override
