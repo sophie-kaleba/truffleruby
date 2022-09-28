@@ -41,12 +41,16 @@ import com.oracle.truffle.api.profiles.ConditionProfile;
 import org.truffleruby.language.methods.LookupMethodOnSelfNode;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.truffleruby.language.dispatch.DispatchConfiguration.PRIVATE;
 import static org.truffleruby.language.dispatch.DispatchConfiguration.PRIVATE_RETURN_MISSING;
 import static org.truffleruby.language.dispatch.DispatchConfiguration.PROTECTED;
 
 public class RubyCallNode extends LiteralCallNode implements AssignableNode {
+
+    private static final AtomicInteger idCounter = new AtomicInteger(0);
+    public final int id;
 
     protected final String methodName;
 
@@ -77,6 +81,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         this.isVCall = parameters.isVCall();
         this.isSafeNavigation = parameters.isSafeNavigation();
         this.isAttrAssign = parameters.isAttrAssign();
+        this.id = idCounter.getAndIncrement();
 
         if (parameters.isSafeNavigation()) {
             nilProfile = ConditionProfile.createCountingProfile();
@@ -147,7 +152,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         if (dispatch == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            dispatch = insert(DispatchNode.create(dispatchConfig, this.getSourceSection()));
+            dispatch = insert(DispatchNode.create(dispatchConfig, this.getSourceSection(), this));
         }
 
         final Object returnValue = dispatch.dispatch(frame, receiverObject, methodName, rubyArgs,
@@ -216,6 +221,10 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
     public boolean hasLiteralBlock() {
         return block instanceof BlockDefinitionNode || block instanceof LambdaToProcNode;
+    }
+
+    public int getCallSiteID() {
+        return this.id;
     }
 
     private RubyNode getLastArgumentNode() {

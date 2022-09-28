@@ -71,7 +71,7 @@ public abstract class CallBlockNode extends RubyBaseNode {
             int ctaddress = block.callTarget.getTargetID();
             String receiver = block.callTarget.toString()+"@"+ctaddress;
             // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
-            getContext().logger.info(getContext().stage + "\t" + method + "yield|call|[]" + "\t" + receiver + "\t" + this.hashCode() + "\t" + currentCallTarget.getTargetID() + "\t" + block.type + "\t" + receiver);
+            getContext().logger.info(getContext().stage + "\t" + method + "yield|call|[]" + "\t" + receiver + "\t" + this.hashCode() + "\t" + currentCallTarget.getTargetID() + "\t" + block.type + "\t" + receiver + "\t" + "NA");
         }
     }
 

@@ -18,19 +18,15 @@ import com.oracle.truffle.api.frame.Frame;
 import com.oracle.truffle.api.interop.TruffleObject;
 import com.oracle.truffle.api.nodes.DenyReplace;
 import com.oracle.truffle.api.nodes.DirectCallNode;
-import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeCost;
 import com.oracle.truffle.api.profiles.ConditionProfile;
-import com.oracle.truffle.api.source.Source;
 import com.oracle.truffle.api.source.SourceSection;
-import org.truffleruby.RubyContext;
 import org.truffleruby.core.cast.ToSymbolNode;
 import org.truffleruby.core.exception.ExceptionOperations.ExceptionFormatter;
 import org.truffleruby.core.hash.RubyHash;
 import org.truffleruby.core.klass.RubyClass;
 import org.truffleruby.core.symbol.RubySymbol;
 import org.truffleruby.language.FrameAndVariablesSendingNode;
-import org.truffleruby.language.RubyDynamicObject;
 import org.truffleruby.language.RubyGuards;
 import org.truffleruby.language.RubyRootNode;
 import org.truffleruby.language.arguments.ArgumentsDescriptor;
@@ -50,7 +46,7 @@ import org.truffleruby.options.Options;
 
 public class DispatchNode extends FrameAndVariablesSendingNode {
 
-    private static final class Missing implements TruffleObject {
+        private static final class Missing implements TruffleObject {
     }
 
     public static final Missing MISSING = new Missing();
@@ -64,19 +60,23 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
     public static final DispatchConfiguration PUBLIC_RETURN_MISSING = DispatchConfiguration.PUBLIC_RETURN_MISSING;
 
     public static DispatchNode create(DispatchConfiguration config, SourceSection parentSourceSection) {
-        return new DispatchNode(config, parentSourceSection);
+        return new DispatchNode(config, parentSourceSection, null);
+    }
+
+    public static DispatchNode create(DispatchConfiguration config, SourceSection parentSourceSection, RubyCallNode tiedCallNode) {
+        return new DispatchNode(config, parentSourceSection, tiedCallNode);
     }
 
     public static DispatchNode create(DispatchConfiguration config) {
-        return new DispatchNode(config, null);
+        return new DispatchNode(config, null, null);
     }
 
     public static DispatchNode create() {
-        return new DispatchNode(DispatchConfiguration.PRIVATE, null);
+        return new DispatchNode(DispatchConfiguration.PRIVATE, null, null);
     }
 
     public static DispatchNode create(SourceSection parentSourceSection) {
-        return new DispatchNode(DispatchConfiguration.PRIVATE, parentSourceSection);
+        return new DispatchNode(DispatchConfiguration.PRIVATE, parentSourceSection, null);
     }
 
     public static DispatchNode getUncached(DispatchConfiguration config) {
@@ -100,6 +100,7 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
     protected final ConditionProfile methodMissing;
     @CompilationFinal private boolean methodMissingMissingProfile;
     protected final SourceSection parentSourceSection;
+    private final RubyCallNode tiedCallNode;
 
     protected DispatchNode(
             DispatchConfiguration config,
@@ -107,23 +108,26 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
             LookupMethodNode methodLookup,
             CallInternalMethodNode callNode,
             ConditionProfile methodMissing,
-            SourceSection parentSourceSection) {
+            SourceSection parentSourceSection,
+            RubyCallNode tiedCallNode) {
         this.config = config;
         this.metaclassNode = metaclassNode;
         this.methodLookup = methodLookup;
         this.callNode = callNode;
         this.methodMissing = methodMissing;
         this.parentSourceSection = parentSourceSection;
+        this.tiedCallNode = tiedCallNode;
     }
 
-    protected DispatchNode(DispatchConfiguration config, SourceSection parentSourceSection) {
+    protected DispatchNode(DispatchConfiguration config, SourceSection parentSourceSection, RubyCallNode tiedCallNode) {
         this(
                 config,
                 MetaClassNode.create(),
                 LookupMethodNode.create(),
                 CallInternalMethodNode.create(),
                 ConditionProfile.create(),
-                parentSourceSection);
+                parentSourceSection,
+                tiedCallNode);
     }
 
     public Object call(Object receiver, String method) {
@@ -297,6 +301,10 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         return parentSourceSection;
     }
 
+    public RubyCallNode getRubyCallNode() {
+        return this.tiedCallNode;
+    }
+
     public final Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs) {
         return dispatch(frame, receiver, methodName, rubyArgs, null);
     }
@@ -448,7 +456,7 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
                 .getUncached(DispatchConfiguration.PRIVATE_RETURN_MISSING_IGNORE_REFINEMENTS);
 
         protected Uncached(DispatchConfiguration config, SourceSection parentSourceSection) {
-            super(config, null, null, null, null, parentSourceSection);
+            super(config, null, null, null, null, parentSourceSection, null);
         }
 
         @Override
