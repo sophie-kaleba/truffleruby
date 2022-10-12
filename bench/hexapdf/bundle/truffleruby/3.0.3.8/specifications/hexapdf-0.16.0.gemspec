@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
   s.homepage = "https://hexapdf.gettalong.org".freeze
   s.licenses = ["AGPL-3.0".freeze, "Nonstandard".freeze]
   s.required_ruby_version = Gem::Requirement.new(">= 2.4".freeze)
-  s.rubygems_version = "3.2.22".freeze
+  s.rubygems_version = "3.2.32".freeze
   s.summary = "HexaPDF - A Versatile PDF Creation and Manipulation Library For Ruby".freeze
 
-  s.installed_by_version = "3.2.22" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.2.32" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
