@@ -1,0 +1,13 @@
+prefix=/home/sopi/Documents/Side_projects/truffleruby/bench/erubi_rails/bundle/truffleruby/3.0.3.8/gems/nokogiri-1.13.1/ports/x86_64-linux/libxslt/1.1.34
+exec_prefix=${prefix}
+libdir=/home/sopi/Documents/Side_projects/truffleruby/bench/erubi_rails/bundle/truffleruby/3.0.3.8/gems/nokogiri-1.13.1/ports/x86_64-linux/libxslt/1.1.34/lib
+includedir=${prefix}/include
+
+
+Name: libxslt
+Version: 1.1.34
+Description: XSLT library version 2.
+Requires: libxml-2.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lxslt -L/home/sopi/Documents/Side_projects/truffleruby/bench/erubi_rails/bundle/truffleruby/3.0.3.8/gems/nokogiri-1.13.1/ports/x86_64-linux/libxml2/2.9.12/lib -lxml2 
+Libs.private: -lm
