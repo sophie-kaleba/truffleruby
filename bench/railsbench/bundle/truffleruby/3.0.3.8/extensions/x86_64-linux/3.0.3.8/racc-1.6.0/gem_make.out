@@ -1,0 +1,28 @@
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/railsbench/bundle/truffleruby/3.0.3.8/gems/racc-1.6.0/ext/racc/cparse
+/home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_A33290E019_JAVA11/graalvm-a33290e019-java11-22.3.0-dev/languages/ruby/bin/truffleruby -I /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_A33290E019_JAVA11/graalvm-a33290e019-java11-22.3.0-dev/languages/ruby/lib/mri -r ./siteconf20221012-31014-wbqo6e.rb extconf.rb
+checking for rb_block_call()... yes
+checking for rb_ary_subseq()... yes
+creating Makefile
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/railsbench/bundle/truffleruby/3.0.3.8/gems/racc-1.6.0/ext/racc/cparse
+make DESTDIR\= clean
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/railsbench/bundle/truffleruby/3.0.3.8/gems/racc-1.6.0/ext/racc/cparse
+make DESTDIR\=
+compiling cparse.c
+In file included from cparse.c:14:
+In file included from /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_A33290E019_JAVA11/graalvm-a33290e019-java11-22.3.0-dev/languages/ruby/lib/cext/include/ruby.h:38:
+In file included from /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_A33290E019_JAVA11/graalvm-a33290e019-java11-22.3.0-dev/languages/ruby/lib/cext/include/ruby/ruby.h:15:
+In file included from /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_A33290E019_JAVA11/graalvm-a33290e019-java11-22.3.0-dev/languages/ruby/lib/cext/include/ruby/internal/config.h:147:
+/home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_A33290E019_JAVA11/graalvm-a33290e019-java11-22.3.0-dev/languages/ruby/lib/cext/include/truffleruby/truffleruby-pre.h:89:9: warning: 'HAVE_RB_BLOCK_CALL' macro redefined [-Wmacro-redefined]
+#define HAVE_RB_BLOCK_CALL
+        ^
+<command line>:1:9: note: previous definition is here
+#define HAVE_RB_BLOCK_CALL 1
+        ^
+1 warning generated.
+linking shared-object racc/cparse.so
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/railsbench/bundle/truffleruby/3.0.3.8/gems/racc-1.6.0/ext/racc/cparse
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20221012-31014-as24ob/racc

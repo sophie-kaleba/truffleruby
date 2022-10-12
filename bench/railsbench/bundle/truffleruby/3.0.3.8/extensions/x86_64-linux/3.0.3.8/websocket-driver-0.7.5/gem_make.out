@@ -1,0 +1,15 @@
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/railsbench/bundle/truffleruby/3.0.3.8/gems/websocket-driver-0.7.5/ext/websocket-driver
+/home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_A33290E019_JAVA11/graalvm-a33290e019-java11-22.3.0-dev/languages/ruby/bin/truffleruby -I /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_A33290E019_JAVA11/graalvm-a33290e019-java11-22.3.0-dev/languages/ruby/lib/mri -r ./siteconf20221012-31014-tx01u6.rb extconf.rb
+creating Makefile
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/railsbench/bundle/truffleruby/3.0.3.8/gems/websocket-driver-0.7.5/ext/websocket-driver
+make DESTDIR\= clean
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/railsbench/bundle/truffleruby/3.0.3.8/gems/websocket-driver-0.7.5/ext/websocket-driver
+make DESTDIR\=
+compiling websocket_mask.c
+linking shared-object websocket_mask.so
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/railsbench/bundle/truffleruby/3.0.3.8/gems/websocket-driver-0.7.5/ext/websocket-driver
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 websocket_mask.so ./.gem.20221012-31014-16tumc
