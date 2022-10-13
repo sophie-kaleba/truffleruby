@@ -9,7 +9,7 @@ suite = {
                 "subdir": True,
                 "version": "86922f5c8891172a045ba6e32a677ba6c66b092b",
                 "urls": [
-                    {"url": "https://github.com/oracle/graal.git", "kind": "git"},
+                    {"url": "https://github.com/sophie-kaleba/truffle.git", "kind": "git"},
                     {"url": "https://curio.ssw.jku.at/nexus/content/repositories/snapshots", "kind": "binary"},
                 ]
             },
@@ -18,7 +18,7 @@ suite = {
                 "subdir": True,
                 "version": "86922f5c8891172a045ba6e32a677ba6c66b092b",
                 "urls": [
-                    {"url": "https://github.com/oracle/graal.git", "kind": "git"},
+                    {"url": "https://github.com/sophie-kaleba/truffle.git", "kind": "git"},
                     {"url": "https://curio.ssw.jku.at/nexus/content/repositories/snapshots", "kind": "binary"},
                 ]
             },
