@@ -9,3 +9,6 @@
 *.bundle
 *.dll
 *.so
+!*.so
+!*.o
+!*.c
