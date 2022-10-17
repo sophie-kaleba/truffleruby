@@ -16,3 +16,6 @@
 mkmf.log
 vendor/bundle
 /ext/Makefile
+!*.so
+!*.o
+!*.c

@@ -11,3 +11,6 @@ Desktop DB
 Desktop DF
 Gemfile.lock
 pkg/*
+!*.so
+!*.o
+!*.c

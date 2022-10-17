@@ -6,3 +6,6 @@
 # YARD
 /.yardoc
 /yardoc/
+!*.so
+!*.o
+!*.c
