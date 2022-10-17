@@ -14,3 +14,6 @@
 /spec/reports/
 /tmp/
 /vendor
+!*.so
+!*.o
+!*.c

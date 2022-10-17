@@ -19,3 +19,6 @@ lib/nio4r_ext.*
 ext/**/*.o
 ext/**/nio4r_ext.*
 .rspec_status
+!*.so
+!*.o
+!*.c

@@ -9,3 +9,6 @@ yarn-error.log*
 .yarn-integrity
 /log
 gemfiles/*.lock
+!*.so
+!*.o
+!*.c

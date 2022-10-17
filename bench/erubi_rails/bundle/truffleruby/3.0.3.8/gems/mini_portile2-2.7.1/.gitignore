@@ -3,3 +3,6 @@ Gemfile.lock
 pkg
 ports
 tmp
+!*.so
+!*.o
+!*.c

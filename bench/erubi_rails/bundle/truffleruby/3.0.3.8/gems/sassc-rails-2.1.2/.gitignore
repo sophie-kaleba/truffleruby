@@ -15,3 +15,6 @@ tmp/
 mkmf.log
 vendor
 *.log
+!*.so
+!*.o
+!*.c
