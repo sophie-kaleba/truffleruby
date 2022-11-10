@@ -44,6 +44,8 @@ import org.truffleruby.language.objects.MetaClassNode;
 import org.truffleruby.language.objects.MetaClassNodeGen;
 import org.truffleruby.options.Options;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class DispatchNode extends FrameAndVariablesSendingNode {
 
         private static final class Missing implements TruffleObject {
@@ -58,6 +60,9 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
     public static final DispatchConfiguration PUBLIC = DispatchConfiguration.PUBLIC;
     public static final DispatchConfiguration PRIVATE_RETURN_MISSING = DispatchConfiguration.PRIVATE_RETURN_MISSING;
     public static final DispatchConfiguration PUBLIC_RETURN_MISSING = DispatchConfiguration.PUBLIC_RETURN_MISSING;
+
+    public final int idSplit;
+    private static final AtomicInteger idSplitCounter = new AtomicInteger(0);
 
     public static DispatchNode create(DispatchConfiguration config, SourceSection parentSourceSection) {
         return new DispatchNode(config, parentSourceSection, null);
@@ -117,6 +122,7 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         this.methodMissing = methodMissing;
         this.parentSourceSection = parentSourceSection;
         this.tiedCallNode = tiedCallNode;
+        this.idSplit = idSplitCounter.getAndIncrement();
     }
 
     protected DispatchNode(DispatchConfiguration config, SourceSection parentSourceSection, RubyCallNode tiedCallNode) {
@@ -295,6 +301,10 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         RubyArguments.setDescriptor(rubyArgs, descriptor);
         RubyArguments.setArguments(rubyArgs, arguments);
         return dispatch(frame, receiver, methodName, rubyArgs);
+    }
+
+    public int getSplitID() {
+        return this.idSplit;
     }
 
     public SourceSection getParentSourceSection() {
