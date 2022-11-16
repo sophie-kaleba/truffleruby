@@ -24,7 +24,6 @@ variables:
   
    ensure-truffle-ruby: &GIT_TR |
      git clone https://github.com/sophie-kaleba/truffleruby.git truffleruby.aux || true
-     rm -Rf truffleruby.aux/.git || true
 
    package-truffleruby: &PACKAGE_TR |
      export RESULT_HOME=$(dirname $(jt --use ${VARIANT} graalvm-home))
