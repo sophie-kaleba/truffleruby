@@ -119,6 +119,7 @@ report-completion:
   stage: benchmark-completion
   tags: [yuria]
   script:
+    - *PREP_PATH
     - *GIT_TR
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
