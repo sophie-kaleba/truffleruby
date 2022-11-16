@@ -1,0 +1,11 @@
+# Bundler
+/.bundle
+/Gemfile.lock
+/pkg/*
+
+# YARD
+/.yardoc
+/yardoc/
+!*.so
+!*.o
+!*.c

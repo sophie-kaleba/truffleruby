@@ -1,0 +1,66 @@
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/nio4r-2.5.8/ext/nio4r
+/home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/bin/truffleruby -I /home/sopi/Documents/Side_projects/graal/sdk/mxbuild/linux-amd64/GRAALVM_25F9771D4B_JAVA11/graalvm-25f9771d4b-java11-22.1.0-dev/languages/ruby/lib/mri -r ./siteconf20220208-32085-8bvj5o.rb extconf.rb
+checking for unistd.h... yes
+checking for linux/aio_abi.h... yes
+checking for linux/io_uring.h... no
+checking for sys/select.h... yes
+checking for port_event_t in poll.h... no
+checking for sys/epoll.h... yes
+checking for sys/event.h... no
+checking for port_event_t in port.h... no
+checking for sys/resource.h... yes
+creating Makefile
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/nio4r-2.5.8/ext/nio4r
+make DESTDIR\= clean
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/nio4r-2.5.8/ext/nio4r
+make DESTDIR\=
+compiling bytebuffer.c
+compiling monitor.c
+compiling nio4r_ext.c
+In file included from nio4r_ext.c:6:
+./../libev/ev.c:573:48: warning: '/*' within block comment [-Wcomment]
+/*#define MIN_INTERVAL  0.00000095367431640625 /* 1/2**20, good till 2200 */
+                                               ^
+./../libev/ev.c:2136:31: warning: 'extern' variable has an initializer [-Wextern-initializer]
+  EV_API_DECL struct ev_loop *ev_default_loop_ptr = 0; /* needs to be initialised to make it a definition despite extern */
+                              ^
+In file included from nio4r_ext.c:6:
+In file included from ./../libev/ev.c:3086:
+./../libev/ev_linuxaio.c:483:9: warning: add explicit braces to avoid dangling else [-Wdangling-else]
+        else if (errno == EAGAIN)
+        ^
+./../libev/ev_linuxaio.c:617:16: warning: expression result unused [-Wunused-value]
+  ev_io_set   (EV_A_ &linuxaio_epoll_w, backend_fd, EV_READ);
+               ^~~~~
+./../libev/ev.h:180:16: note: expanded from macro 'EV_A_'
+# define EV_A_ EV_A,                              /* a loop as first of multiple arguments */
+               ^~~~
+./../libev/ev.h:179:16: note: expanded from macro 'EV_A'
+# define EV_A  loop                               /* a loop as sole argument to a function call */
+               ^~~~
+./../libev/ev.h:698:52: note: expanded from macro 'ev_io_set'
+#define ev_io_set(ev,fd_,events_)            do { (ev)->fd = (fd_); (ev)->events = (events_) | EV__IOFDSET; } while (0)
+                                                   ^~
+In file included from nio4r_ext.c:6:
+In file included from ./../libev/ev.c:3086:
+./../libev/ev_linuxaio.c:617:16: warning: expression result unused [-Wunused-value]
+  ev_io_set   (EV_A_ &linuxaio_epoll_w, backend_fd, EV_READ);
+               ^~~~~
+./../libev/ev.h:180:16: note: expanded from macro 'EV_A_'
+# define EV_A_ EV_A,                              /* a loop as first of multiple arguments */
+               ^~~~
+./../libev/ev.h:179:16: note: expanded from macro 'EV_A'
+# define EV_A  loop                               /* a loop as sole argument to a function call */
+               ^~~~
+./../libev/ev.h:698:70: note: expanded from macro 'ev_io_set'
+#define ev_io_set(ev,fd_,events_)            do { (ev)->fd = (fd_); (ev)->events = (events_) | EV__IOFDSET; } while (0)
+                                                                     ^~
+5 warnings generated.
+compiling selector.c
+linking shared-object nio4r_ext.so
+
+current directory: /home/sopi/Documents/Side_projects/truffleruby/bench/test/bundle/truffleruby/3.0.2.10/gems/nio4r-2.5.8/ext/nio4r
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 nio4r_ext.so ./.gem.20220208-32085-ht28sl

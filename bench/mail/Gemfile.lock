@@ -1,0 +1,27 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    digest (3.1.0)
+    io-wait (0.1.0)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
+    mini_mime (1.1.2)
+    net-protocol (0.1.2)
+      io-wait
+      timeout
+    net-smtp (0.2.1)
+      digest
+      net-protocol
+      timeout
+    timeout (0.2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  io-wait (= 0.1.0)
+  mail (= 2.7.1)
+  net-smtp (= 0.2.1)
+
+BUNDLED WITH
+   2.2.22

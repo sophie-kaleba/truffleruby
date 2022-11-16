@@ -4,6 +4,7 @@ require 'zlib'
 require 'stringio'
 require 'enumerator'
 
+$:.unshift File.dirname __FILE__
 # ChunkyPNG - the pure ruby library to access PNG files.
 #
 # The ChunkyPNG module defines some constants that are used in the

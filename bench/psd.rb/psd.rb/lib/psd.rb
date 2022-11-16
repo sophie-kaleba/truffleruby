@@ -1,8 +1,10 @@
-require "bindata"
-require "psd/enginedata"
-require "chunky_png"
+require 'bindata'
+
+$:.unshift File.dirname __FILE__
 
 require_relative 'psd/section'
+require_relative '../../../chunky_png/chunky_png/lib/chunky_png'
+#require_relative 'psd/enginedata'
 
 dir_root = File.dirname(File.absolute_path(__FILE__)) + '/psd'
 [
