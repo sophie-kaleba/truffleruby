@@ -6,7 +6,7 @@ stages:
 variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
-  WORKING_BRANCH: update-truby
+  WORKING_BRANCH: master-with-benchs
 
 .scripts:
    prep-path: &PREP_PATH |
@@ -24,6 +24,7 @@ variables:
   
    ensure-truffle-ruby: &GIT_TR |
      git clone https://github.com/sophie-kaleba/truffleruby.git truffleruby.aux || true
+     rm -Rf truffleruby.aux/.git || true
 
    package-truffleruby: &PACKAGE_TR |
      export RESULT_HOME=$(dirname $(jt --use ${VARIANT} graalvm-home))
@@ -118,7 +119,6 @@ benchmark3:
 
 report-completion:
   stage: benchmark-completion
-  needs: ["build_and_test_job"]
   tags: [yuria]
   script:
     - *GIT_TR
