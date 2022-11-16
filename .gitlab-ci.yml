@@ -78,7 +78,6 @@ benchmark1:
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
     - git checkout ${WORKING_BRANCH}
-    - rm -Rf truffleruby.aux/.git || true
 
     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
     - rm -Rf /tmp/truffleruby
