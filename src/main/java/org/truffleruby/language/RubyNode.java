@@ -340,6 +340,8 @@ public abstract class RubyNode extends RubyBaseNodeWithExecute implements Instru
 
         RubyNode[] copies = new RubyNode[nodes.length];
         for (int i = 0; i < nodes.length; i++) {
+            // maybe here? add an extra cloneUnitialized method in the classes I want to preserve
+            // RubyCallNode, CallInternalMethodNode, YieldExpressionNode.yieldNode, DispatchNode
             copies[i] = nodes[i].cloneUninitialized();
         }
         return copies;

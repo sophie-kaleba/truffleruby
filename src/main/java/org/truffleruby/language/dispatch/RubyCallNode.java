@@ -269,19 +269,20 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
     @Override
     public RubyNode cloneUninitialized() {
-        RubyCallNodeParameters parameters = new RubyCallNodeParameters(
-                receiver.cloneUninitialized(),
-                methodName,
-                cloneUninitialized(block),
-                descriptor,
-                cloneUninitialized(arguments),
-                isSplatted,
-                dispatchConfig == PRIVATE,
-                isVCall,
-                isSafeNavigation,
-                isAttrAssign);
-        var copy = getLanguage().coreMethodAssumptions.createCallNode(parameters);
-        return copy.copyFlags(this);
+//        RubyCallNodeParameters parameters = new RubyCallNodeParameters(
+//                receiver.cloneUninitialized(),
+//                methodName,
+//                cloneUninitialized(block),
+//                descriptor,
+//                cloneUninitialized(arguments),
+//                isSplatted,
+//                dispatchConfig == PRIVATE,
+//                isVCall,
+//                isSafeNavigation,
+//                isAttrAssign);
+//        var copy = getLanguage().coreMethodAssumptions.createCallNode(parameters);
+//        return copy.copyFlags(this);
+        return this;
     }
 
     private class DefinedNode extends RubyBaseNode {
