@@ -58,7 +58,7 @@ build_and_test_job:
     
     - export VARIANT=jvm-ce
     - ${JT} build --sforceimports --env ${VARIANT}
-    - ${JT} --use ${VARIANT} test fast
+    # - ${JT} --use ${VARIANT} test fast
     # - ${JT} --use ${VARIANT} test unittest
   
     - *PACKAGE_TR
