@@ -114,3 +114,16 @@ benchmark3:
 
     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
     - rm -Rf /tmp/truffleruby
+
+report-completion:
+  stage: benchmark-completion
+  tags: [yuria]
+  script:
+    - *PREP_PATH
+    - *GIT_TR
+
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
+    - git fetch --all || true
+    - git checkout ${WORKING_BRANCH}
+
+    - rebench --experiment="CI ID $CI_PIPELINE_ID" --report-completion rebench.conf
