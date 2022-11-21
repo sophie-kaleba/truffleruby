@@ -1,7 +1,7 @@
 stages:
   - build-and-test
   - benchmark
-  - benchmark-completion
+#  - benchmark-completion
 
 variables:
   JT: bin/jt
