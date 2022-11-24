@@ -37,6 +37,7 @@ import org.truffleruby.language.arguments.RubyArguments;
 import org.truffleruby.language.control.RaiseException;
 import org.truffleruby.language.dispatch.DispatchNode;
 import org.truffleruby.language.dispatch.LiteralCallNode;
+import org.truffleruby.language.dispatch.RubyCallNode;
 
 @ReportPolymorphism
 @GenerateUncached
@@ -44,13 +45,16 @@ import org.truffleruby.language.dispatch.LiteralCallNode;
 public abstract class CallInternalMethodNode extends RubyBaseNode {
 
     public static CallInternalMethodNode create() {
-        return CallInternalMethodNodeGen.create();
+        return CallInternalMethodNodeStatic.create();
     }
 
-    /** Callers should use {@link RubyArguments#assertFrameArguments} unless they use {@code RubyArguments#pack}.
-     * {@code literalCallNode} is only non-null if this was called splatted with a ruby2_keyword Hash. */
+//    /** Callers should use {@link RubyArguments#assertFrameArguments} unless they use {@code RubyArguments#pack}.
+//     * {@code literalCallNode} is only non-null if this was called splatted with a ruby2_keyword Hash. */
+//    public abstract Object execute(Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
+//                                   LiteralCallNode literalCallNode);
+
     public abstract Object execute(Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
-            LiteralCallNode literalCallNode);
+                                   LiteralCallNode literalCallNode, RubyCallNode rubyCallNode);
 
     @Specialization(
             guards = {
@@ -60,7 +64,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             assumptions = "getMethodAssumption(cachedMethod)", // to remove the inline cache entry when the method is redefined or removed
             limit = "getCacheLimit()")
     protected Object callCached(
-            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode,
+            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, RubyCallNode rubyCallNode,
             @Cached("method.getCallTarget()") RootCallTarget cachedCallTarget,
             @Cached("method") InternalMethod cachedMethod,
             @Cached("createCall(cachedMethod.getName(), cachedCallTarget)") DirectCallNode callNode) {
@@ -74,7 +78,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
     @InliningCutoff
     @Specialization(guards = "!method.alwaysInlined()", replaces = "callCached")
     protected Object callUncached(
-            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode,
+            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, RubyCallNode rubyCallNode,
             @Cached IndirectCallNode indirectCallNode) {
         if (literalCallNode != null) {
             literalCallNode.copyRuby2KeywordsHash(rubyArgs, method.getSharedMethodInfo());
@@ -91,7 +95,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             assumptions = "getMethodAssumption(cachedMethod)", // to remove the inline cache entry when the method is redefined or removed
             limit = "getCacheLimit()")
     protected Object alwaysInlined(
-            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode,
+            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, RubyCallNode rubyCallNode,
             @Cached("method.getCallTarget()") RootCallTarget cachedCallTarget,
             @Cached("method") InternalMethod cachedMethod,
             @Cached("createAlwaysInlinedMethodNode(cachedMethod)") AlwaysInlinedMethodNode alwaysInlinedNode,
@@ -134,7 +138,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
 
     @Specialization(guards = "method.alwaysInlined()", replaces = "alwaysInlined")
     protected Object alwaysInlinedUncached(
-            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode) {
+            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, RubyCallNode rubyCallNode) {
         return alwaysInlinedBoundary(
                 frame == null ? null : frame.materialize(),
                 method,
@@ -161,6 +165,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
                     receiver,
                     rubyArgs,
                     literalCallNode,
+                    null,
                     method.getCallTarget(),
                     method,
                     getUncachedAlwaysInlinedMethodNode(method),
