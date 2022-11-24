@@ -57,6 +57,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
     private final boolean isVCall;
     private final boolean isSafeNavigation;
     private final boolean isAttrAssign;
+    private boolean oldCacheInvalidated;
 
     @Child private DispatchNode dispatch;
     @Child private DefinedNode definedNode;
@@ -100,6 +101,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         this.isVCall = isVCall;
         this.isSafeNavigation = isSafeNavigation;
         this.isAttrAssign = isAttrAssign;
+        this.oldCacheInvalidated = true;
 
         if (isSafeNavigation) {
             nilProfile = ConditionProfile.createCountingProfile();
@@ -171,7 +173,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         if (dispatch == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            dispatch = insert(DispatchNode.create(dispatchConfig));
+            dispatch = insert(DispatchNode.create(dispatchConfig, this));
         }
 
         final Object returnValue = dispatch.dispatch(frame, receiverObject, methodName, rubyArgs,
@@ -209,6 +211,14 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         for (int i = 0; i < arguments.length; i++) {
             RubyArguments.setArgument(rubyArgs, i, arguments[i].execute(frame));
         }
+    }
+
+    public boolean getOldCacheInvalidated() {
+        return this.oldCacheInvalidated;
+    }
+
+    public void invalidateCache() {
+        this.oldCacheInvalidated = true;
     }
 
     private Object[] splatArgs(Object receiverObject, Object[] rubyArgs) {
@@ -269,19 +279,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
     @Override
     public RubyNode cloneUninitialized() {
-//        RubyCallNodeParameters parameters = new RubyCallNodeParameters(
-//                receiver.cloneUninitialized(),
-//                methodName,
-//                cloneUninitialized(block),
-//                descriptor,
-//                cloneUninitialized(arguments),
-//                isSplatted,
-//                dispatchConfig == PRIVATE,
-//                isVCall,
-//                isSafeNavigation,
-//                isAttrAssign);
-//        var copy = getLanguage().coreMethodAssumptions.createCallNode(parameters);
-//        return copy.copyFlags(this);
+        this.oldCacheInvalidated = false;
         return this;
     }
 

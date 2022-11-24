@@ -62,6 +62,8 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         return new DispatchNode(config);
     }
 
+    public static DispatchNode create(DispatchConfiguration config, RubyCallNode callNode) { return new DispatchNode(config, callNode);}
+
     public static DispatchNode create() {
         return new DispatchNode(DispatchConfiguration.PRIVATE);
     }
@@ -76,6 +78,8 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
     }
 
     public final DispatchConfiguration config;
+
+    public final RubyCallNode rubyCallNode;
 
     @Child protected MetaClassNode metaclassNode;
     @Child protected LookupMethodNode methodLookup;
@@ -98,6 +102,22 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         this.methodLookup = methodLookup;
         this.callNode = callNode;
         this.methodMissing = methodMissing;
+        this.rubyCallNode = null;
+    }
+
+    protected DispatchNode(
+            DispatchConfiguration config,
+            MetaClassNode metaclassNode,
+            LookupMethodNode methodLookup,
+            CallInternalMethodNode callNode,
+            ConditionProfile methodMissing,
+            RubyCallNode rubyCallNode) {
+        this.config = config;
+        this.metaclassNode = metaclassNode;
+        this.methodLookup = methodLookup;
+        this.callNode = callNode;
+        this.methodMissing = methodMissing;
+        this.rubyCallNode = rubyCallNode;
     }
 
     protected DispatchNode(DispatchConfiguration config) {
@@ -107,6 +127,16 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
                 LookupMethodNode.create(),
                 CallInternalMethodNode.create(),
                 ConditionProfile.create());
+    }
+
+    protected DispatchNode(DispatchConfiguration config, RubyCallNode rubyCallNode) {
+        this(
+                config,
+                MetaClassNode.create(),
+                LookupMethodNode.create(),
+                CallInternalMethodNode.create(),
+                ConditionProfile.create(),
+                rubyCallNode);
     }
 
     public Object call(Object receiver, String method) {
@@ -315,7 +345,8 @@ public class DispatchNode extends FrameAndVariablesSendingNode {
         RubyArguments.setCallerData(rubyArgs, getFrameOrStorageIfRequired(frame));
 
         assert RubyArguments.assertFrameArguments(rubyArgs);
-        return callNode.execute(frame, method, receiver, rubyArgs, literalCallNode);
+//        return callNode.execute(frame, method, receiver, rubyArgs, literalCallNode);
+        return callNode.execute(frame, method, receiver, rubyArgs, literalCallNode, this.rubyCallNode);
     }
 
     @InliningCutoff
