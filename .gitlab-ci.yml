@@ -98,22 +98,22 @@ benchmark2:
     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
     - rm -Rf /tmp/truffleruby
 
-# benchmark3:
-#   stage: benchmark
-#   needs: ["build_and_test_job"]
-#   tags: [yuria3]
-#   allow_failure: true
-#   script:
-#     - *DOWNLOAD_TR
-#     - *GIT_TR
-#     - *INSTALL_ON_TMP
+benchmark3:
+  stage: benchmark
+  needs: ["build_and_test_job"]
+  tags: [yuria3]
+  allow_failure: true
+  script:
+    - *DOWNLOAD_TR
+    - *GIT_TR
+    - *INSTALL_ON_TMP
 
-#     - cd ${PROJECT_FOLDER}/truffleruby.aux
-#     - git fetch --all || true
-#     - git checkout ${WORKING_BRANCH}
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
+    - git fetch --all || true
+    - git checkout ${WORKING_BRANCH}
 
-#     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
-#     - rm -Rf /tmp/truffleruby
+    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
+    - rm -Rf /tmp/truffleruby
 
 # Failing, and optional anyway - will investigate later
 # report-completion:
