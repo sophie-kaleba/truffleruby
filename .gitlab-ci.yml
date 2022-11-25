@@ -64,22 +64,22 @@ build_and_test_job:
     - *PACKAGE_TR
     - *UPLOAD_TR
 
-# benchmark1:
-#   stage: benchmark
-#   needs: ["build_and_test_job"]
-#   tags: [yuria]
-#   allow_failure: true
-#   script:
-#     - *DOWNLOAD_TR
-#     - *GIT_TR
-#     - *INSTALL_ON_TMP
+benchmark1:
+  stage: benchmark
+  needs: ["build_and_test_job"]
+  tags: [yuria]
+  allow_failure: true
+  script:
+    - *DOWNLOAD_TR
+    - *GIT_TR
+    - *INSTALL_ON_TMP
 
-#     - cd ${PROJECT_FOLDER}/truffleruby.aux
-#     - git fetch --all || true
-#     - git checkout ${WORKING_BRANCH}
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
+    - git fetch --all || true
+    - git checkout ${WORKING_BRANCH}
 
-#     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
-#     - rm -Rf /tmp/truffleruby
+    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
+    - rm -Rf /tmp/truffleruby
 
 benchmark2:
   stage: benchmark
