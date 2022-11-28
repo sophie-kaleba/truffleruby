@@ -81,7 +81,9 @@ class Run
       raise 'Benchmark failed with incorrect result'
     end
     end_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :nanosecond)
- #   Primitive.monitor_calls false
+    # Primitive.monitor_calls false
+    puts "#{@name}: Number of full lookups:      #{Primitive.full_lookup_counter}"
+    Primitive.reinit_lookup_counter
 
     run_time = (end_time - start_time) / 1000
     print_result(run_time)
