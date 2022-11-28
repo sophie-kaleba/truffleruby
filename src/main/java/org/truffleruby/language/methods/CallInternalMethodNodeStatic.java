@@ -17,6 +17,8 @@ import com.oracle.truffle.api.nodes.NodeCost;
 import com.oracle.truffle.api.profiles.BranchProfile;
 import java.lang.invoke.VarHandle;
 import java.util.concurrent.locks.Lock;
+
+import org.truffleruby.RubyContext;
 import org.truffleruby.core.inlined.AlwaysInlinedMethodNode;
 import org.truffleruby.language.dispatch.LiteralCallNode;
 import org.truffleruby.language.dispatch.RubyCallNode;
@@ -127,6 +129,7 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
                                                 arg4Value.invalidateCache();
                                                 callCached_cache = null;
                                             }
+                                            RubyContext.numberOfFullLookups += 1;
                                             s0_ = super.insert(new CallCachedData(callCached_cache));
                                             s0_.cachedCallTarget_ = cachedCallTarget__;
                                             s0_.cachedMethod_ = cachedMethod__;
