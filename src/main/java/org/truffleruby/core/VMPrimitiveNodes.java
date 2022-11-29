@@ -654,22 +654,4 @@ public abstract class VMPrimitiveNodes {
         }
     }
 
-    @Primitive(name = "full_lookup_counter")
-    public abstract static class LookupCounterNode extends PrimitiveArrayArgumentsNode {
-
-        @Specialization
-        protected long countLookups() {
-            return RubyContext.numberOfFullLookups;
-        }
-    }
-
-    @Primitive(name = "reinit_lookup_counter")
-    public abstract static class ReinitLookupCounterNode extends PrimitiveArrayArgumentsNode {
-
-        @Specialization
-        protected long reinitCountLookups() {
-            return RubyContext.numberOfFullLookups = 0;
-        }
-    }
-
 }
