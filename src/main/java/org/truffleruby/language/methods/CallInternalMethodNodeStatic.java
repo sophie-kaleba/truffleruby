@@ -124,7 +124,6 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
                                     Assumption assumption0 = (getMethodAssumption(cachedMethod__));
                                     if (Assumption.isValidAssumption(assumption0)) {
                                         if (count0_ < (getCacheLimit())) {
-                                            RubyContext.numberOfFullLookups += 1;
                                             s0_ = super.insert(new CallCachedData(callCached_cache));
                                             s0_.cachedCallTarget_ = cachedCallTarget__;
                                             s0_.cachedMethod_ = cachedMethod__;
