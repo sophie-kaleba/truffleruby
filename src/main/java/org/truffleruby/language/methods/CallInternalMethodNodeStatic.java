@@ -39,7 +39,7 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
 
     @ExplodeLoop
     @Override
-    public Object execute(Frame frameValue, InternalMethod arg0Value, Object arg1Value, Object[] arg2Value, LiteralCallNode arg3Value, RubyCallNode arg4Value) {
+    public Object execute(Frame frameValue, InternalMethod arg0Value, Object arg1Value, Object[] arg2Value, LiteralCallNode arg3Value) {
         int state_0 = this.state_0_;
         if (state_0 != 0 /* is-state_0 callCached(InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode, RootCallTarget, InternalMethod, DirectCallNode) || callUncached(InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode, IndirectCallNode) || alwaysInlined(Frame, InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode, RootCallTarget, InternalMethod, AlwaysInlinedMethodNode, Arity, BranchProfile, BranchProfile) || alwaysInlinedUncached(Frame, InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode) */) {
             if ((state_0 & 0b1) != 0 /* is-state_0 callCached(InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode, RootCallTarget, InternalMethod, DirectCallNode) */) {
@@ -49,18 +49,18 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
                     if (!Assumption.isValidAssumption(s0_.assumption0_)) {
                         CompilerDirectives.transferToInterpreterAndInvalidate();
                         removeCallCached_(s0_);
-                        return executeAndSpecialize(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value);
+                        return executeAndSpecialize(frameValue, arg0Value, arg1Value, arg2Value, arg3Value);
                     }
                     if ((arg0Value.getCallTarget() == s0_.cachedCallTarget_)) {
                         assert (!(s0_.cachedMethod_.alwaysInlined()));
-                        return callCached(arg0Value, arg1Value, arg2Value, arg3Value, arg4Value, s0_.cachedCallTarget_, s0_.cachedMethod_, s0_.callNode_);
+                        return callCached(arg0Value, arg1Value, arg2Value, arg3Value, s0_.cachedCallTarget_, s0_.cachedMethod_, s0_.callNode_);
                     }
                     s0_ = s0_.next_;
                 }
             }
             if ((state_0 & 0b10) != 0 /* is-state_0 callUncached(InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode, IndirectCallNode) */) {
                 if ((!(arg0Value.alwaysInlined()))) {
-                    return callUncached(arg0Value, arg1Value, arg2Value, arg3Value, arg4Value, this.callUncached_indirectCallNode_);
+                    return callUncached(arg0Value, arg1Value, arg2Value, arg3Value, this.callUncached_indirectCallNode_);
                 }
             }
             if ((state_0 & 0b100) != 0 /* is-state_0 alwaysInlined(Frame, InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode, RootCallTarget, InternalMethod, AlwaysInlinedMethodNode, Arity, BranchProfile, BranchProfile) */) {
@@ -70,26 +70,26 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
                     if (!Assumption.isValidAssumption(s2_.assumption0_)) {
                         CompilerDirectives.transferToInterpreterAndInvalidate();
                         removeAlwaysInlined_(s2_);
-                        return executeAndSpecialize(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value);
+                        return executeAndSpecialize(frameValue, arg0Value, arg1Value, arg2Value, arg3Value);
                     }
                     if ((arg0Value.getCallTarget() == s2_.cachedCallTarget_)) {
                         assert (s2_.cachedMethod_.alwaysInlined());
-                        return alwaysInlined(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value, s2_.cachedCallTarget_, s2_.cachedMethod_, s2_.alwaysInlinedNode_, s2_.cachedArity_, s2_.checkArityProfile_, s2_.exceptionProfile_);
+                        return alwaysInlined(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, s2_.cachedCallTarget_, s2_.cachedMethod_, s2_.alwaysInlinedNode_, s2_.cachedArity_, s2_.checkArityProfile_, s2_.exceptionProfile_);
                     }
                     s2_ = s2_.next_;
                 }
             }
             if ((state_0 & 0b1000) != 0 /* is-state_0 alwaysInlinedUncached(Frame, InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode) */) {
                 if ((arg0Value.alwaysInlined())) {
-                    return alwaysInlinedUncached(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value);
+                    return alwaysInlinedUncached(frameValue, arg0Value, arg1Value, arg2Value, arg3Value);
                 }
             }
         }
         CompilerDirectives.transferToInterpreterAndInvalidate();
-        return executeAndSpecialize(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value);
+        return executeAndSpecialize(frameValue, arg0Value, arg1Value, arg2Value, arg3Value);
     }
 
-    private Object executeAndSpecialize(Frame frameValue, InternalMethod arg0Value, Object arg1Value, Object[] arg2Value, LiteralCallNode arg3Value, RubyCallNode arg4Value) {
+    private Object executeAndSpecialize(Frame frameValue, InternalMethod arg0Value, Object arg1Value, Object[] arg2Value, LiteralCallNode arg3Value) {
         Lock lock = getLock();
         boolean hasLock = true;
         lock.lock();
@@ -124,11 +124,6 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
                                     Assumption assumption0 = (getMethodAssumption(cachedMethod__));
                                     if (Assumption.isValidAssumption(assumption0)) {
                                         if (count0_ < (getCacheLimit())) {
-                                            if (arg4Value != null && !arg4Value.getOldCacheInvalidated()) {
-                                                // We preserved the cache but a new entry is being added. Let's invalidate preserved cache and start new
-                                                arg4Value.invalidateCache();
-                                                callCached_cache = null;
-                                            }
                                             RubyContext.numberOfFullLookups += 1;
                                             s0_ = super.insert(new CallCachedData(callCached_cache));
                                             s0_.cachedCallTarget_ = cachedCallTarget__;
@@ -147,7 +142,7 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
                     if (s0_ != null) {
                         lock.unlock();
                         hasLock = false;
-                        return callCached(arg0Value, arg1Value, arg2Value, arg3Value, arg4Value, s0_.cachedCallTarget_, s0_.cachedMethod_, s0_.callNode_);
+                        return callCached(arg0Value, arg1Value, arg2Value, arg3Value, s0_.cachedCallTarget_, s0_.cachedMethod_, s0_.callNode_);
                     }
                 }
                 if ((!(arg0Value.alwaysInlined()))) {
@@ -158,7 +153,7 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
                     this.state_0_ = state_0 = state_0 | 0b10 /* add-state_0 callUncached(InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode, IndirectCallNode) */;
                     lock.unlock();
                     hasLock = false;
-                    return callUncached(arg0Value, arg1Value, arg2Value, arg3Value, arg4Value, this.callUncached_indirectCallNode_);
+                    return callUncached(arg0Value, arg1Value, arg2Value, arg3Value, this.callUncached_indirectCallNode_);
                 }
                 if (((exclude & 0b10)) == 0 /* is-not-exclude alwaysInlined(Frame, InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode, RootCallTarget, InternalMethod, AlwaysInlinedMethodNode, Arity, BranchProfile, BranchProfile) */ && (isSingleContext())) {
                     int count2_ = 0;
@@ -204,7 +199,7 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
                     if (s2_ != null) {
                         lock.unlock();
                         hasLock = false;
-                        return alwaysInlined(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value, s2_.cachedCallTarget_, s2_.cachedMethod_, s2_.alwaysInlinedNode_, s2_.cachedArity_, s2_.checkArityProfile_, s2_.exceptionProfile_);
+                        return alwaysInlined(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, s2_.cachedCallTarget_, s2_.cachedMethod_, s2_.alwaysInlinedNode_, s2_.cachedArity_, s2_.checkArityProfile_, s2_.exceptionProfile_);
                     }
                 }
                 if ((arg0Value.alwaysInlined())) {
@@ -214,9 +209,9 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
                     this.state_0_ = state_0 = state_0 | 0b1000 /* add-state_0 alwaysInlinedUncached(Frame, InternalMethod, Object, Object[], LiteralCallNode, RubyCallNode) */;
                     lock.unlock();
                     hasLock = false;
-                    return alwaysInlinedUncached(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value);
+                    return alwaysInlinedUncached(frameValue, arg0Value, arg1Value, arg2Value, arg3Value);
                 }
-                throw new UnsupportedSpecializationException(this, new Node[] {null, null, null, null, null}, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value);
+                throw new UnsupportedSpecializationException(this, new Node[] {null, null, null, null, null}, arg0Value, arg1Value, arg2Value, arg3Value);
             } finally {
                 if (oldState_0 != 0 || oldExclude != 0) {
                     checkForPolymorphicSpecialize(oldState_0, oldExclude, oldCacheCount);
@@ -387,15 +382,15 @@ public final class CallInternalMethodNodeStatic extends CallInternalMethodNode {
     private static final class Uncached extends CallInternalMethodNode {
 
         @Override
-        public Object execute(Frame frameValue, InternalMethod arg0Value, Object arg1Value, Object[] arg2Value, LiteralCallNode arg3Value, RubyCallNode arg4Value) {
+        public Object execute(Frame frameValue, InternalMethod arg0Value, Object arg1Value, Object[] arg2Value, LiteralCallNode arg3Value) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
             if ((!(arg0Value.alwaysInlined()))) {
-                return callUncached(arg0Value, arg1Value, arg2Value, arg3Value, arg4Value, (IndirectCallNode.getUncached()));
+                return callUncached(arg0Value, arg1Value, arg2Value, arg3Value, (IndirectCallNode.getUncached()));
             }
             if ((arg0Value.alwaysInlined())) {
-                return alwaysInlinedUncached(frameValue, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value);
+                return alwaysInlinedUncached(frameValue, arg0Value, arg1Value, arg2Value, arg3Value);
             }
-            throw new UnsupportedSpecializationException(this, new Node[] {null, null, null, null, null}, arg0Value, arg1Value, arg2Value, arg3Value, arg4Value);
+            throw new UnsupportedSpecializationException(this, new Node[] {null, null, null, null, null}, arg0Value, arg1Value, arg2Value, arg3Value);
         }
 
         @Override
