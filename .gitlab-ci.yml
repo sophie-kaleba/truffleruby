@@ -55,7 +55,7 @@ variables:
     pull-submodule-updates: &UPDATE_SUBMODULE |
       export PROJECT_FOLDER=$(pwd)
       git submodule update --init
-      cd ${PROJECT_FOLDER}/phd-bench
+      cd ${PROJECT_FOLDER}/truffleruby.aux/phd-bench
       git fetch --all || true
       git pull master
       cd ${PROJECT_FOLDER}/truffleruby.aux
