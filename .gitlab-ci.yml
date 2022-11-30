@@ -57,7 +57,7 @@ variables:
       git submodule update --init
       cd ${PROJECT_FOLDER}/phd-bench
       git fetch --all || true
-      git pull
+      git pull master
       cd ${PROJECT_FOLDER}/truffleruby.aux
 
 
