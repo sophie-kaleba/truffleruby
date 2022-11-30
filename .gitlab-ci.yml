@@ -52,6 +52,15 @@ variables:
       ${JT} --use jvm-ce ruby -S gem install timeout
       ${JT} --use jvm-ce ruby -S gem install strscan
 
+    pull-submodule-updates: &UPDATE_SUBMODULE |
+      export PROJECT_FOLDER=$(pwd)
+      git submodule update --init
+      cd ${PROJECT_FOLDER}/phd-bench
+      git fetch --all || true
+      git pull
+      cd ${PROJECT_FOLDER}/truffleruby.aux
+
+
 build_and_test_job:
   stage: build-and-test
   tags: [yuria]
@@ -81,7 +90,8 @@ benchmark1:
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
     - git checkout ${WORKING_BRANCH}
-    - git submodule update --init
+    - *UPDATE_SUBMODULE
+
 
     - *INSTALL_GEMS
     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
@@ -100,7 +110,7 @@ benchmark2:
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
     - git checkout ${WORKING_BRANCH}
-    - git submodule update --init
+    - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
@@ -119,7 +129,7 @@ benchmark3:
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
     - git checkout ${WORKING_BRANCH}
-    - git submodule update --init
+    - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
