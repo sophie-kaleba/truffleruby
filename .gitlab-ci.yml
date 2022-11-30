@@ -49,8 +49,8 @@ variables:
       tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-jvm-ce.tar.lz4
 
     install-gem-deps: &INSTALL_GEMS |
-      /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby ruby -S gem install timeout
-      /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby ruby -S gem install strscan
+      /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby -S gem install timeout
+      /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby -S gem install strscan
 
     pull-submodule-updates: &UPDATE_SUBMODULE |
       export PROJECT_FOLDER=$(pwd)
