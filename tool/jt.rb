@@ -1071,6 +1071,16 @@ module Commands
     sh env_vars, ruby_launcher, *(vm_args if truffleruby?), *ruby_args, options
   end
 
+  private def run_ruby_rebench(*args)
+    env_vars = args.first.is_a?(Hash) ? args.shift : {}
+    options = args.last.is_a?(Hash) ? args.pop : {}
+
+    vm_args, ruby_args, options = ruby_options(options, args)
+    ruby_launcher_rebench = "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
+
+    sh env_vars, ruby_launcher_rebench, *(vm_args if truffleruby?), *ruby_args, options
+  end
+
   def ruby(*args)
     require_ruby_launcher!
     env = args.first.is_a?(Hash) ? args.shift : {}
@@ -3070,6 +3080,11 @@ class JT
   def self.ruby(*args)
     jt = JT.new
     jt.send(:run_ruby, *args)
+  end
+
+  def self.ruby_rebench(*args)
+    jt = JT.new
+    jt.send(:run_ruby_rebench, *args)
   end
 
   def self.gem_test_pack
