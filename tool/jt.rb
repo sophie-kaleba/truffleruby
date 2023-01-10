@@ -2961,6 +2961,13 @@ module Commands
     abort 'There were extra blank lines around imports.' if Formatting.format_imports
   end
 
+  def check_generated_files
+    check_core_symbols
+    check_parser
+    check_options
+    check_polyglot_methods
+  end
+
   def lint(*args)
     in_truffleruby_repo_root!
     fast = args.first == 'fast'
@@ -2996,10 +3003,8 @@ module Commands
 
       build
 
-      check_core_symbols
-      check_parser
-      check_options
-      check_polyglot_methods
+      check_generated_files
+
       check_documentation
       check_documentation_urls
       check_license
