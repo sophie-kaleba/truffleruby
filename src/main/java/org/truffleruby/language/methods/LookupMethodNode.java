@@ -38,7 +38,7 @@ public abstract class LookupMethodNode extends RubyBaseNode {
 
     @NeverDefault
     public static LookupMethodNode create() {
-        return LookupMethodNodeGen.create();
+        return LookupMethodNodeGenTemp.create();
     }
 
     public abstract InternalMethod execute(Frame frame, RubyClass metaClass, String name, DispatchConfiguration config);
