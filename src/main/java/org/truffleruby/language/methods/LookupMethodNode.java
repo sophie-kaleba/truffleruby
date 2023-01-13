@@ -36,7 +36,7 @@ import com.oracle.truffle.api.profiles.ConditionProfile;
 public abstract class LookupMethodNode extends RubyBaseNode {
 
     public static LookupMethodNode create() {
-        return LookupMethodNodeGen.create();
+        return LookupMethodNodeGenTemp.create();
     }
 
     public abstract InternalMethod execute(Frame frame, RubyClass metaClass, String name, DispatchConfiguration config);

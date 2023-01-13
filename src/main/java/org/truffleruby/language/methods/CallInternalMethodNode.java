@@ -44,7 +44,7 @@ import org.truffleruby.language.dispatch.LiteralCallNode;
 public abstract class CallInternalMethodNode extends RubyBaseNode {
 
     public static CallInternalMethodNode create() {
-        return CallInternalMethodNodeGen.create();
+        return CallInternalMethodNodeTemp.create();
     }
 
     /** Callers should use {@link RubyArguments#assertFrameArguments} unless they use {@code RubyArguments#pack}.
