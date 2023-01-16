@@ -69,6 +69,7 @@ build_and_test_job:
     - *GIT_DEPS
     - *PREP_PATH
     
+    - ${JT} clean
     - export VARIANT=jvm-ce
     - ${JT} build --sforceimports --env ${VARIANT}
 #    - ${JT} --use ${VARIANT} test fast
