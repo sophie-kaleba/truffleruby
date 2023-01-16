@@ -72,7 +72,7 @@ build_native_libgraal:
     - *PREP_PATH
     
     - ${JT} clean
-    - export VARIANT=native-libgraal
+    - export VARIANT=jvm-ce
     - ${JT} build --sforceimports --env ${VARIANT}
 #    - ${JT} --use ${VARIANT} test fast
     # - ${JT} --use ${VARIANT} test unittest
