@@ -22,7 +22,7 @@ variables:
       git -C ../graal fetch --all || true
       git -C ../mx pull || true
       cd ../graal
-      git checkout $(WORKING_BRANCH)
+      git checkout ${WORKING_BRANCH}
       cd ${PROJECT_FOLDER}
 
     ensure-truffle-ruby: &GIT_TR |
