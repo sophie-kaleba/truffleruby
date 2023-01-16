@@ -21,9 +21,6 @@ variables:
     ensure-git-dependencies: &GIT_DEPS |
       git -C ../graal fetch --all || true
       git -C ../mx pull || true
-      cd ../graal
-      git checkout ${WORKING_BRANCH}
-      cd ${PROJECT_FOLDER}
 
     ensure-truffle-ruby: &GIT_TR |
       git clone https://github.com/sophie-kaleba/truffleruby.git truffleruby.aux || true
