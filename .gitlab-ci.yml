@@ -6,7 +6,7 @@ stages:
 variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
-  WORKING_BRANCH: simple-context-splitting
+  WORKING_BRANCH: sk/simple-context-splitting
 
 .scripts:
     prep-path: &PREP_PATH |
@@ -90,7 +90,7 @@ benchmark1:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
+    - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
 
@@ -110,7 +110,7 @@ benchmark2:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
+    - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
@@ -129,7 +129,7 @@ benchmark3:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
+    - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
