@@ -89,7 +89,7 @@ benchmark1:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${CI_COMMIT_BRANCH}
+    - git checkout ${WORKING_BRANCH}
     - *UPDATE_SUBMODULE
 
 
@@ -109,7 +109,7 @@ benchmark2:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${CI_COMMIT_BRANCH}
+    - git checkout ${WORKING_BRANCH}
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
@@ -128,7 +128,7 @@ benchmark2:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${CI_COMMIT_BRANCH}
+    - git checkout ${WORKING_BRANCH}
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
