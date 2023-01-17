@@ -50,7 +50,7 @@ variables:
 
     install-gem-deps: &INSTALL_GEMS |
       /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby -S gem install timeout
-      /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby -S gem install strscan
+      /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby -S gem install strscan -v 3.0.4
 
     pull-submodule-updates: &UPDATE_SUBMODULE |
       export PROJECT_FOLDER=$(pwd)
@@ -89,7 +89,7 @@ benchmark1:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
+    - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
 
@@ -109,7 +109,7 @@ benchmark2:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
+    - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
@@ -128,7 +128,7 @@ benchmark2:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
+    - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
