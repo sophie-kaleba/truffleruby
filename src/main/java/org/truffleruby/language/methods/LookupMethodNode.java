@@ -31,7 +31,7 @@ import com.oracle.truffle.api.frame.Frame;
 import com.oracle.truffle.api.profiles.ConditionProfile;
 
 /** Caches {@link ModuleOperations#lookupMethodCached(RubyModule, String, DeclarationContext)} on an actual instance. */
-@ReportPolymorphism
+//@ReportPolymorphism
 @GenerateUncached
 public abstract class LookupMethodNode extends RubyBaseNode {
 
