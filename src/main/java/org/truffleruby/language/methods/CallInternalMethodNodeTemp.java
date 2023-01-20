@@ -51,6 +51,7 @@ public final class CallInternalMethodNodeTemp extends CallInternalMethodNode {
                     }
                     if ((arg0Value.getCallTarget() == s0_.cachedCallTarget_)) {
                         assert (!(s0_.cachedMethod_.alwaysInlined()));
+                        s0_.callNode_.updateUserArgs(RubyArguments.getRawArguments(arg2Value));
                         return callCached(arg0Value, arg1Value, arg2Value, arg3Value, s0_.cachedCallTarget_, s0_.cachedMethod_, s0_.callNode_);
                     }
                     s0_ = s0_.next_;
@@ -125,7 +126,7 @@ public final class CallInternalMethodNodeTemp extends CallInternalMethodNode {
                                             s0_ = super.insert(new CallCachedData(callCached_cache));
                                             s0_.cachedCallTarget_ = cachedCallTarget__;
                                             s0_.cachedMethod_ = cachedMethod__;
-                                            s0_.callNode_ = s0_.insertAccessor((createCall(cachedMethod__.getName(), cachedCallTarget__)));
+                                            s0_.callNode_ = s0_.insertAccessor((createCall(cachedMethod__.getName(), cachedCallTarget__, RubyArguments.getRawArguments(arg2Value))));
                                             s0_.assumption0_ = assumption0;
                                             VarHandle.storeStoreFence();
                                             this.callCached_cache = s0_;
@@ -212,7 +213,6 @@ public final class CallInternalMethodNodeTemp extends CallInternalMethodNode {
             } finally {
                 if (oldState_0 != 0 || oldExclude != 0) {
                     Object[] t1args = frameValue != null ? RubyArguments.getRawArguments(frameValue) : null;
-                    //Object[] t1args = frameValue != null ? frameValue.getArguments() : null;
                     checkForPolymorphicSpecialize(oldState_0, oldExclude, oldCacheCount, t1args);
                 }
             }
