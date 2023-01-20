@@ -204,4 +204,13 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
         }
         return callNode;
     }
+
+    protected DirectCallNode createCall(String methodName, RootCallTarget callTarget, Object[] userArgs) {
+        final DirectCallNode callNode = DirectCallNode.create(callTarget, userArgs);
+        final DispatchNode dispatch = NodeUtil.findParent(this, DispatchNode.class);
+        if (dispatch != null) {
+            dispatch.applySplittingInliningStrategy(callTarget, methodName, callNode);
+        }
+        return callNode;
+    }
 }
