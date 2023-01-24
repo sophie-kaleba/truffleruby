@@ -212,8 +212,7 @@ public final class CallInternalMethodNodeTemp extends CallInternalMethodNode {
                 throw new UnsupportedSpecializationException(this, new Node[] {null, null, null, null}, arg0Value, arg1Value, arg2Value, arg3Value);
             } finally {
                 if (oldState_0 != 0 || oldExclude != 0) {
-                    Object[] t1args = frameValue != null ? RubyArguments.getRawArguments(frameValue) : null;
-                    checkForPolymorphicSpecialize(oldState_0, oldExclude, oldCacheCount, t1args);
+                    checkForPolymorphicSpecialize(oldState_0, oldExclude, oldCacheCount);
                 }
             }
         } finally {
@@ -223,11 +222,11 @@ public final class CallInternalMethodNodeTemp extends CallInternalMethodNode {
         }
     }
 
-    private void checkForPolymorphicSpecialize(int oldState_0, int oldExclude, int oldCacheCount, Object[] t1Args) {
+    private void checkForPolymorphicSpecialize(int oldState_0, int oldExclude, int oldCacheCount) {
         int newState_0 = this.state_0_;
         int newExclude = this.exclude_;
         if (((oldState_0 ^ newState_0) != 0) || (oldExclude ^ newExclude) != 0 || oldCacheCount < countCaches()) {
-            this.reportPolymorphicSpecialize(t1Args);
+            this.reportPolymorphicSpecialize(true);
         }
     }
 
