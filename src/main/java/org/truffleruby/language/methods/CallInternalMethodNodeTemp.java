@@ -51,7 +51,6 @@ public final class CallInternalMethodNodeTemp extends CallInternalMethodNode {
                     }
                     if ((arg0Value.getCallTarget() == s0_.cachedCallTarget_)) {
                         assert (!(s0_.cachedMethod_.alwaysInlined()));
-                        s0_.callNode_.updateUserArgs(RubyArguments.getRawArguments(arg2Value));
                         return callCached(arg0Value, arg1Value, arg2Value, arg3Value, s0_.cachedCallTarget_, s0_.cachedMethod_, s0_.callNode_);
                     }
                     s0_ = s0_.next_;
