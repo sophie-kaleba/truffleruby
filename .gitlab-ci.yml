@@ -6,7 +6,7 @@ stages:
 variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
-  WORKING_BRANCH: sk/simple-context-splitting
+  WORKING_BRANCH: context-args
 
 .scripts:
     prep-path: &PREP_PATH |
