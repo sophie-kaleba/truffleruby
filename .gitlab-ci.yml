@@ -39,6 +39,7 @@ variables:
       EOF
 
     download-variants: &DOWNLOAD_TR |
+      sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-native-libgraal.tar.lz4
       sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-jvm-ce.tar.lz4
 
     install-on-tmpfs: &INSTALL_ON_TMP |
@@ -46,6 +47,7 @@ variables:
       rm -Rf /tmp/truffleruby
       mkdir -p /tmp/truffleruby
       cd /tmp/truffleruby
+      tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-native-libgraal.tar.lz4
       tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-jvm-ce.tar.lz4
 
     install-gem-deps: &INSTALL_GEMS |
@@ -61,7 +63,7 @@ variables:
       cd ${PROJECT_FOLDER}
 
 
-build_and_test_job:
+build_native_libgraal:
   stage: build-and-test
   tags: [yuria]
   script:
@@ -69,7 +71,8 @@ build_and_test_job:
     - *GIT_DEPS
     - *PREP_PATH
     
-    - export VARIANT=jvm-ce
+    - ${JT} clean
+    - export VARIANT=native-libgraal
     - ${JT} build --sforceimports --env ${VARIANT}
 #    - ${JT} --use ${VARIANT} test fast
     # - ${JT} --use ${VARIANT} test unittest
@@ -77,9 +80,25 @@ build_and_test_job:
     - *PACKAGE_TR
     - *UPLOAD_TR
 
+build_jvmce:
+  stage: build-and-test
+  needs: ["build_native_libgraal"]
+  tags: [yuria]
+  script:
+    - *INSTALL_REMOTE_BRANCH
+    - *GIT_DEPS
+    - *PREP_PATH
+    
+    - ${JT} clean
+    - export VARIANT=jvm-ce
+    - ${JT} build --sforceimports --env ${VARIANT}
+  
+    - *PACKAGE_TR
+    - *UPLOAD_TR
+
 benchmark1:
   stage: benchmark
-  needs: ["build_and_test_job"]
+  needs: ["build_jvmce"]
   tags: [yuria]
   allow_failure: true
   script:
@@ -89,7 +108,7 @@ benchmark1:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
+    - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
 
@@ -99,7 +118,7 @@ benchmark1:
 
 benchmark2:
   stage: benchmark
-  needs: ["build_and_test_job"]
+  needs: ["build_jvmce"]
   tags: [yuria2]
   allow_failure: true
   script:
@@ -109,7 +128,7 @@ benchmark2:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
+    - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
@@ -118,7 +137,7 @@ benchmark2:
 
 benchmark3:
   stage: benchmark
-  needs: ["build_and_test_job"]
+  needs: ["build_jvmce"]
   tags: [yuria3]
   allow_failure: true
   script:
@@ -128,7 +147,7 @@ benchmark3:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
+    - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
