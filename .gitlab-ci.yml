@@ -6,7 +6,7 @@ stages:
 variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
-  WORKING_BRANCH: sk/simple-context-splitting
+  WORKING_BRANCH: sk/embed-cache-state
 
 .scripts:
     prep-path: &PREP_PATH |
@@ -72,10 +72,25 @@ build_native_libgraal:
     - *PREP_PATH
     
     - ${JT} clean
-    - export VARIANT=jvm-ce
+    - export VARIANT=native-libgraal
     - ${JT} build --sforceimports --env ${VARIANT}
 #    - ${JT} --use ${VARIANT} test fast
     # - ${JT} --use ${VARIANT} test unittest
+  
+    - *PACKAGE_TR
+    - *UPLOAD_TR
+
+build_jvmce:
+  stage: build-and-test
+  tags: [yuria]
+  script:
+    - *INSTALL_REMOTE_BRANCH
+    - *GIT_DEPS
+    - *PREP_PATH
+    
+    - ${JT} clean
+    - export VARIANT=jvm-ce
+    - ${JT} build --sforceimports --env ${VARIANT}
   
     - *PACKAGE_TR
     - *UPLOAD_TR
