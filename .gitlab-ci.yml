@@ -82,6 +82,7 @@ build_native_libgraal:
 
 build_jvmce:
   stage: build-and-test
+  needs: ["build_native_libgraal"]
   tags: [yuria]
   script:
     - *INSTALL_REMOTE_BRANCH
