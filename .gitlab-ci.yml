@@ -6,7 +6,7 @@ stages:
 variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
-  WORKING_BRANCH: sk/simple-context-splitting
+  WORKING_BRANCH: sk/embed-cache-state
 
 .scripts:
     prep-path: &PREP_PATH |
@@ -39,6 +39,7 @@ variables:
       EOF
 
     download-variants: &DOWNLOAD_TR |
+      sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-native-libgraal.tar.lz4
       sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-jvm-ce.tar.lz4
 
     install-on-tmpfs: &INSTALL_ON_TMP |
@@ -46,6 +47,7 @@ variables:
       rm -Rf /tmp/truffleruby
       mkdir -p /tmp/truffleruby
       cd /tmp/truffleruby
+      tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-native-libgraal.tar.lz4
       tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-jvm-ce.tar.lz4
 
     install-gem-deps: &INSTALL_GEMS |
@@ -61,7 +63,24 @@ variables:
       cd ${PROJECT_FOLDER}
 
 
-build_and_test_job:
+build_native_libgraal:
+  stage: build-and-test
+  tags: [yuria]
+  script:
+    - *INSTALL_REMOTE_BRANCH
+    - *GIT_DEPS
+    - *PREP_PATH
+    
+    - ${JT} clean
+    - export VARIANT=native-libgraal
+    - ${JT} build --sforceimports --env ${VARIANT}
+#    - ${JT} --use ${VARIANT} test fast
+    # - ${JT} --use ${VARIANT} test unittest
+  
+    - *PACKAGE_TR
+    - *UPLOAD_TR
+
+build_jvmce:
   stage: build-and-test
   tags: [yuria]
   script:
@@ -72,8 +91,6 @@ build_and_test_job:
     - ${JT} clean
     - export VARIANT=jvm-ce
     - ${JT} build --sforceimports --env ${VARIANT}
-#    - ${JT} --use ${VARIANT} test fast
-    # - ${JT} --use ${VARIANT} test unittest
   
     - *PACKAGE_TR
     - *UPLOAD_TR

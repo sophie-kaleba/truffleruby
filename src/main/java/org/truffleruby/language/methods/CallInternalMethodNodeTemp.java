@@ -2,6 +2,7 @@
 package org.truffleruby.language.methods;
 
 import com.oracle.truffle.api.Assumption;
+import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.CompilerDirectives;
 import com.oracle.truffle.api.RootCallTarget;
 import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
@@ -14,6 +15,7 @@ import com.oracle.truffle.api.nodes.ExplodeLoop;
 import com.oracle.truffle.api.nodes.IndirectCallNode;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeCost;
+import com.oracle.truffle.api.nodes.RootNode;
 import com.oracle.truffle.api.profiles.BranchProfile;
 import java.lang.invoke.VarHandle;
 import java.util.concurrent.locks.Lock;
@@ -122,6 +124,13 @@ public final class CallInternalMethodNodeTemp extends CallInternalMethodNode {
                                     Assumption assumption0 = (getMethodAssumption(cachedMethod__));
                                     if (Assumption.isValidAssumption(assumption0)) {
                                         if (count0_ < (getCacheLimit())) {
+                                            RootNode source = this.getRootNode();
+                                            RootCallTarget sourceTarget = source != null ? source.getCallTarget() : null;
+                                            if (count0_ + 1 > 1 ) {
+                                                sourceTarget.setCacheState(NodeCost.POLYMORPHIC);
+                                            } else {
+                                                sourceTarget.setCacheState(NodeCost.MONOMORPHIC);
+                                            }
                                             s0_ = super.insert(new CallCachedData(callCached_cache));
                                             s0_.cachedCallTarget_ = cachedCallTarget__;
                                             s0_.cachedMethod_ = cachedMethod__;

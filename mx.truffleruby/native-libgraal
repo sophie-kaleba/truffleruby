@@ -1,0 +1,4 @@
+GRAALVM_SKIP_ARCHIVE=true
+DYNAMIC_IMPORTS=/tools,/compiler,/substratevm
+COMPONENTS=TruffleRuby,SubstrateVM,LibGraal
+NATIVE_IMAGES=true
