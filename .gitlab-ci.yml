@@ -136,7 +136,7 @@ benchmark1:
 
 
     - *INSTALL_GEMS
-    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
+    - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
     - sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria1.log <<< $'put ${PROJECT_FOLDER}/splitting_statistics.log'
     - rm -Rf /tmp/truffleruby
 
@@ -156,7 +156,7 @@ benchmark2:
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
-    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
+    - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
     - sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria2.log <<< $'put ${PROJECT_FOLDER}/splitting_statistics.log'
     - rm -Rf /tmp/truffleruby
 
@@ -176,17 +176,17 @@ benchmark3:
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
-    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
+    - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
     - sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria3.log <<< $'put ${PROJECT_FOLDER}/splitting_statistics.log'
     - rm -Rf /tmp/truffleruby
 
-fetch_statistics:
-  stage: benchmark-completion
-  tags: [yuria1]
-  allow_failure: true
-  script:
+# fetch_statistics:
+#   stage: benchmark-completion
+#   tags: [yuria1]
+#   allow_failure: true
+#   script:
 
-    - *PREP_PATH
-    - *DOWNLOAD_SPLIT
+#     - *PREP_PATH
+#     - *DOWNLOAD_SPLIT
 
-    - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics_${CI_COMMIT_REF_NAME}.log
+#     - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics_${CI_COMMIT_REF_NAME}.log
