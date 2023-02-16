@@ -124,13 +124,6 @@ public final class CallInternalMethodNodeTemp extends CallInternalMethodNode {
                                     Assumption assumption0 = (getMethodAssumption(cachedMethod__));
                                     if (Assumption.isValidAssumption(assumption0)) {
                                         if (count0_ < (getCacheLimit())) {
-                                            RootNode source = this.getRootNode();
-                                            RootCallTarget sourceTarget = source != null ? source.getCallTarget() : null;
-                                            if (count0_ + 1 > 1 ) {
-                                                sourceTarget.setCacheState(NodeCost.POLYMORPHIC);
-                                            } else {
-                                                sourceTarget.setCacheState(NodeCost.MONOMORPHIC);
-                                            }
                                             s0_ = super.insert(new CallCachedData(callCached_cache));
                                             s0_.cachedCallTarget_ = cachedCallTarget__;
                                             s0_.cachedMethod_ = cachedMethod__;
