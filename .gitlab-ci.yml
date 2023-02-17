@@ -149,7 +149,7 @@ benchmark1:
 
     - touch splitting_statistics.log
     - *INSTALL_GEMS
-    - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
+    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
 
     - *UPLOAD_Y1
     - rm -Rf /tmp/truffleruby
@@ -171,7 +171,7 @@ benchmark2:
 
     - touch splitting_statistics.log
     - *INSTALL_GEMS
-    - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
+    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
 
     - *UPLOAD_Y2
     - rm -Rf /tmp/truffleruby
@@ -193,7 +193,7 @@ benchmark3:
 
     - touch splitting_statistics.log
     - *INSTALL_GEMS
-    - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
+    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
 
     - *UPLOAD_Y3
     - rm -Rf /tmp/truffleruby
@@ -207,4 +207,5 @@ fetch_statistics:
     - *PREP_PATH
     - *DOWNLOAD_SPLIT
 
-    - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_REF_NAME}.log
+    - touch splitting_statistics-${CI_COMMIT_SHA}.log
+    - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_SHA}.log
