@@ -121,7 +121,10 @@ benchmark1:
     - touch splitting_statistics.log
     - *INSTALL_GEMS
     - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
-    - sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria1.log <<< $'put ${PROJECT_FOLDER}/splitting_statistics.log'
+
+    - sftp tmp-artifacts << EOF
+        ${PROJECT_FOLDER}/splitting_statistics.log incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria1.log
+      EOF
     - rm -Rf /tmp/truffleruby
 
 benchmark2:
@@ -142,7 +145,9 @@ benchmark2:
     - touch splitting_statistics.log
     - *INSTALL_GEMS
     - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
-    - sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria2.log <<< $'put ${PROJECT_FOLDER}/splitting_statistics.log'
+    - sftp tmp-artifacts << EOF
+        ${PROJECT_FOLDER}/splitting_statistics.log incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria2.log
+      EOF
     - rm -Rf /tmp/truffleruby
 
 benchmark3:
@@ -163,7 +168,9 @@ benchmark3:
     - touch splitting_statistics.log
     - *INSTALL_GEMS
     - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
-    - sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria3.log <<< $'put ${PROJECT_FOLDER}/splitting_statistics.log'
+    - sftp tmp-artifacts << EOF
+        ${PROJECT_FOLDER}/splitting_statistics.log incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria3.log
+      EOF
     - rm -Rf /tmp/truffleruby
 
 # fetch_statistics:
