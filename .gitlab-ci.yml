@@ -83,22 +83,22 @@ variables:
       cd ${PROJECT_FOLDER}
 
 
-# build_native_libgraal:
-#   stage: build-and-test
-#   tags: [yuria]
-#   script:
-#     - *INSTALL_REMOTE_BRANCH
-#     - *GIT_DEPS
-#     - *PREP_PATH
+build_native_libgraal:
+  stage: build-and-test
+  tags: [yuria]
+  script:
+    - *INSTALL_REMOTE_BRANCH
+    - *GIT_DEPS
+    - *PREP_PATH
     
-#     - ${JT} clean
-#     - export VARIANT=native-libgraal
-#     - ${JT} build --sforceimports --env ${VARIANT}
-# #    - ${JT} --use ${VARIANT} test fast
-#     # - ${JT} --use ${VARIANT} test unittest
+#    - ${JT} clean
+    - export VARIANT=native-libgraal
+#    - ${JT} build --sforceimports --env ${VARIANT}
+#    - ${JT} --use ${VARIANT} test fast
+    # - ${JT} --use ${VARIANT} test unittest
   
-#     - *PACKAGE_TR
-#     - *UPLOAD_TR
+#    - *PACKAGE_TR
+#    - *UPLOAD_TR
 
 build_jvmce:
   stage: build-and-test
