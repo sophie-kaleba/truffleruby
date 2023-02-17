@@ -36,13 +36,11 @@ variables:
       sftp tmp-artifacts << EOF
         -mkdir incoming/${CI_PIPELINE_ID}/
         put ${PROJECT_FOLDER}/truffleruby-${VARIANT}.tar.lz4 incoming/${CI_PIPELINE_ID}/
-        put ${PROJECT_FOLDER}/post-process.sh incoming/${CI_PIPELINE_ID}/
       EOF
 
     download-variants: &DOWNLOAD_TR |
       sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-native-libgraal.tar.lz4
       sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-jvm-ce.tar.lz4
-      sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/post-process.sh
 
     dowload-splitting-stats: &DOWNLOAD_SPLIT |    
       sftp tmp-artifacts << EOF
