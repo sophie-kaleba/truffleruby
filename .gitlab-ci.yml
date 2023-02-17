@@ -54,13 +54,14 @@ variables:
       EOF
 
     download-variants: &DOWNLOAD_TR |
+#      sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-native-libgraal.tar.lz4
       sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-jvm-ce.tar.lz4
 
     dowload-splitting-stats: &DOWNLOAD_SPLIT |    
       sftp tmp-artifacts << EOF
-        get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria1.log /[...]/splitting_statistics_yuria1.log
-        get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria2.log /[...]/splitting_statistics_yuria2.log
-        get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria3.log /[...]/splitting_statistics_yuria3.log
+        get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria1.log $(pwd)/splitting_statistics_yuria1.log
+        get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria2.log $(pwd)/splitting_statistics_yuria2.log
+        get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria3.log $(pwd)/splitting_statistics_yuria3.log
       EOF
 
     install-on-tmpfs: &INSTALL_ON_TMP |
@@ -68,6 +69,7 @@ variables:
       rm -Rf /tmp/truffleruby
       mkdir -p /tmp/truffleruby
       cd /tmp/truffleruby
+#      tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-native-libgraal.tar.lz4
       tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-jvm-ce.tar.lz4
 
     install-gem-deps: &INSTALL_GEMS |
@@ -91,14 +93,14 @@ build_native_libgraal:
     - *GIT_DEPS
     - *PREP_PATH
     
-#    - ${JT} clean
+  #  - ${JT} clean
     - export VARIANT=native-libgraal
-#    - ${JT} build --sforceimports --env ${VARIANT}
-#    - ${JT} --use ${VARIANT} test fast
-    # - ${JT} --use ${VARIANT} test unittest
+  #  - ${JT} build --sforceimports --env ${VARIANT}
+  #  - ${JT} --use ${VARIANT} test fast
+  #   - ${JT} --use ${VARIANT} test unittest
   
-#    - *PACKAGE_TR
-#    - *UPLOAD_TR
+  #  - *PACKAGE_TR
+  #  - *UPLOAD_TR
 
 build_jvmce:
   stage: build-and-test
@@ -198,13 +200,13 @@ benchmark3:
     - *UPLOAD_Y3
     - rm -Rf /tmp/truffleruby
 
-# fetch_statistics:
-#   stage: benchmark-completion
-#   tags: [yuria1]
-#   allow_failure: true
-#   script:
+fetch_statistics:
+  stage: benchmark-completion
+  tags: [yuria]
+  allow_failure: true
+  script:
 
-#     - *PREP_PATH
-#     - *DOWNLOAD_SPLIT
+    - *PREP_PATH
+    - *DOWNLOAD_SPLIT
 
-#     - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_REF_NAME}.log
+    - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_REF_NAME}.log
