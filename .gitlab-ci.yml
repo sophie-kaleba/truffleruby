@@ -39,7 +39,7 @@ variables:
       EOF
 
     download-variants: &DOWNLOAD_TR |
-      sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-native-libgraal.tar.lz4
+#     sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-native-libgraal.tar.lz4
       sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-jvm-ce.tar.lz4
 
     dowload-splitting-stats: &DOWNLOAD_SPLIT |    
@@ -54,7 +54,7 @@ variables:
       rm -Rf /tmp/truffleruby
       mkdir -p /tmp/truffleruby
       cd /tmp/truffleruby
-      tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-native-libgraal.tar.lz4
+#      tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-native-libgraal.tar.lz4
       tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-jvm-ce.tar.lz4
 
     install-gem-deps: &INSTALL_GEMS |
@@ -70,22 +70,22 @@ variables:
       cd ${PROJECT_FOLDER}
 
 
-build_native_libgraal:
-  stage: build-and-test
-  tags: [yuria]
-  script:
-    - *INSTALL_REMOTE_BRANCH
-    - *GIT_DEPS
-    - *PREP_PATH
+# build_native_libgraal:
+#   stage: build-and-test
+#   tags: [yuria]
+#   script:
+#     - *INSTALL_REMOTE_BRANCH
+#     - *GIT_DEPS
+#     - *PREP_PATH
     
-    - ${JT} clean
-    - export VARIANT=native-libgraal
-    - ${JT} build --sforceimports --env ${VARIANT}
-#    - ${JT} --use ${VARIANT} test fast
-    # - ${JT} --use ${VARIANT} test unittest
+#     - ${JT} clean
+#     - export VARIANT=native-libgraal
+#     - ${JT} build --sforceimports --env ${VARIANT}
+# #    - ${JT} --use ${VARIANT} test fast
+#     # - ${JT} --use ${VARIANT} test unittest
   
-    - *PACKAGE_TR
-    - *UPLOAD_TR
+#     - *PACKAGE_TR
+#     - *UPLOAD_TR
 
 build_jvmce:
   stage: build-and-test
@@ -122,7 +122,8 @@ benchmark1:
     - *INSTALL_GEMS
     - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
 
-    - sftp tmp-artifacts << EOF
+    - |
+      sftp tmp-artifacts << EOF
         put ${PROJECT_FOLDER}/splitting_statistics.log incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria1.log
       EOF
     - rm -Rf /tmp/truffleruby
@@ -145,7 +146,9 @@ benchmark2:
     - touch splitting_statistics.log
     - *INSTALL_GEMS
     - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
-    - sftp tmp-artifacts << EOF
+
+    - |
+      sftp tmp-artifacts << EOF
         put ${PROJECT_FOLDER}/splitting_statistics.log incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria2.log
       EOF
     - rm -Rf /tmp/truffleruby
@@ -168,7 +171,9 @@ benchmark3:
     - touch splitting_statistics.log
     - *INSTALL_GEMS
     - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
-    - sftp tmp-artifacts << EOF
+
+    - | 
+      sftp tmp-artifacts << EOF
         put ${PROJECT_FOLDER}/splitting_statistics.log incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria3.log
       EOF
     - rm -Rf /tmp/truffleruby
@@ -182,4 +187,4 @@ benchmark3:
 #     - *PREP_PATH
 #     - *DOWNLOAD_SPLIT
 
-#     - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics_${CI_COMMIT_REF_NAME}.log
+#     - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_REF_NAME}.log
