@@ -136,7 +136,7 @@ benchmark1:
     - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
-    - chmod +x ./post-process.sh
+    - touch splitting_statistics.log
     - *INSTALL_GEMS
     - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
     - sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria1.log <<< $'put ${PROJECT_FOLDER}/splitting_statistics.log'
@@ -157,7 +157,7 @@ benchmark2:
     - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
-    - chmod +x ./post-process.sh
+    - touch splitting_statistics.log
     - *INSTALL_GEMS
     - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
     - sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria2.log <<< $'put ${PROJECT_FOLDER}/splitting_statistics.log'
@@ -178,7 +178,7 @@ benchmark3:
     - git checkout ${CI_COMMIT_BRANCH}
     - *UPDATE_SUBMODULE
 
-    - chmod +x ./post-process.sh
+    - touch splitting_statistics.log
     - *INSTALL_GEMS
     - rebench -dv -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
     - sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria3.log <<< $'put ${PROJECT_FOLDER}/splitting_statistics.log'
