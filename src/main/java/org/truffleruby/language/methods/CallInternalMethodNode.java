@@ -46,7 +46,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
 
     @NeverDefault
     public static CallInternalMethodNode create() {
-        return CallInternalMethodNodeGen.create();
+        return CallInternalMethodNodeAux.create();
     }
 
     /** Callers should use {@link RubyArguments#assertFrameArguments} unless they use {@code RubyArguments#pack}.
