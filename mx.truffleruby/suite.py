@@ -7,18 +7,18 @@ suite = {
             {
                 "name": "regex",
                 "subdir": True,
-                "version": "d090c8901583d6c6471b82c1c9f4ba644411bf5e",
+                "version": "954f8b948f507ab8fa2f9f3a4029b4a204cd4dda",
                 "urls": [
-                    {"url": "https://github.com/oracle/graal.git", "kind": "git"},
+                    {"url": "https://github.com/sophie-kaleba/truffle.git", "kind": "git"},
                     {"url": "https://curio.ssw.jku.at/nexus/content/repositories/snapshots", "kind": "binary"},
                 ]
             },
             {
                 "name": "sulong",
                 "subdir": True,
-                "version": "d090c8901583d6c6471b82c1c9f4ba644411bf5e",
+                "version": "954f8b948f507ab8fa2f9f3a4029b4a204cd4dda",
                 "urls": [
-                    {"url": "https://github.com/oracle/graal.git", "kind": "git"},
+                    {"url": "https://github.com/sophie-kaleba/truffle.git", "kind": "git"},
                     {"url": "https://curio.ssw.jku.at/nexus/content/repositories/snapshots", "kind": "binary"},
                 ]
             },
