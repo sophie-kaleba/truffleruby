@@ -193,3 +193,4 @@ fetch_statistics:
 
     - touch splitting_statistics-${CI_COMMIT_SHA}.log
     - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_SHA}.log
+    - rm splitting_statistics_yuria2.log splitting_statistics_yuria3.log
