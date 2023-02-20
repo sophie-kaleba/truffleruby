@@ -6,7 +6,7 @@ stages:
 variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
-  WORKING_BRANCH: sk/embed-cache-state
+  WORKING_BRANCH: splitting/cache-driven-splitting
 
 .scripts:
     prep-path: &PREP_PATH |
