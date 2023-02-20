@@ -93,14 +93,14 @@ build_native_libgraal:
     - *GIT_DEPS
     - *PREP_PATH
     
-   - ${JT} clean
+    - ${JT} clean
     - export VARIANT=native-libgraal
-   - ${JT} build --sforceimports --env ${VARIANT}
+    - ${JT} build --sforceimports --env ${VARIANT}
   #  - ${JT} --use ${VARIANT} test fast
   #   - ${JT} --use ${VARIANT} test unittest
   
-   - *PACKAGE_TR
-   - *UPLOAD_TR
+    - *PACKAGE_TR
+    - *UPLOAD_TR
 
 build_jvmce:
   stage: build-and-test
