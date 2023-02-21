@@ -1,0 +1,31 @@
+source("./scripts/libraries.R", chdir=TRUE)
+
+#args = commandArgs(trailingOnly=TRUE)
+filename1 = "./splitting_statistics/ef7779bee01a0a4721185c146dbb28b642527fc8/ef7779bee01a0a4721185c146dbb28b642527fc8_truffle_split_statistics.csv"
+filename2 = "./splitting_statistics/ef7779bee01a0a4721185c146dbb28b642527fc8/ef7779bee01a0a4721185c146dbb28b642527fc8_truffle_split_statistics.csv"
+
+#filename1 = args[1]
+#filename2 = args[2]
+#folder_out = args[3] 
+
+data1 <- fread(filename1, header = TRUE, sep=",") #older
+data1 <- data1 %>% 
+  rename_with( ~ paste0("1_", .x), .cols = commit:last_col())
+
+data2 <- fread(filename2, header = TRUE, sep=",") #newer
+data2$commit <- 2874374362746832746
+data2$total_split_count <- data2$total_split_count - 20
+data2 <- data2 %>% 
+  rename_with( ~ paste0("2_", .x), .cols = commit:last_col())
+
+data <- join(data1, data2)
+
+# generate tables comparing 2 commits
+# grouped by benchmarks, suite and executor
+comparison_table <- data %>%
+  group_by(benchmark, executor, suite) %>%
+  dplyr::mutate(Split.Count.Change = round((((`2_total_split_count` - `1_total_split_count`) / `1_total_split_count`) * 100 ), 1),
+                Unforced.Count.Change = round((((`2_unforced_split_count` - `1_unforced_split_count`) / `1_unforced_split_count`) * 100 ), 1),
+                Node.Created.Change = round((((`2_node_created_splitting` - `1_node_created_splitting`) / `1_node_created_splitting`) * 100 ), 1))
+                
+# generate plots comparing
