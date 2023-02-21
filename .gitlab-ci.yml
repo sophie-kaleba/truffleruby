@@ -130,7 +130,7 @@ benchmark1:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${CI_COMMIT_BRANCH}
+    - git checkout ${WORKING_BRANCH}
     - *UPDATE_SUBMODULE
 
     - touch splitting_statistics.log
@@ -152,7 +152,7 @@ benchmark2:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${CI_COMMIT_BRANCH}
+    - git checkout ${WORKING_BRANCH}
     - *UPDATE_SUBMODULE
 
     - touch splitting_statistics.log
@@ -174,7 +174,7 @@ benchmark3:
 
     - cd ${PROJECT_FOLDER}/truffleruby.aux
     - git fetch --all || true
-    - git checkout ${CI_COMMIT_BRANCH}
+    - git checkout ${WORKING_BRANCH}
     - *UPDATE_SUBMODULE
 
     - touch splitting_statistics.log
