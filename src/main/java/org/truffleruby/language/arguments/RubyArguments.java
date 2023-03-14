@@ -466,18 +466,18 @@ public final class RubyArguments {
         return null;
     }
 
+    @CompilerDirectives.TruffleBoundary
     public static long computeFingerprint(Object[] rubyArgs) {
-        long signature = -42;
+        long signature = -1;
 
-        if (rubyArgs.length > 8) {
-            for (int i = 8; i < rubyArgs.length; i++) {
-                Object o = rubyArgs[i];
-                if (o != null) {
-                    if (o instanceof RubyBasicObject) {
-                        signature += ((RubyBasicObject) o).getMetaClass().hashCode();
-                    } else {
-                        signature += o.toString().hashCode();
-                    }
+        Object[] userArgs = getRawArguments(rubyArgs);
+        for (int i = 0; i < userArgs.length; i++) {
+            Object o = userArgs[i];
+            if (o != null) {
+                if (o instanceof RubyBasicObject) {
+                    signature += ((RubyBasicObject) o).getMetaClass().hashCode();
+                } else {
+                    signature += o.toString().hashCode();
                 }
             }
         }
