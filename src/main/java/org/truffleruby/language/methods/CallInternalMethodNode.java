@@ -70,6 +70,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             literalCallNode.copyRuby2KeywordsHash(rubyArgs, cachedMethod.getSharedMethodInfo());
         }
 
+        cachedCallTarget.setContextSignature(RubyArguments.computeFingerprint(rubyArgs));
         return callNode.call(RubyArguments.repackForCall(rubyArgs));
     }
 
@@ -82,6 +83,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             literalCallNode.copyRuby2KeywordsHash(rubyArgs, method.getSharedMethodInfo());
         }
 
+        method.getCallTarget().setContextSignature(RubyArguments.computeFingerprint(rubyArgs));
         return indirectCallNode.call(method.getCallTarget(), RubyArguments.repackForCall(rubyArgs));
     }
 

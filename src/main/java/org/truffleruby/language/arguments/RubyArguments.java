@@ -12,6 +12,7 @@ package org.truffleruby.language.arguments;
 import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.CompilerDirectives;
 import org.truffleruby.core.array.ArrayUtils;
+import org.truffleruby.core.basicobject.RubyBasicObject;
 import org.truffleruby.core.hash.RubyHash;
 import org.truffleruby.core.proc.RubyProc;
 import org.truffleruby.core.string.StringUtils;
@@ -463,6 +464,25 @@ public final class RubyArguments {
         }
 
         return null;
+    }
+
+    public static long computeFingerprint(Object[] rubyArgs) {
+        long signature = -42;
+
+        if (rubyArgs.length > 8) {
+            for (int i = 8; i < rubyArgs.length; i++) {
+                Object o = rubyArgs[i];
+                if (o != null) {
+                    if (o instanceof RubyBasicObject) {
+                        signature += ((RubyBasicObject) o).getMetaClass().hashCode();
+                    } else {
+                        signature += o.toString().hashCode();
+                    }
+                }
+            }
+        }
+
+        return signature;
     }
 
 }
