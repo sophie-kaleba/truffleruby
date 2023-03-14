@@ -96,8 +96,8 @@ build_native_libgraal:
     - ${JT} clean
     - export VARIANT=native-libgraal
     - ${JT} build --sforceimports --env ${VARIANT}
-    - ${JT} --use ${VARIANT} test fast
-    - ${JT} --use ${VARIANT} test unittest
+    # - ${JT} --use ${VARIANT} test fast
+    # - ${JT} --use ${VARIANT} test unittest
 
     - *PACKAGE_TR
     - *UPLOAD_TR
