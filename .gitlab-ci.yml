@@ -133,7 +133,7 @@ benchmark1:
     # - git checkout ${WORKING_BRANCH}
     # - *UPDATE_SUBMODULE
 
-    # - touch splitting_statistics.log
+    - touch splitting_statistics.log
     # - *INSTALL_GEMS
     # - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
 
@@ -155,7 +155,7 @@ benchmark2:
     # - git checkout ${WORKING_BRANCH}
     # - *UPDATE_SUBMODULE
 
-    # - touch splitting_statistics.log
+    - touch splitting_statistics.log
     # - *INSTALL_GEMS
     # - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
 
@@ -193,6 +193,6 @@ fetch_statistics:
     # - *PREP_PATH
     # - *DOWNLOAD_SPLIT
 
-    # - touch splitting_statistics-${CI_COMMIT_SHA}.log
+    - touch splitting_statistics-${CI_COMMIT_SHA}.log
     # - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_SHA}.log
     # - rm splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log
