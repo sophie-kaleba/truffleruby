@@ -124,21 +124,21 @@ benchmark1:
   tags: [yuria]
   allow_failure: true
   script:
-    # - *DOWNLOAD_TR
-    # - *GIT_TR
-    # - *INSTALL_ON_TMP
+    - *DOWNLOAD_TR
+    - *GIT_TR
+    - *INSTALL_ON_TMP
 
-    # - cd ${PROJECT_FOLDER}/truffleruby.aux
-    # - git fetch --all || true
-    # - git checkout ${WORKING_BRANCH}
-    # - *UPDATE_SUBMODULE
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
+    - git fetch --all || true
+    - git checkout ${WORKING_BRANCH}
+    - *UPDATE_SUBMODULE
 
     - touch splitting_statistics.log
-    # - *INSTALL_GEMS
-    # - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
+    - *INSTALL_GEMS
+    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
 
-    # - *UPLOAD_Y1
-    # - rm -Rf /tmp/truffleruby
+    - *UPLOAD_Y1
+    - rm -Rf /tmp/truffleruby
 
 benchmark2:
   stage: benchmark
@@ -146,21 +146,21 @@ benchmark2:
   tags: [yuria2]
   allow_failure: true
   script:
-    # - *DOWNLOAD_TR
-    # - *GIT_TR
-    # - *INSTALL_ON_TMP
+    - *DOWNLOAD_TR
+    - *GIT_TR
+    - *INSTALL_ON_TMP
 
-    # - cd ${PROJECT_FOLDER}/truffleruby.aux
-    # - git fetch --all || true
-    # - git checkout ${WORKING_BRANCH}
-    # - *UPDATE_SUBMODULE
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
+    - git fetch --all || true
+    - git checkout ${WORKING_BRANCH}
+    - *UPDATE_SUBMODULE
 
     - touch splitting_statistics.log
-    # - *INSTALL_GEMS
-    # - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
+    - *INSTALL_GEMS
+    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
 
-    # - *UPLOAD_Y2
-    # - rm -Rf /tmp/truffleruby
+    - *UPLOAD_Y2
+    - rm -Rf /tmp/truffleruby
 
 benchmark3:
   stage: benchmark
@@ -190,9 +190,9 @@ fetch_statistics:
   allow_failure: true
   script:
 
-    # - *PREP_PATH
-    # - *DOWNLOAD_SPLIT
+    - *PREP_PATH
+    - *DOWNLOAD_SPLIT
 
     - touch splitting_statistics-${CI_COMMIT_SHA}.log
-    # - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_SHA}.log
-    # - rm splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log
+    - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_SHA}.log
+    - rm splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log
