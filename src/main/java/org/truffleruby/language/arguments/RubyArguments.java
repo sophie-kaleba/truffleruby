@@ -477,7 +477,7 @@ public final class RubyArguments {
                 if (o instanceof RubyBasicObject) {
                     signature += ((RubyBasicObject) o).getMetaClass().hashCode();
                 } else {
-                    signature += o.toString().hashCode();
+                    signature += o.getClass().hashCode();
                 }
             }
         }
