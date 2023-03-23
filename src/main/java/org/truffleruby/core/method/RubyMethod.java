@@ -73,7 +73,9 @@ public class RubyMethod extends RubyDynamicObject implements ObjectGraphNode {
         final Object[] convertedArguments = foreignToRubyArgumentsNode.executeConvert(arguments);
         final Object[] frameArgs = RubyArguments.pack(null, null, method, null, receiver, nil,
                 EmptyArgumentsDescriptor.INSTANCE, convertedArguments);
-        return callInternalMethodNode.execute(null, method, receiver, frameArgs, null);
+        // TODO - we can get a signature out of the converted arguments
+        long contextSignature = -77;
+        return callInternalMethodNode.execute(null, method, receiver, frameArgs, null, contextSignature);
     }
     // endregion
 
