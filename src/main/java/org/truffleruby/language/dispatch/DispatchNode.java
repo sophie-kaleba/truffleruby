@@ -284,17 +284,24 @@ public class DispatchNode extends SpecialVariablesSendingNode {
     }
 
     public Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
-            LiteralCallNode literalCallNode) {
+                           LiteralCallNode literalCallNode) {
+        long contextSignature = -44;
         return dispatchInternal(frame, receiver, methodName, rubyArgs, literalCallNode,
-                metaclassNode, methodLookup, methodMissing, callNode);
+                metaclassNode, methodLookup, methodMissing, callNode, contextSignature);
+    }
+
+    public Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
+                           LiteralCallNode literalCallNode, long contextSignature) {
+        return dispatchInternal(frame, receiver, methodName, rubyArgs, literalCallNode,
+                metaclassNode, methodLookup, methodMissing, callNode, contextSignature);
     }
 
     protected final Object dispatchInternal(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
-            LiteralCallNode literalCallNode,
-            MetaClassNode metaClassNode,
-            LookupMethodNode lookupMethodNode,
-            ConditionProfile methodMissingProfile,
-            CallInternalMethodNode callNode) {
+                                            LiteralCallNode literalCallNode,
+                                            MetaClassNode metaClassNode,
+                                            LookupMethodNode lookupMethodNode,
+                                            ConditionProfile methodMissingProfile,
+                                            CallInternalMethodNode callNode, long contextSignature) {
         assert RubyArguments.getSelf(rubyArgs) == receiver;
 
         final RubyClass metaclass = metaClassNode.execute(receiver);
@@ -318,7 +325,7 @@ public class DispatchNode extends SpecialVariablesSendingNode {
         RubyArguments.setCallerSpecialVariables(rubyArgs, getSpecialVariablesIfRequired(frame));
 
         assert RubyArguments.assertFrameArguments(rubyArgs);
-        return callNode.execute(frame, method, receiver, rubyArgs, literalCallNode);
+        return callNode.execute(frame, method, receiver, rubyArgs, literalCallNode, contextSignature);
     }
 
     @InliningCutoff
@@ -433,12 +440,13 @@ public class DispatchNode extends SpecialVariablesSendingNode {
 
         @Override
         public Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
-                LiteralCallNode literalCallNode) {
+                               LiteralCallNode literalCallNode) {
+            long contextSignature = -55;
             return dispatchInternal(frame, receiver, methodName, rubyArgs, literalCallNode,
                     MetaClassNodeGen.getUncached(),
                     LookupMethodNodeGen.getUncached(),
                     ConditionProfile.getUncached(),
-                    CallInternalMethodNodeGen.getUncached());
+                    CallInternalMethodNodeGen.getUncached(), contextSignature);
         }
 
         @Override
