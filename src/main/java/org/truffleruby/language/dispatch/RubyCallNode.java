@@ -15,6 +15,7 @@ import org.truffleruby.RubyLanguage;
 import org.truffleruby.core.array.ArrayAppendOneNode;
 import org.truffleruby.core.array.AssignableNode;
 import org.truffleruby.core.array.RubyArray;
+import org.truffleruby.core.basicobject.RubyBasicObject;
 import org.truffleruby.core.cast.BooleanCastNode;
 import org.truffleruby.core.cast.BooleanCastNodeGen;
 import org.truffleruby.core.inlined.LambdaToProcNode;
@@ -120,7 +121,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         ArgumentsDescriptor descriptor = this.descriptor;
         boolean ruby2KeywordsHash = false;
-        executeArguments(frame, rubyArgs);
+        long contextSignature = executeArguments(frame, rubyArgs);
         if (isSplatted) {
             rubyArgs = splatArgs(receiverObject, rubyArgs);
             ruby2KeywordsHash = isRuby2KeywordsHash(rubyArgs, RubyArguments.getRawArgumentsCount(rubyArgs));
@@ -131,7 +132,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         RubyArguments.setBlock(rubyArgs, executeBlock(frame));
 
-        return doCall(frame, receiverObject, descriptor, rubyArgs, ruby2KeywordsHash);
+        return doCall(frame, receiverObject, descriptor, rubyArgs, ruby2KeywordsHash, contextSignature);
     }
 
     @Override
@@ -146,7 +147,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         Object[] rubyArgs = RubyArguments.allocate(arguments.length);
         RubyArguments.setSelf(rubyArgs, receiverObject);
 
-        executeArguments(frame, rubyArgs);
+        long contextSignature = executeArguments(frame, rubyArgs);
         if (isSplatted) {
             rubyArgs = splatArgs(receiverObject, rubyArgs);
         }
@@ -157,11 +158,11 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         RubyArguments.setBlock(rubyArgs, executeBlock(frame));
 
         // no ruby2_keywords behavior for assign
-        doCall(frame, receiverObject, descriptor, rubyArgs, false);
+        doCall(frame, receiverObject, descriptor, rubyArgs, false, contextSignature);
     }
 
     public Object doCall(VirtualFrame frame, Object receiverObject, ArgumentsDescriptor descriptor, Object[] rubyArgs,
-            boolean ruby2KeywordsHash) {
+                         boolean ruby2KeywordsHash, long contextSignature) {
         // Remove empty kwargs in the caller, so the callee does not need to care about this special case
         if (descriptor instanceof KeywordArgumentsDescriptor && emptyKeywordArguments(rubyArgs)) {
             rubyArgs = removeEmptyKeywordArguments(rubyArgs);
@@ -176,7 +177,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         }
 
         final Object returnValue = dispatch.dispatch(frame, receiverObject, methodName, rubyArgs,
-                ruby2KeywordsHash ? this : null);
+                ruby2KeywordsHash ? this : null, contextSignature);
         if (isAttrAssign) {
             final Object value = rubyArgs[rubyArgs.length - 1];
             assert RubyGuards.assertIsValidRubyValue(value);
@@ -194,7 +195,8 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         RubyArguments.setSelf(rubyArgs, receiverObject);
         RubyArguments.setBlock(rubyArgs, blockObject);
         RubyArguments.setArguments(rubyArgs, argumentsObjects);
-        return doCall(frame, receiverObject, descriptor, rubyArgs, false);
+        long contextSignature = -33;
+        return doCall(frame, receiverObject, descriptor, rubyArgs, false, contextSignature);
     }
 
     private Object executeBlock(VirtualFrame frame) {
@@ -206,10 +208,20 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
     }
 
     @ExplodeLoop
-    private void executeArguments(VirtualFrame frame, Object[] rubyArgs) {
+    private long executeArguments(VirtualFrame frame, Object[] rubyArgs) {
+        long contextSignature = -2;
         for (int i = 0; i < arguments.length; i++) {
-            RubyArguments.setArgument(rubyArgs, i, arguments[i].execute(frame));
+            Object value = arguments[i].execute(frame);
+            RubyArguments.setArgument(rubyArgs, i, value);
+            if (value != null) {
+                if (value instanceof RubyBasicObject) {
+                    contextSignature += ((RubyBasicObject) value).getMetaClass().hashCode();
+                } else {
+                    contextSignature += value.getClass().hashCode();
+                }
+            }
         }
+        return contextSignature;
     }
 
     private Object[] splatArgs(Object receiverObject, Object[] rubyArgs) {
