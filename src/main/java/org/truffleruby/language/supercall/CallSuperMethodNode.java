@@ -56,7 +56,9 @@ public class CallSuperMethodNode extends SpecialVariablesSendingNode {
         final Object[] rubyArgs = RubyArguments.pack(
                 null, callerSpecialVariables, superMethod, null, self, block, descriptor, arguments);
 
-        return getCallMethodNode().execute(frame, superMethod, self, rubyArgs, literalCallNode);
+        // TODO - check arguments here too
+        long contextSignature = -88;
+        return getCallMethodNode().execute(frame, superMethod, self, rubyArgs, literalCallNode, contextSignature);
     }
 
     private CallInternalMethodNode getCallMethodNode() {
