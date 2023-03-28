@@ -6,7 +6,8 @@ stages:
 variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
-  WORKING_BRANCH: master-with-benchs
+  WORKING_BRANCH: splitting/share-split-targets
+  BENCH_BRANCH: no-standalone
 
 .scripts:
     prep-path: &PREP_PATH |
@@ -34,7 +35,7 @@ variables:
 
     upload-truffleruby: &UPLOAD_TR |
       sftp tmp-artifacts << EOF
-        -mkdir incoming/${CI_PIPELINE_ID}/
+        -mkdir -p incoming/${CI_PIPELINE_ID}/
         put ${PROJECT_FOLDER}/truffleruby-${VARIANT}.tar.lz4 incoming/${CI_PIPELINE_ID}/
       EOF
 
@@ -73,15 +74,19 @@ variables:
       tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-jvm-ce.tar.lz4
 
     install-gem-deps: &INSTALL_GEMS |
+      export PROJECT_FOLDER=$(pwd)
       /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby -S gem install timeout
       /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby -S gem install strscan -v 3.0.4
+      cd ${PROJECT_FOLDER}/phd-bench
+      /tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby ./setup-gem-based-benchs.rb
+      cd ${PROJECT_FOLDER}
 
     pull-submodule-updates: &UPDATE_SUBMODULE |
       export PROJECT_FOLDER=$(pwd)
       git submodule update --init
       cd ${PROJECT_FOLDER}/phd-bench
       git fetch --all || true
-      git pull origin master
+      git checkout ${BENCH_BRANCH}
       cd ${PROJECT_FOLDER}
 
 
