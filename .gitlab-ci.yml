@@ -156,7 +156,7 @@ benchmark2:
 
     - touch splitting_statistics.log
     - *INSTALL_GEMS
-    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
+    - rebench -d -v -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria2
 
     - *UPLOAD_Y2
     - rm -Rf /tmp/truffleruby
