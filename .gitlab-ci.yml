@@ -30,7 +30,7 @@ variables:
       export RESULT_HOME=$(dirname $(jt --use ${VARIANT} graalvm-home))
       cd ${RESULT_HOME}
       mv $(basename $(jt --use ${VARIANT} graalvm-home)) truffleruby-${VARIANT}
-      rm -Rf truffleruby-${VARIANT}/legal truffleruby-${VARIANT}/lib/visualvm truffleruby-${VARIANT}/lib/jfr truffleruby-${VARIANT}/tools truffleruby-${VARIANT}/include truffleruby-${VARIANT}/lib/llvm
+      rm -Rf truffleruby-${VARIANT}/legal truffleruby-${VARIANT}/lib/visualvm truffleruby-${VARIANT}/lib/jfr truffleruby-${VARIANT}/tools truffleruby-${VARIANT}/include
       tar -I lz4 -cf ${PROJECT_FOLDER}/truffleruby-${VARIANT}.tar.lz4 truffleruby-${VARIANT}
 
     upload-truffleruby: &UPLOAD_TR |
