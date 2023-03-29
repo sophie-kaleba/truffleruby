@@ -82,13 +82,7 @@ variables:
       cd ${PROJECT_FOLDER}
 
     pull-submodule-updates: &UPDATE_SUBMODULE |
-      export PROJECT_FOLDER=$(pwd)
       git submodule update --init
-      cd ${PROJECT_FOLDER}/phd-bench
-      git fetch --all || true
-      git checkout ${BENCH_BRANCH}
-      cd ${PROJECT_FOLDER}
-
 
 build_native_libgraal:
   stage: build-and-test
