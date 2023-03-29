@@ -86,7 +86,7 @@ variables:
 
 build_native_libgraal:
   stage: build-and-test
-  tags: [yuria]
+  tags: [yuria2]
   script:
     - *INSTALL_REMOTE_BRANCH
     - *GIT_DEPS
@@ -104,7 +104,7 @@ build_native_libgraal:
 build_jvmce:
   stage: build-and-test
   needs: ["build_native_libgraal"]
-  tags: [yuria]
+  tags: [yuria3]
   script:
     - *INSTALL_REMOTE_BRANCH
     - *GIT_DEPS
@@ -117,27 +117,27 @@ build_jvmce:
     - *PACKAGE_TR
     - *UPLOAD_TR
 
-benchmark1:
-  stage: benchmark
-  needs: ["build_jvmce"]
-  tags: [yuria]
-  allow_failure: true
-  script:
-    - *DOWNLOAD_TR
-    - *GIT_TR
-    - *INSTALL_ON_TMP
+# benchmark1:
+#   stage: benchmark
+#   needs: ["build_jvmce"]
+#   tags: [yuria]
+#   allow_failure: true
+#   script:
+#     - *DOWNLOAD_TR
+#     - *GIT_TR
+#     - *INSTALL_ON_TMP
 
-    - cd ${PROJECT_FOLDER}/truffleruby.aux
-    - git fetch --all || true
-    - git checkout ${WORKING_BRANCH}
-    - *UPDATE_SUBMODULE
+#     - cd ${PROJECT_FOLDER}/truffleruby.aux
+#     - git fetch --all || true
+#     - git checkout ${WORKING_BRANCH}
+#     - *UPDATE_SUBMODULE
 
-    - touch splitting_statistics.log
-    - *INSTALL_GEMS
-    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
+#     - touch splitting_statistics.log
+#     - *INSTALL_GEMS
+#     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
 
-    - *UPLOAD_Y1
-    - rm -Rf /tmp/truffleruby
+#     - *UPLOAD_Y1
+#     - rm -Rf /tmp/truffleruby
 
 benchmark2:
   stage: benchmark
