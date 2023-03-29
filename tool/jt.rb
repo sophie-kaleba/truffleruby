@@ -239,6 +239,8 @@ module Utilities
                       ENV['RBENV_ROOT'] ? `rbenv which ruby`.chomp : which('ruby')
                     elsif @ruby_name.start_with?('/')
                       File.directory?(@ruby_name) ? "#{@ruby_name}/bin/ruby" : @ruby_name
+                    elsif @ruby_name == 'rebench'
+                      "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
                     else
                       graalvm = "#{TRUFFLERUBY_DIR}/mxbuild/truffleruby-#{@ruby_name}"
                       "#{graalvm}/languages/ruby/bin/ruby"
@@ -1097,10 +1099,11 @@ module Commands
     env_vars = args.first.is_a?(Hash) ? args.shift : {}
     options = args.last.is_a?(Hash) ? args.pop : {}
 
+    @ruby_name = "rebench"
     vm_args, ruby_args, options = ruby_options(options, args)
-    ruby_launcher_rebench = "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
+    ruby_launcher = "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
 
-    sh env_vars, ruby_launcher_rebench, *(vm_args if truffleruby?), *ruby_args, options
+    sh env_vars, ruby_launcher, *(vm_args if truffleruby?), *ruby_args, options
   end
 
   def ruby(*args)

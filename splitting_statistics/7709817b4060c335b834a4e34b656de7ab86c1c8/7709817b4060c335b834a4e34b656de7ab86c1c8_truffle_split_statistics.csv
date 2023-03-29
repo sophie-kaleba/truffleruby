@@ -1,0 +1,9 @@
+benchmark,suite,executor,commit,total_split_count,unforced_split_count,node_created_splitting,node_created_nosplitting
+Acid,ruby-benchs-steady,TruffleRuby-ce,7709817b4060c335b834a4e34b656de7ab86c1c8,2918,2855,2146,32616
+BinaryTrees,yjit-benchs-steady,TruffleRuby-ce,7709817b4060c335b834a4e34b656de7ab86c1c8,3792,3728,2882,33545
+Bounce,game-benchs-steady,TruffleRuby-ce,7709817b4060c335b834a4e34b656de7ab86c1c8,2915,2851,2167,32894
+AsciidoctorConvertSmall,ruby-benchs-steady,TruffleRuby-ce,7709817b4060c335b834a4e34b656de7ab86c1c8,112391,111755,105272,105306
+FannkuchRedux,yjit-benchs-steady,TruffleRuby-ce,7709817b4060c335b834a4e34b656de7ab86c1c8,2997,2933,2207,33433
+CD,game-benchs-steady,TruffleRuby-ce,7709817b4060c335b834a4e34b656de7ab86c1c8,3288,3216,2529,35513
+AsciidoctorLoadFileSmall,ruby-benchs-steady,TruffleRuby-ce,7709817b4060c335b834a4e34b656de7ab86c1c8,91053,90484,84503,100056
+HexaPdfSmall,yjit-benchs-steady,TruffleRuby-ce,7709817b4060c335b834a4e34b656de7ab86c1c8,162973,162307,153061,168148
