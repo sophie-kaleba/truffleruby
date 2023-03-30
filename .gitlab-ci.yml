@@ -1,7 +1,7 @@
 stages:
   - build-and-test
   - benchmark
-  # - benchmark-completion
+  - benchmark-completion
 
 variables:
   JT: bin/jt
@@ -60,7 +60,6 @@ variables:
 
     dowload-splitting-stats: &DOWNLOAD_SPLIT |    
       sftp tmp-artifacts << EOF
-        get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria1.log $(pwd)/splitting_statistics_yuria1.log
         get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria2.log $(pwd)/splitting_statistics_yuria2.log
         get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria3.log $(pwd)/splitting_statistics_yuria3.log
       EOF
@@ -183,15 +182,17 @@ benchmark3:
     - *UPLOAD_Y3
     - rm -Rf /tmp/truffleruby
 
-# fetch_statistics:
-#   stage: benchmark-completion
-#   tags: [yuria]
-#   allow_failure: true
-#   script:
+fetch_statistics:
+  stage: benchmark-completion
+  tags: [yuria2]
+  allow_failure: true
+  script:
 
-#     - *PREP_PATH
-#     - *DOWNLOAD_SPLIT
+    - *PREP_PATH
+    - *DOWNLOAD_SPLIT
 
-#     - touch splitting_statistics-${CI_COMMIT_SHA}.log
-#     - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_SHA}.log
-#     - rm splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log
+    - touch splitting_statistics-${CI_COMMIT_SHA}.log
+    - cat splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_SHA}.log
+    - rm splitting_statistics_yuria2.log splitting_statistics_yuria3.log
+    # - cat splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log > splitting_statistics-${CI_COMMIT_SHA}.log
+    # - rm splitting_statistics_yuria1.log splitting_statistics_yuria2.log splitting_statistics_yuria3.log
