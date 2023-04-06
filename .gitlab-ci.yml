@@ -6,7 +6,7 @@ stages:
 variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
-  WORKING_BRANCH: splitting/share-split-targets
+  WORKING_BRANCH: splitting/handle-mispredicts
   BENCH_BRANCH: no-standalone
 
 .scripts:
