@@ -19,6 +19,7 @@ import org.truffleruby.core.basicobject.RubyBasicObject;
 import org.truffleruby.core.cast.BooleanCastNode;
 import org.truffleruby.core.cast.BooleanCastNodeGen;
 import org.truffleruby.core.inlined.LambdaToProcNode;
+import org.truffleruby.core.proc.RubyProc;
 import org.truffleruby.core.string.FrozenStrings;
 import org.truffleruby.core.symbol.RubySymbol;
 import org.truffleruby.language.RubyBaseNode;
@@ -216,6 +217,8 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
             if (value != null) {
                 if (value instanceof RubyBasicObject) {
                     contextSignature += ((RubyBasicObject) value).getMetaClass().hashCode();
+                } else if (value instanceof RubyProc) {
+                    contextSignature += value.hashCode();
                 } else {
                     contextSignature += value.getClass().hashCode();
                 }
