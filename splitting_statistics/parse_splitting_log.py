@@ -16,12 +16,13 @@ def parse_one_benchmark(fp, line):
     unforced_split_count = fp.readline().split(":")
     node_created_splitting = fp.readline().split(":")
     node_created_nosplitting = fp.readline().split(":")
+    node_created_absolute = fp.readline().split(":")
     bench = fp.readline().split("_") #[FROMBENCH]%(benchmark)s-%(suite)s-%(executor)s'
 
-    split_fout.write(bench[1].strip()+","+bench[2].strip()+","+bench[3].strip()+","+commit+","+total_split_count[1].strip()+","+unforced_split_count[1].strip()+","+node_created_splitting[1].strip()+","+node_created_nosplitting[1].strip()+"\n")
+    split_fout.write(bench[1].strip()+","+bench[2].strip()+","+bench[3].strip()+","+commit+","+total_split_count[1].strip()+","+unforced_split_count[1].strip()+","+node_created_splitting[1].strip()+","+node_created_nosplitting[1].strip()+","+node_created_absolute[1].strip()+"\n")
     
 with open(fin) as fp:
-    split_fout.write("benchmark,suite,executor,commit,total_split_count,unforced_split_count,node_created_splitting,node_created_nosplitting\n")
+    split_fout.write("benchmark,suite,executor,commit,total_split_count,unforced_split_count,node_created_splitting,node_created_nosplitting,node_created_absolute\n")
     while True:
         line = fp.readline()
         if "TotalSplitCount" in line:

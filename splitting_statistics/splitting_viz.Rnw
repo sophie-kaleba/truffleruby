@@ -1,20 +1,85 @@
 source("../scripts/libraries.R", chdir=TRUE)
 
 #args = commandArgs(trailingOnly=TRUE)
-filename1 = "./6455c7aba50557c32d832f884062edd34a43e2ab/6455c7aba50557c32d832f884062edd34a43e2ab_truffle_split_statistics.csv"
-filename2 = "./ab8c8d7ec5fc54b831fe60a68c42a7bded212d78/ab8c8d7ec5fc54b831fe60a68c42a7bded212d78_truffle_split_statistics.csv"
+nosplit = "./2f066fe853d8e969b7a6e3ed7a7f33725cb2d76e/2f066fe853d8e969b7a6e3ed7a7f33725cb2d76e_truffle_split_statistics.csv"
+heuristics = "./8880edebb97b0bc344d9554327037d5d9ce30ca8/8880edebb97b0bc344d9554327037d5d9ce30ca8_truffle_split_statistics.csv"
+sharing = "./57e631a404c13e8b47f5deb7ae746afdb73ea7d8/57e631a404c13e8b47f5deb7ae746afdb73ea7d8_truffle_split_statistics.csv"
+mispredicts = "./2bec45c05eb5a8b77aa81be924b7d922bf81076f/2bec45c05eb5a8b77aa81be924b7d922bf81076f_truffle_split_statistics.csv"
 
-#filename1 = args[1]
-#filename2 = args[2]
-#folder_out = args[3] 
+table_for_names <- fread(nosplit, header = TRUE, sep=",")
+tables_names <- names(table_for_names)
 
-data1 <- fread(filename1, header = TRUE, sep=",") #older
-data1 <- data1 %>% 
-  rename_with( ~ paste0("1_", .x), .cols = commit:last_col())
+format_data <- function(db, prefix) {
+  result <- fread(db, header = TRUE, sep=",") #older
+  result <- result %>% 
+    rename_with( ~ paste0(prefix, .x), .cols = commit:last_col())
+  return(result)
+}
 
-data2 <- fread(filename2, header = TRUE, sep=",") #newer
-data2 <- data2 %>% 
-  rename_with( ~ paste0("2_", .x), .cols = commit:last_col())
+no_split_data <- format_data(nosplit, "1_")
+heuristics_data <- format_data(heuristics, "2_")
+sharing_data <- format_data(sharing, "3_")
+mispredicts_data <- format_data(mispredicts, "4_")
+
+######## COMPARISON TABLES
+
+compare_2_tables <- function(d1, d2) {
+  table_order <- str_order(c(names(d1)[5], names(d2)[5]))
+  if (table_order[1] == 1) {
+    names(d1) <- tables_names
+    names(d2) <- tables_names
+    d1 <- d1 %>% 
+      rename_with( ~ paste0("BEFORE_", .x), .cols = commit:last_col())
+    d2 <- d2 %>% 
+      rename_with( ~ paste0("AFTER_", .x), .cols = commit:last_col())
+  } else if (table_order[1] == 2) {
+    names(d1) <- tables_names
+    names(d2) <- tables_names
+    d1 <- d1 %>% 
+      rename_with( ~ paste0("AFTER_", .x), .cols = commit:last_col())
+    d2 <- d2 %>% 
+      rename_with( ~ paste0("BEFORE_", .x), .cols = commit:last_col())
+  }
+  
+  data <- join(d1, d2)
+  comparison_table <- data %>%
+    group_by(benchmark, executor, suite) %>%
+    dplyr::mutate(Split.Count.Change = round((((`AFTER_total_split_count` - `BEFORE_total_split_count`) / `BEFORE_total_split_count`) * 100 ), 1),
+                  Unforced.Count.Change = round((((`AFTER_unforced_split_count` - `BEFORE_unforced_split_count`) / `BEFORE_unforced_split_count`) * 100 ), 1),
+                  Node.Created.Change = round((((`AFTER_node_created_splitting` - `BEFORE_node_created_splitting`) / `BEFORE_node_created_splitting`) * 100 ), 1),
+                  Node.Created.No.Change = round((((`AFTER_node_created_nosplitting` - `BEFORE_node_created_nosplitting`) / `BEFORE_node_created_nosplitting`) * 100 ), 1),
+                  Node.Created.Abs.Change = round((((`AFTER_node_created_absolute` - `BEFORE_node_created_absolute`) / `BEFORE_node_created_absolute`) * 100 ), 1))
+  
+  comparison_table <- comparison_table %>%
+    select(benchmark, suite, executor, BEFORE_commit, AFTER_commit, Split.Count.Change, Unforced.Count.Change, Node.Created.Change, Node.Created.No.Change, Node.Created.Abs.Change)
+  return(comparison_table)
+}
+
+no_split_VS_heurstics <- compare_2_tables(no_split_data, heuristics_data)
+no_split_VS_sharing <- compare_2_tables(no_split_data, sharing_data)
+heuristics_VS_sharing <- compare_2_tables(heuristics_data, sharing_data)
+heuristics_VS_mispredicts <- compare_2_tables(heuristics_data, mispredicts_data)
+sharing_VS_mispredicts <- compare_2_tables(sharing_data, mispredicts_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 data <- join(data1, data2)
 
@@ -25,7 +90,8 @@ comparison_table <- data %>%
   dplyr::mutate(Split.Count.Change = round((((`2_total_split_count` - `1_total_split_count`) / `1_total_split_count`) * 100 ), 1),
                 Unforced.Count.Change = round((((`2_unforced_split_count` - `1_unforced_split_count`) / `1_unforced_split_count`) * 100 ), 1),
                 Node.Created.Change = round((((`2_node_created_splitting` - `1_node_created_splitting`) / `1_node_created_splitting`) * 100 ), 1),
-                Node.Created.No.Change = round((((`2_node_created_nosplitting` - `1_node_created_nosplitting`) / `1_node_created_nosplitting`) * 100 ), 1))
+                Node.Created.No.Change = round((((`2_node_created_nosplitting` - `1_node_created_nosplitting`) / `1_node_created_nosplitting`) * 100 ), 1),
+                Node.Created.Abs.Change = round((((`2_node_created_absolute` - `1_node_created_absolute`) / `1_node_created_absolute`) * 100 ), 1))
 
 before_split_count <- sum(data1$`1_node_created_splitting`)
 after_split_count <- sum(data2$`2_node_created_splitting`)
