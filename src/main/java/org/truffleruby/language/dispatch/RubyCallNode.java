@@ -218,7 +218,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
                 if (value instanceof RubyBasicObject) {
                     contextSignature += ((RubyBasicObject) value).getMetaClass().identityHashCode();
                 } else if (value instanceof RubyProc) {
-                    contextSignature += ((RubyProc) value).identityHashCode();
+                    contextSignature += ((RubyProc) value).callTarget.hashCode();
                 } else {
                     contextSignature += value.getClass().hashCode();
                 }
