@@ -55,7 +55,6 @@ variables:
       EOF
 
     download-variants: &DOWNLOAD_TR |
-      sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-native-libgraal.tar.lz4
       sftp tmp-artifacts:incoming/${CI_PIPELINE_ID}/truffleruby-jvm-ce.tar.lz4
 
     dowload-splitting-stats: &DOWNLOAD_SPLIT |    
@@ -69,7 +68,6 @@ variables:
       rm -Rf /tmp/truffleruby
       mkdir -p /tmp/truffleruby
       cd /tmp/truffleruby
-      tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-native-libgraal.tar.lz4
       tar -I lz4 -xf ${PROJECT_FOLDER}/truffleruby-jvm-ce.tar.lz4
 
     install-gem-deps: &INSTALL_GEMS |
