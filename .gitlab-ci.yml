@@ -59,6 +59,7 @@ variables:
 
     dowload-splitting-stats: &DOWNLOAD_SPLIT |    
       sftp tmp-artifacts << EOF
+        get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria1.log $(pwd)/splitting_statistics_yuria1.log
         get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria2.log $(pwd)/splitting_statistics_yuria2.log
         get incoming/${CI_PIPELINE_ID}/splitting_statistics_yuria3.log $(pwd)/splitting_statistics_yuria3.log
       EOF
