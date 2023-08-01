@@ -67,6 +67,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
     private final CountingConditionProfile nilProfile;
 
     @Child private SplatToArgsNode splatToArgs;
+    private final int[] primeForSignature = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
 
     public RubyCallNode(RubyCallNodeParameters parameters) {
         this(
@@ -215,12 +216,13 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
             Object value = arguments[i].execute(frame);
             RubyArguments.setArgument(rubyArgs, i, value);
             if (value != null) {
+                int j = i % primeForSignature.length;
                 if (value instanceof RubyBasicObject) {
-                    contextSignature += ((RubyBasicObject) value).getMetaClass().identityHashCode();
-                } else if (value instanceof RubyProc) {
-                    contextSignature += ((RubyProc) value).callTarget.hashCode();
+                    contextSignature += ((RubyBasicObject) value).getMetaClass().hashCode() * primeForSignature[j];
+                } else if (value instanceof RubyProc){
+                    contextSignature += ((RubyProc) value).callTarget.hashCode() * primeForSignature[j];
                 } else {
-                    contextSignature += value.getClass().hashCode();
+                    contextSignature += value.getClass().hashCode() * primeForSignature[j];
                 }
             }
         }
