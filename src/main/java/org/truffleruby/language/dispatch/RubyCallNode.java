@@ -18,6 +18,7 @@ import org.truffleruby.core.array.RubyArray;
 import org.truffleruby.core.cast.BooleanCastNode;
 import org.truffleruby.core.cast.BooleanCastNodeGen;
 import org.truffleruby.core.inlined.LambdaToProcNode;
+import org.truffleruby.core.proc.RubyProc;
 import org.truffleruby.core.string.FrozenStrings;
 import org.truffleruby.core.symbol.RubySymbol;
 import org.truffleruby.language.RubyBaseNode;
@@ -65,6 +66,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
     private final CountingConditionProfile nilProfile;
 
     @Child private SplatToArgsNode splatToArgs;
+    private final int[] primeForSignature = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
 
     public RubyCallNode(RubyCallNodeParameters parameters) {
         this(
@@ -208,7 +210,18 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
     @ExplodeLoop
     private void executeArguments(VirtualFrame frame, Object[] rubyArgs) {
         for (int i = 0; i < arguments.length; i++) {
-            RubyArguments.setArgument(rubyArgs, i, arguments[i].execute(frame));
+            Object value = arguments[i].execute(frame);
+            RubyArguments.setArgument(rubyArgs, i, value);
+            if (value != null) {
+                int j = i % primeForSignature.length;
+                if (value instanceof RubyBasicObject) {
+                    contextSignature += ((RubyBasicObject) value).getMetaClass().hashCode() * primeForSignature[j];
+                } else if (value instanceof RubyProc){
+                    contextSignature += ((RubyProc) value).callTarget.hashCode() * primeForSignature[j];
+                } else {
+                    contextSignature += value.getClass().hashCode() * primeForSignature[j];
+                }
+            }
         }
     }
 
