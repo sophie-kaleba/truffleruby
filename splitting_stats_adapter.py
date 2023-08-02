@@ -1,6 +1,4 @@
 import re
-import os
-print(os.getcwd())
 
 from rebench.interop.rebench_log_adapter   import RebenchLogAdapter, OutputNotParseable
 from rebench.model.data_point  import DataPoint
