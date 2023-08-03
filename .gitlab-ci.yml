@@ -75,25 +75,25 @@ build_jvmce:
     - *PACKAGE_TR
     - *UPLOAD_TR
 
-# benchmark1:
-#   stage: benchmark
-#   needs: ["build_jvmce"]
-#   tags: [yuria]
-#   allow_failure: true
-#   script:
-#     - *DOWNLOAD_TR
-#     - *GIT_TR
-#     - *INSTALL_ON_TMP
+benchmark1:
+  stage: benchmark
+  needs: ["build_jvmce"]
+  tags: [yuria]
+  allow_failure: true
+  script:
+    - *DOWNLOAD_TR
+    - *GIT_TR
+    - *INSTALL_ON_TMP
 
-#     - cd ${PROJECT_FOLDER}/truffleruby.aux
-#     - git fetch --all || true
-#     - git checkout ${WORKING_BRANCH}
-#     - *UPDATE_SUBMODULE
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
+    - git fetch --all || true
+    - git checkout ${WORKING_BRANCH}
+    - *UPDATE_SUBMODULE
 
-#     - *INSTALL_GEMS
-#     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
+    - *INSTALL_GEMS
+    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
 
-#     - rm -Rf /tmp/truffleruby
+    - rm -Rf /tmp/truffleruby
 
 benchmark2:
   stage: benchmark
@@ -115,22 +115,22 @@ benchmark2:
 
     - rm -Rf /tmp/truffleruby
 
-# benchmark3:
-#   stage: benchmark
-#   needs: ["build_jvmce"]
-#   tags: [yuria3]
-#   allow_failure: true
-#   script:
-#     - *DOWNLOAD_TR
-#     - *GIT_TR
-#     - *INSTALL_ON_TMP
+benchmark3:
+  stage: benchmark
+  needs: ["build_jvmce"]
+  tags: [yuria3]
+  allow_failure: true
+  script:
+    - *DOWNLOAD_TR
+    - *GIT_TR
+    - *INSTALL_ON_TMP
 
-#     - cd ${PROJECT_FOLDER}/truffleruby.aux
-#     - git fetch --all || true
-#     - git checkout ${WORKING_BRANCH}
-#     - *UPDATE_SUBMODULE
+    - cd ${PROJECT_FOLDER}/truffleruby.aux
+    - git fetch --all || true
+    - git checkout ${WORKING_BRANCH}
+    - *UPDATE_SUBMODULE
 
-#     - *INSTALL_GEMS
-#     - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
+    - *INSTALL_GEMS
+    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
 
-#     - rm -Rf /tmp/truffleruby
+    - rm -Rf /tmp/truffleruby
