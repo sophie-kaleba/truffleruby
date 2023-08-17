@@ -7,7 +7,7 @@ from rebench.model.measurement import Measurement
 class SplittingStatsAdapter(RebenchLogAdapter):
 
     split_stat_file = "splitting_statistics.log"
-    num_split_features = 5
+    num_split_features = 7
 
     def __init__(self, include_faulty, executor):
         super(SplittingStatsAdapter, self).__init__(include_faulty, executor)
