@@ -21,21 +21,23 @@ with open(fin) as fp:
             break
 
         match = re.search(line_rgx, line)
-        if match != "":
+        if match != "" and match.group(1) != None:
             calls += 1
-            match = match.group(1).split(",")
-            signature_hash = match[0]
-            if signature_hash != "-2":
-                arguments = match[1:len(match)-1]
+            
+            match = match.group(1).split("|")
+
+            if len(match) == 2:
+                arguments = match[0].split(",")
+                hashes = match[1].split(",")
             
                 if str(arguments) not in all_signatures.keys():
-                    all_signatures[str(arguments)] = signature_hash
+                    all_signatures[str(arguments)] = str(hashes)
                 else:
-                    current_signature = all_signatures[str(arguments)]
-                    if current_signature != signature_hash:
+                    current_hashes = all_signatures[str(arguments)]
+                    if current_hashes != str(hashes):
                         collisions+=1
                         if str(arguments) not in all_collisions.keys():
-                            all_collisions[str(arguments)] = 1
+                            all_collisions[str(arguments)] = {str(hashes)}#1 #[1, str(hashes)]
                         else:
-                            all_collisions[str(arguments)] = all_collisions[str(arguments)] +1
+                            all_collisions[str(arguments)].add(str(hashes)) #= all_collisions[str(arguments)] +1 #[all_collisions[str(arguments)][0] +1, all_collisions[str(arguments)][1]+"~"+str(hashes)]
                         #print("[COLLISION] "+current_signature+" "+ str(arguments))

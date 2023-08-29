@@ -215,25 +215,30 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         long contextSignature = -2;
 
         StringBuilder listArguments = new StringBuilder();
+        StringBuilder listHashes = new StringBuilder();
         for (int i = 0; i < arguments.length; i++) {
             Object value = arguments[i].execute(frame);
             RubyArguments.setArgument(rubyArgs, i, value);
             if (value != null) {
                 int j = i % primeForSignature.length;
                 if (value instanceof RubyBasicObject) {
-                    listArguments.append(((RubyBasicObject) value).getMetaClass().getName()+"|"+((RubyBasicObject) value).getMetaClass().hashCode()+",");
+                    listArguments.append(((RubyBasicObject) value).getMetaClass().getName()+",");
+                    listHashes.append(((RubyBasicObject) value).getMetaClass().hashCode()+",");
                     contextSignature += ((RubyBasicObject) value).getMetaClass().hashCode() * primeForSignature[j];
                 } else if (value instanceof RubyProc){
-                    listArguments.append(getSourceSectionAbbrv(((RubyProc) value).callTarget.getRootNode().getSourceSection())+"|"+((RubyProc) value).callTarget.hashCode()+",");
+                    listArguments.append(getSourceSectionAbbrv(((RubyProc) value).callTarget.getRootNode().getSourceSection())+",");
+                    listHashes.append(((RubyProc) value).callTarget.hashCode()+",");
                     contextSignature += ((RubyProc) value).callTarget.hashCode() * primeForSignature[j];
                 } else {
-                    listArguments.append(value.getClass().getName()+"|"+value.getClass().hashCode()+",");
+                    listArguments.append(value.getClass().getName()+",");
+                    listHashes.append(value.getClass().hashCode()+",");
                     contextSignature += value.getClass().hashCode() * primeForSignature[j];
                 }
             }
         }
 
-        getContext().logger.info(contextSignature+","+listArguments.toString());
+        getContext().logger.info(listArguments.toString()+"|"+listHashes.toString());
+//        getContext().logger.info(contextSignature+","+listArguments.toString()+","+listHashes.toString());
         return contextSignature;
     }
 
