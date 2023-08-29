@@ -487,6 +487,8 @@ public final class RubyLanguage extends TruffleLanguage<RubyContext> {
 
     private void applicationStarts() {
         // Set breakpoints on this line to break when user code is about to be loaded
+        getCurrentContext().stage = "MAIN";
+        getCurrentContext().monitorCalls = getCurrentContext().getOptions().MONITOR_CALLS;
         return;
     }
 
