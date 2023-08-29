@@ -10,6 +10,7 @@
 package org.truffleruby.language.dispatch;
 
 import com.oracle.truffle.api.profiles.CountingConditionProfile;
+import com.oracle.truffle.api.source.SourceSection;
 import org.truffleruby.RubyContext;
 import org.truffleruby.RubyLanguage;
 import org.truffleruby.core.array.ArrayAppendOneNode;
@@ -212,21 +213,39 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
     @ExplodeLoop
     private long executeArguments(VirtualFrame frame, Object[] rubyArgs) {
         long contextSignature = -2;
+
+        StringBuilder listArguments = new StringBuilder();
         for (int i = 0; i < arguments.length; i++) {
             Object value = arguments[i].execute(frame);
             RubyArguments.setArgument(rubyArgs, i, value);
             if (value != null) {
                 int j = i % primeForSignature.length;
                 if (value instanceof RubyBasicObject) {
+                    listArguments.append(((RubyBasicObject) value).getMetaClass().getName()+"|"+((RubyBasicObject) value).getMetaClass().hashCode()+",");
                     contextSignature += ((RubyBasicObject) value).getMetaClass().hashCode() * primeForSignature[j];
                 } else if (value instanceof RubyProc){
+                    listArguments.append(getSourceSectionAbbrv(((RubyProc) value).callTarget.getRootNode().getSourceSection())+"|"+((RubyProc) value).callTarget.hashCode()+",");
                     contextSignature += ((RubyProc) value).callTarget.hashCode() * primeForSignature[j];
                 } else {
+                    listArguments.append(value.getClass().getName()+"|"+value.getClass().hashCode()+",");
                     contextSignature += value.getClass().hashCode() * primeForSignature[j];
                 }
             }
         }
+
+        getContext().logger.info(contextSignature+","+listArguments.toString());
         return contextSignature;
+    }
+
+    public String getSourceSectionAbbrv(SourceSection source) {
+        String result = "NA";
+
+        if (source != null) {
+            result = source.getSource().getPath() + ":" + source.getStartLine() + ":"
+                    + source.getStartColumn() + ":" + source.getCharLength();
+        }
+
+        return result;
     }
 
     private Object[] splatArgs(Object receiverObject, Object[] rubyArgs) {
