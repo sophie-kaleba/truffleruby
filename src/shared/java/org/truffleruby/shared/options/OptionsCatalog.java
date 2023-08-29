@@ -150,6 +150,8 @@ public class OptionsCatalog {
     public static final OptionKey<Boolean> YIELD_ALWAYS_INLINE_KEY = new OptionKey<>(INLINE_DEFAULT_KEY.getDefaultValue());
     public static final OptionKey<Boolean> METHODMISSING_ALWAYS_CLONE_KEY = new OptionKey<>(CLONE_DEFAULT_KEY.getDefaultValue());
     public static final OptionKey<Boolean> METHODMISSING_ALWAYS_INLINE_KEY = new OptionKey<>(INLINE_DEFAULT_KEY.getDefaultValue());
+    public static final OptionKey<Boolean> MONITOR_CALLS_KEY = new OptionKey<>(false);
+    public static final OptionKey<Boolean> MONITOR_CALLS_STARTUP_KEY = new OptionKey<>(false)
     public static final OptionKey<Boolean> CHECK_CLONE_UNINITIALIZED_CORRECTNESS_KEY = new OptionKey<>(false);
     public static final OptionKey<Boolean> REGEXP_INSTRUMENT_CREATION_KEY = new OptionKey<>(false);
     public static final OptionKey<Boolean> REGEXP_INSTRUMENT_MATCH_KEY = new OptionKey<>(false);
@@ -1213,6 +1215,20 @@ public class OptionsCatalog {
             .usageSyntax("")
             .build();
 
+    public static final OptionDescriptor MONITOR_CALLS = OptionDescriptor
+            .newBuilder(MONITOR_CALLS_KEY, "ruby.monitor-calls")
+            .help("Monitor calls and closures")
+            .category(OptionCategory.INTERNAL)
+            .stability(OptionStability.EXPERIMENTAL)
+            .build();
+
+    public static final OptionDescriptor MONITOR_CALLS_STARTUP = OptionDescriptor
+            .newBuilder(MONITOR_CALLS_STARTUP_KEY, "ruby.monitor-startup")
+            .help("Monitor calls and closures, before user code is loaded")
+            .category(OptionCategory.INTERNAL)
+            .stability(OptionStability.EXPERIMENTAL)
+            .build();
+
     public static final OptionDescriptor REGEXP_INSTRUMENT_CREATION = OptionDescriptor
             .newBuilder(REGEXP_INSTRUMENT_CREATION_KEY, "ruby.regexp-instrument-creation")
             .help("Enable instrumentation to gather stats on regexp creation")
@@ -1579,6 +1595,10 @@ public class OptionsCatalog {
                 return METHODMISSING_ALWAYS_CLONE;
             case "ruby.method-missing-always-inline":
                 return METHODMISSING_ALWAYS_INLINE;
+            case "ruby.monitor-calls":
+                return MONITOR_CALLS;
+            case "ruby.monitor-startup":
+                return MONITOR_CALLS_STARTUP;
             case "ruby.check-clone-uninitialized-correctness":
                 return CHECK_CLONE_UNINITIALIZED_CORRECTNESS;
             case "ruby.regexp-instrument-creation":
@@ -1744,6 +1764,8 @@ public class OptionsCatalog {
             YIELD_ALWAYS_INLINE,
             METHODMISSING_ALWAYS_CLONE,
             METHODMISSING_ALWAYS_INLINE,
+            MONITOR_CALLS,
+            MONITOR_CALLS_STARTUP,
             CHECK_CLONE_UNINITIALIZED_CORRECTNESS,
             REGEXP_INSTRUMENT_CREATION,
             REGEXP_INSTRUMENT_MATCH,
