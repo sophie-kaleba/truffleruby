@@ -9,6 +9,7 @@
  */
 package org.truffleruby.language.methods;
 
+import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.HostCompilerDirectives.InliningCutoff;
 import com.oracle.truffle.api.dsl.NeverDefault;
@@ -18,9 +19,11 @@ import com.oracle.truffle.api.nodes.EncapsulatingNodeReference;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.NodeUtil;
 import com.oracle.truffle.api.profiles.BranchProfile;
+import com.oracle.truffle.api.source.SourceSection;
 import org.truffleruby.RubyContext;
 import org.truffleruby.builtins.CoreMethodNodeManager;
 import org.truffleruby.core.inlined.AlwaysInlinedMethodNode;
+import org.truffleruby.core.klass.RubyClass;
 import org.truffleruby.language.RubyBaseNode;
 
 import com.oracle.truffle.api.Assumption;
@@ -56,6 +59,27 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
 
     public abstract Object execute(Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
                                    LiteralCallNode literalCallNode, long contextSignature);
+
+    public String getSourceSectionAbbrv(DispatchNode dispatchNode) {
+        String result = "NA";
+
+        if (dispatchNode != null) {
+            SourceSection source = dispatchNode.getParentSourceSection();
+            if (source != null) {
+                result = source.getSource().getPath() + ":" + source.getStartLine() + ":"
+                        + source.getStartColumn() + ":" + source.getCharLength();
+            }
+        }
+
+        return result;
+    }
+
+    private void logCalls(InternalMethod method, DispatchNode dispatchNode, RubyClass metaclass, CallTarget currentCallTarget) {
+        if (getContext().monitorCalls) {
+            // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
+            getContext().logger.info(getContext().stage + "\t" + method.getName() + "\t" + (metaclass == null ? "NA" : metaclass.getMetaSimpleName()) + "\t" + getSourceSectionAbbrv(dispatchNode) + "\t" + currentCallTarget.getTargetID() + "\t" + method.isBuiltIn() + "\t" + method.getDeclaringModule().getName());
+        }
+    }
 
     @Specialization(
             guards = {

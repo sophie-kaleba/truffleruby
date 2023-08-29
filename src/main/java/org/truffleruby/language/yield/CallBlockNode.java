@@ -9,7 +9,9 @@
  */
 package org.truffleruby.language.yield;
 
+import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.dsl.NeverDefault;
+import com.oracle.truffle.api.source.SourceSection;
 import org.truffleruby.core.proc.ProcOperations;
 import org.truffleruby.core.proc.RubyProc;
 import org.truffleruby.language.RubyBaseNode;
@@ -51,6 +53,24 @@ public abstract class CallBlockNode extends RubyBaseNode {
     public final Object yield(RubyProc block, Object... args) {
         return executeCallBlock(block.declarationContext, block, ProcOperations.getSelf(block), nil,
                 EmptyArgumentsDescriptor.INSTANCE, args, null);
+    }
+
+    public String getSourceSectionAbbrv(SourceSection source) {
+        String result = "NA";
+
+        result = source.getSource().getPath() + ":" + source.getStartLine() + ":"
+                + source.getStartColumn() + ":" + source.getCharLength();
+
+        return result;
+    }
+
+    private void logCalls(String method, RubyProc block, CallTarget currentCallTarget) {
+        if (getContext().monitorCalls) {
+            int ctaddress = block.callTarget.getTargetID();
+            String receiver = block.callTarget.toString()+"@"+ctaddress;
+            // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
+            getContext().logger.info(getContext().stage + "\t" + method + "yield|call|[]" + "\t" + receiver + "\t" + this.hashCode() + "\t" + currentCallTarget.getTargetID() + "\t" + block.type + "\t" + receiver);
+        }
     }
 
     /** {@code literalCallNode} is only non-null if this was called splatted with a ruby2_keyword Hash. */
