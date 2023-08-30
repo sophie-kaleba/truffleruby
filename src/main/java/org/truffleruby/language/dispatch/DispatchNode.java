@@ -309,6 +309,14 @@ public class DispatchNode extends SpecialVariablesSendingNode {
         return dispatch(frame, receiver, methodName, rubyArgs);
     }
 
+    public int getSplitID() {
+        return this.idSplit;
+    }
+
+    public RubyCallNode getRubyCallNode() {
+        return this.tiedCallNode;
+    }
+
     public final Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs) {
         return dispatch(frame, receiver, methodName, rubyArgs, null);
     }
