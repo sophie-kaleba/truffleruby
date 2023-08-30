@@ -240,7 +240,8 @@ module Utilities
                     elsif @ruby_name.start_with?('/')
                       File.directory?(@ruby_name) ? "#{@ruby_name}/bin/ruby" : @ruby_name
                     elsif @ruby_name == 'rebench'
-                      "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
+                      "/data/home/sk755/ruby-cs-analyser/truffleruby/mxbuild/truffleruby-jvm-ce/languages/ruby/bin/ruby"
+                      #"/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
                     elsif @ruby_name == 'rebench-native'
                       "/tmp/truffleruby/truffleruby-native-libgraal/bin/truffleruby"
                     elsif @ruby_name == 'ce'
