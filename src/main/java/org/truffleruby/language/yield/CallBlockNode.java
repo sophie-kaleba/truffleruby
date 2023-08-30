@@ -69,7 +69,14 @@ public abstract class CallBlockNode extends RubyBaseNode {
             int ctaddress = block.callTarget.getTargetID();
             String receiver = block.callTarget.toString()+"@"+ctaddress;
             // "Symbol", "Original.Receiver", "Source.Section", "CT.Address", "Builtin?", "Observed.Receiver"
-            getContext().logger.info(getContext().stage + "\t" + method + "yield|call|[]" + "\t" + receiver + "\t" + this.hashCode() + "\t" + currentCallTarget.getTargetID() + "\t" + block.type + "\t" + receiver);
+            getContext().logger.info(getContext().stage + "\t" +
+                    method + "yield|call|[]" + "\t" +
+                    receiver + "\t" +
+                    this.hashCode() + "\t" +
+                    currentCallTarget.getTargetID() + "\t" +
+                    block.type + "\t" +
+                    receiver + "\t" +
+                    currentCallTarget.getTargetID());
         }
     }
 
@@ -92,9 +99,14 @@ public abstract class CallBlockNode extends RubyBaseNode {
             literalCallNode.copyRuby2KeywordsHash(arguments, RubyRootNode.of(cachedCallTarget).getSharedMethodInfo());
         }
 
-        final Object[] frameArguments = packArguments(declarationContext, block, self, blockArgument, descriptor,
-                arguments);
-        return callNode.call(frameArguments);
+        try {
+            final Object[] frameArguments = packArguments(declarationContext, block, self, blockArgument, descriptor,
+                    arguments);
+            return callNode.call(frameArguments);
+        }
+        finally {
+            logCalls("CACHED", block, callNode.getCurrentCallTarget());
+        }
     }
 
     @Specialization(replaces = "callBlockCached")
@@ -113,7 +125,13 @@ public abstract class CallBlockNode extends RubyBaseNode {
 
         final Object[] frameArguments = packArguments(declarationContext, block, self, blockArgument, descriptor,
                 arguments);
-        return callNode.call(block.callTarget, frameArguments);
+
+        try {
+            return callNode.call(block.callTarget, frameArguments);
+        }
+        finally {
+            logCalls("UNCACHED", block, block.callTarget);
+        }
     }
 
     private Object[] packArguments(DeclarationContext declarationContext, RubyProc block, Object self,
