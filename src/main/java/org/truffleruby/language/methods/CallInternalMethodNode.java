@@ -58,7 +58,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
 //            LiteralCallNode literalCallNode);
 
     public abstract Object execute(Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
-                                   LiteralCallNode literalCallNode, long contextSignature);
+                                   LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaClass, long contextSignature);
 
     public String getSourceSectionAbbrv(DispatchNode dispatchNode) {
         String result = "NA";
@@ -89,7 +89,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             assumptions = "getMethodAssumption(cachedMethod)", // to remove the inline cache entry when the method is redefined or removed
             limit = "getCacheLimit()")
     protected Object callCached(
-            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, long contextSignature,
+            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass, long contextSignature,
             @Cached("method.getCallTarget()") RootCallTarget cachedCallTarget,
             @Cached("method") InternalMethod cachedMethod,
             @Cached("createCall(cachedMethod.getName(), cachedCallTarget)") DirectCallNode callNode) {
@@ -97,21 +97,31 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             literalCallNode.copyRuby2KeywordsHash(rubyArgs, cachedMethod.getSharedMethodInfo());
         }
 
-        cachedCallTarget.setContextSignature(contextSignature);
-        return callNode.call(RubyArguments.repackForCall(rubyArgs));
+        try {
+            cachedCallTarget.setContextSignature(contextSignature);
+            return callNode.call(RubyArguments.repackForCall(rubyArgs));
+        }
+        finally {
+            logCalls(method, dispatchNode, metaclass, callNode.getCurrentCallTarget());
+        }
     }
 
     @InliningCutoff
     @Specialization(guards = "!method.alwaysInlined()", replaces = "callCached")
     protected Object callUncached(
-            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, long contextSignature,
+            InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass, long contextSignature,
             @Cached IndirectCallNode indirectCallNode) {
         if (literalCallNode != null) {
             literalCallNode.copyRuby2KeywordsHash(rubyArgs, method.getSharedMethodInfo());
         }
 
-        method.getCallTarget().setContextSignature(contextSignature);
-        return indirectCallNode.call(method.getCallTarget(), RubyArguments.repackForCall(rubyArgs));
+        try {
+            method.getCallTarget().setContextSignature(contextSignature);
+            return indirectCallNode.call(method.getCallTarget(), RubyArguments.repackForCall(rubyArgs));
+        }
+        finally {
+            logCalls(method, dispatchNode, metaclass, method.getCallTarget());
+        }
     }
 
     @Specialization(
@@ -122,7 +132,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             assumptions = "getMethodAssumption(cachedMethod)", // to remove the inline cache entry when the method is redefined or removed
             limit = "getCacheLimit()")
     protected Object alwaysInlined(
-            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, long contextSignature,
+            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass, long contextSignature,
             @Cached("method.getCallTarget()") RootCallTarget cachedCallTarget,
             @Cached("method") InternalMethod cachedMethod,
             @Cached("createAlwaysInlinedMethodNode(cachedMethod)") AlwaysInlinedMethodNode alwaysInlinedNode,
@@ -144,6 +154,7 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
                 throw RubyCheckArityRootNode.checkArityError(cachedArity, given, alwaysInlinedNode);
             }
 
+            logCalls(method, dispatchNode, metaclass, method.getCallTarget());
             return alwaysInlinedNode.execute(frame, receiver, RubyArguments.repackForCall(rubyArgs), cachedCallTarget);
         } catch (RaiseException e) {
             exceptionProfile.enter();
@@ -165,20 +176,22 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
 
     @Specialization(guards = "method.alwaysInlined()", replaces = "alwaysInlined")
     protected Object alwaysInlinedUncached(
-            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, long contextSignature) {
+            Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs, LiteralCallNode literalCallNode, DispatchNode dispatchNode, RubyClass metaclass, long contextSignature) {
         return alwaysInlinedBoundary(
                 frame == null ? null : frame.materialize(),
                 method,
                 receiver,
                 rubyArgs,
                 literalCallNode,
-                isAdoptable());
+                isAdoptable(),
+                dispatchNode,
+                metaclass);
     }
 
     @TruffleBoundary // getUncachedAlwaysInlinedMethodNode(method) and arity are not PE constants
     private Object alwaysInlinedBoundary(
             MaterializedFrame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
-            LiteralCallNode literalCallNode, boolean cachedToUncached) {
+            LiteralCallNode literalCallNode, boolean cachedToUncached, DispatchNode dispatchNode, RubyClass metaclass) {
         EncapsulatingNodeReference encapsulating = null;
         Node prev = null;
         if (cachedToUncached) {
@@ -193,6 +206,8 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
                     receiver,
                     rubyArgs,
                     literalCallNode,
+                    dispatchNode,
+                    metaclass,
                     contextSignature,
                     method.getCallTarget(),
                     method,
