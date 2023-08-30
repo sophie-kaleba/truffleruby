@@ -43,12 +43,16 @@ import com.oracle.truffle.api.profiles.ConditionProfile;
 import org.truffleruby.language.methods.LookupMethodOnSelfNode;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.truffleruby.language.dispatch.DispatchConfiguration.PRIVATE;
 import static org.truffleruby.language.dispatch.DispatchConfiguration.PRIVATE_RETURN_MISSING;
 import static org.truffleruby.language.dispatch.DispatchConfiguration.PROTECTED;
 
 public class RubyCallNode extends LiteralCallNode implements AssignableNode {
+
+    private static final AtomicInteger idCounter = new AtomicInteger(0);
+    public final int id;
 
     private final String methodName;
 
@@ -104,6 +108,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         this.isVCall = isVCall;
         this.isSafeNavigation = isSafeNavigation;
         this.isAttrAssign = isAttrAssign;
+        this.id = idCounter.getAndIncrement();
 
         if (isSafeNavigation) {
             nilProfile = CountingConditionProfile.create();
@@ -246,6 +251,10 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         }
 
         return definedNode.isDefined(frame, context);
+    }
+
+    public int getCallSiteID() {
+        return this.id;
     }
 
     public String getName() {
