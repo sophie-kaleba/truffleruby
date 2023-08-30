@@ -122,7 +122,7 @@ public class DefineClassNode extends RubyContextSourceNode {
     private void callInherited(VirtualFrame frame, RubyClass superClass, RubyClass childClass) {
         if (inheritedNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            inheritedNode = insert(DispatchNode.create());
+            inheritedNode = insert(DispatchNode.create(this.getSourceSection()));
         }
         inheritedNode.call(superClass, "inherited", childClass);
     }

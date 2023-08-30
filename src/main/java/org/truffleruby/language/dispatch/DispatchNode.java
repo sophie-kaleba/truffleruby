@@ -21,6 +21,7 @@ import com.oracle.truffle.api.nodes.DenyReplace;
 import com.oracle.truffle.api.nodes.DirectCallNode;
 import com.oracle.truffle.api.nodes.NodeCost;
 import com.oracle.truffle.api.profiles.ConditionProfile;
+import com.oracle.truffle.api.source.SourceSection;
 import org.truffleruby.core.cast.ToSymbolNode;
 import org.truffleruby.core.exception.ExceptionOperations.ExceptionFormatter;
 import org.truffleruby.core.hash.RubyHash;
@@ -44,6 +45,8 @@ import org.truffleruby.language.objects.MetaClassNode;
 import org.truffleruby.language.objects.MetaClassNodeGen;
 import org.truffleruby.options.Options;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class DispatchNode extends SpecialVariablesSendingNode {
 
     private static final class Missing implements TruffleObject {
@@ -59,14 +62,32 @@ public class DispatchNode extends SpecialVariablesSendingNode {
     public static final DispatchConfiguration PRIVATE_RETURN_MISSING = DispatchConfiguration.PRIVATE_RETURN_MISSING;
     public static final DispatchConfiguration PUBLIC_RETURN_MISSING = DispatchConfiguration.PUBLIC_RETURN_MISSING;
 
+    public final int idSplit;
+    private static final AtomicInteger idSplitCounter = new AtomicInteger(0);
+
+    @NeverDefault
+    public static DispatchNode create(DispatchConfiguration config, SourceSection parentSourceSection, RubyCallNode tiedCallNode) {
+        return new DispatchNode(config, parentSourceSection, tiedCallNode);
+    }
+
     @NeverDefault
     public static DispatchNode create(DispatchConfiguration config) {
-        return new DispatchNode(config);
+        return new DispatchNode(config, null, null);
+    }
+
+    @NeverDefault
+    public static DispatchNode create(DispatchConfiguration config, SourceSection parentSourceSection) {
+        return new DispatchNode(config, parentSourceSection, null);
+    }
+
+    @NeverDefault
+    public static DispatchNode create(SourceSection parentSourceSection) {
+        return new DispatchNode(DispatchConfiguration.PRIVATE, parentSourceSection, null);
     }
 
     @NeverDefault
     public static DispatchNode create() {
-        return new DispatchNode(DispatchConfiguration.PRIVATE);
+        return new DispatchNode(DispatchConfiguration.PRIVATE, null, null);
     }
 
     public static DispatchNode getUncached(DispatchConfiguration config) {
@@ -89,27 +110,36 @@ public class DispatchNode extends SpecialVariablesSendingNode {
 
     protected final ConditionProfile methodMissing;
     @CompilationFinal private boolean methodMissingMissingProfile;
+    protected final SourceSection parentSourceSection;
+    private final RubyCallNode tiedCallNode;
 
     protected DispatchNode(
             DispatchConfiguration config,
             MetaClassNode metaclassNode,
             LookupMethodNode methodLookup,
             CallInternalMethodNode callNode,
-            ConditionProfile methodMissing) {
+            ConditionProfile methodMissing,
+            SourceSection parentSourceSection,
+            RubyCallNode tiedCallNode) {
         this.config = config;
         this.metaclassNode = metaclassNode;
         this.methodLookup = methodLookup;
         this.callNode = callNode;
         this.methodMissing = methodMissing;
+        this.parentSourceSection = parentSourceSection;
+        this.tiedCallNode = tiedCallNode;
+        this.idSplit = idSplitCounter.getAndIncrement();
     }
 
-    protected DispatchNode(DispatchConfiguration config) {
+    protected DispatchNode(DispatchConfiguration config, SourceSection parentSourceSection, RubyCallNode tiedCallNode) {
         this(
                 config,
                 MetaClassNode.create(),
                 LookupMethodNode.create(),
                 CallInternalMethodNode.create(),
-                ConditionProfile.create());
+                ConditionProfile.create(),
+                parentSourceSection,
+                tiedCallNode);
     }
 
     public Object call(Object receiver, String method) {
@@ -296,6 +326,10 @@ public class DispatchNode extends SpecialVariablesSendingNode {
                 metaclassNode, methodLookup, methodMissing, callNode, contextSignature);
     }
 
+    public SourceSection getParentSourceSection() {
+        return parentSourceSection;
+    }
+
     protected final Object dispatchInternal(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
                                             LiteralCallNode literalCallNode,
                                             MetaClassNode metaClassNode,
@@ -325,7 +359,7 @@ public class DispatchNode extends SpecialVariablesSendingNode {
         RubyArguments.setCallerSpecialVariables(rubyArgs, getSpecialVariablesIfRequired(frame));
 
         assert RubyArguments.assertFrameArguments(rubyArgs);
-        return callNode.execute(frame, method, receiver, rubyArgs, literalCallNode, contextSignature);
+        return callNode.execute(frame, method, receiver, rubyArgs, literalCallNode, this, metaclass, contextSignature);
     }
 
     @InliningCutoff
@@ -376,7 +410,7 @@ public class DispatchNode extends SpecialVariablesSendingNode {
             CompilerDirectives.transferToInterpreterAndInvalidate();
             // #method_missing ignores refinements on CRuby: https://bugs.ruby-lang.org/issues/13129
             callMethodMissing = insert(
-                    DispatchNode.create(DispatchConfiguration.PRIVATE_RETURN_MISSING_IGNORE_REFINEMENTS));
+                    DispatchNode.create(DispatchConfiguration.PRIVATE_RETURN_MISSING_IGNORE_REFINEMENTS, this.getSourceSection()));
         }
         return callMethodMissing;
     }
@@ -427,15 +461,15 @@ public class DispatchNode extends SpecialVariablesSendingNode {
 
         static {
             for (DispatchConfiguration config : DispatchConfiguration.values()) {
-                UNCACHED_NODES[config.ordinal()] = new Uncached(config);
+                UNCACHED_NODES[config.ordinal()] = new Uncached(config, null);
             }
         }
 
         public static final DispatchNode UNCACHED_METHOD_MISSING_NODE = DispatchNode
                 .getUncached(DispatchConfiguration.PRIVATE_RETURN_MISSING_IGNORE_REFINEMENTS);
 
-        protected Uncached(DispatchConfiguration config) {
-            super(config, null, null, null, null);
+        protected Uncached(DispatchConfiguration config, SourceSection parentSourceSection) {
+            super(config, null, null, null, null, parentSourceSection, null);
         }
 
         @Override

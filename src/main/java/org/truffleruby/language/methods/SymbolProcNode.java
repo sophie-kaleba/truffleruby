@@ -42,7 +42,7 @@ public class SymbolProcNode extends RubyContextSourceNode {
     private DispatchNode getCallNode() {
         if (callNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            callNode = insert(DispatchNode.create(PUBLIC));
+            callNode = insert(DispatchNode.create(PUBLIC, this.getSourceSection()));
         }
 
         return callNode;
