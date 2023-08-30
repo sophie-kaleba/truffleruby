@@ -68,7 +68,7 @@ public abstract class RescueNode extends RubyContextSourceNode {
 
         if (callTripleEqualsNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            callTripleEqualsNode = insert(DispatchNode.create());
+            callTripleEqualsNode = insert(DispatchNode.create(this.getSourceSection()));
         }
         if (booleanCastNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();

@@ -146,7 +146,7 @@ public abstract class MethodNodes {
             assert RubyArguments.assertFrameArguments(newArgs);
             // TODO - check signature here, too
             long contextSignature = -99;
-            return callInternalMethodNode.execute(frame, internalMethod, receiver, newArgs, null, contextSignature);
+            return callInternalMethodNode.execute(frame, internalMethod, receiver, newArgs, null, null, null, contextSignature);
         }
     }
 

@@ -175,7 +175,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         if (dispatch == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            dispatch = insert(DispatchNode.create(dispatchConfig));
+            dispatch = insert(DispatchNode.create(dispatchConfig, this.getSourceSection(), this));
         }
 
         final Object returnValue = dispatch.dispatch(frame, receiverObject, methodName, rubyArgs,
@@ -306,7 +306,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         private final RubySymbol methodNameSymbol = getSymbol(methodName);
 
-        @Child private DispatchNode respondToMissing = DispatchNode.create(PRIVATE_RETURN_MISSING);
+        @Child private DispatchNode respondToMissing = DispatchNode.create(PRIVATE_RETURN_MISSING, this.getSourceSection());
         @Child private BooleanCastNode respondToMissingCast = BooleanCastNodeGen.create(null);
 
 

@@ -49,7 +49,7 @@ public abstract class ReadMatchReferenceNodes extends RubyContextSourceNode {
         private Object callGetIndex(VirtualFrame frame, Object match, int index) {
             if (getIndexNode == null) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();
-                getIndexNode = insert(DispatchNode.create());
+                getIndexNode = insert(DispatchNode.create(this.getSourceSection()));
             }
             return getIndexNode.call(match, "[]", index);
         }
