@@ -151,7 +151,7 @@ public class OptionsCatalog {
     public static final OptionKey<Boolean> METHODMISSING_ALWAYS_CLONE_KEY = new OptionKey<>(CLONE_DEFAULT_KEY.getDefaultValue());
     public static final OptionKey<Boolean> METHODMISSING_ALWAYS_INLINE_KEY = new OptionKey<>(INLINE_DEFAULT_KEY.getDefaultValue());
     public static final OptionKey<Boolean> MONITOR_CALLS_KEY = new OptionKey<>(false);
-    public static final OptionKey<Boolean> MONITOR_CALLS_STARTUP_KEY = new OptionKey<>(false)
+    public static final OptionKey<Boolean> MONITOR_CALLS_STARTUP_KEY = new OptionKey<>(false);
     public static final OptionKey<Boolean> CHECK_CLONE_UNINITIALIZED_CORRECTNESS_KEY = new OptionKey<>(false);
     public static final OptionKey<Boolean> REGEXP_INSTRUMENT_CREATION_KEY = new OptionKey<>(false);
     public static final OptionKey<Boolean> REGEXP_INSTRUMENT_MATCH_KEY = new OptionKey<>(false);
