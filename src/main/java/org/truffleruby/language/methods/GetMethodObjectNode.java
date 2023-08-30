@@ -121,7 +121,7 @@ public abstract class GetMethodObjectNode extends RubyBaseNode {
     private static class CallMethodMissingWithStaticName extends RubyContextSourceNode {
 
         private final RubySymbol methodName;
-        @Child private DispatchNode methodMissing = DispatchNode.create();
+        @Child private DispatchNode methodMissing = DispatchNode.create(this.getSourceSection());
 
         public CallMethodMissingWithStaticName(RubySymbol methodName) {
             this.methodName = methodName;

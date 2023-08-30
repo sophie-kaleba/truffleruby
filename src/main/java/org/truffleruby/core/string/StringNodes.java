@@ -2488,7 +2488,7 @@ public abstract class StringNodes {
 
         public abstract Object executeSum(Object string, Object bits);
 
-        @Child private DispatchNode addNode = DispatchNode.create();
+        @Child private DispatchNode addNode = DispatchNode.create(this.getSourceSection());
         @Child private TruffleString.GetInternalByteArrayNode byteArrayNode = TruffleString.GetInternalByteArrayNode
                 .create();
 

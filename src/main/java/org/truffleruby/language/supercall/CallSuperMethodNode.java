@@ -58,7 +58,7 @@ public class CallSuperMethodNode extends SpecialVariablesSendingNode {
 
         // TODO - check arguments here too
         long contextSignature = -88;
-        return getCallMethodNode().execute(frame, superMethod, self, rubyArgs, literalCallNode, contextSignature);
+        return getCallMethodNode().execute(frame, superMethod, self, rubyArgs, literalCallNode, null, null, contextSignature);
     }
 
     private CallInternalMethodNode getCallMethodNode() {
@@ -73,7 +73,7 @@ public class CallSuperMethodNode extends SpecialVariablesSendingNode {
             LiteralCallNode literalCallNode) {
         if (callMethodMissingNode == null) {
             CompilerDirectives.transferToInterpreterAndInvalidate();
-            callMethodMissingNode = insert(DispatchNode.create());
+            callMethodMissingNode = insert(DispatchNode.create(this.getSourceSection()));
         }
         return callMethodMissingNode.callWithDescriptor(receiver, "method_missing", block, descriptor, arguments,
                 literalCallNode);
