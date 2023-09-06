@@ -7,7 +7,7 @@ suite = {
             {
                 "name": "regex",
                 "subdir": True,
-                "version": "4ca57ecccf6fd04e29ae5658cfc34bcc93757c05",
+                "version": "9bf20a8d61b3fafcfe2d1518f0aba4689440196d",
                 "urls": [
                     {"url": "https://github.com/sophie-kaleba/truffle.git", "kind": "git"},
                     {"url": "https://curio.ssw.jku.at/nexus/content/repositories/snapshots", "kind": "binary"},
@@ -16,7 +16,7 @@ suite = {
             {
                 "name": "sulong",
                 "subdir": True,
-                "version": "4ca57ecccf6fd04e29ae5658cfc34bcc93757c05",
+                "version": "9bf20a8d61b3fafcfe2d1518f0aba4689440196d",
                 "urls": [
                     {"url": "https://github.com/sophie-kaleba/truffle.git", "kind": "git"},
                     {"url": "https://curio.ssw.jku.at/nexus/content/repositories/snapshots", "kind": "binary"},
