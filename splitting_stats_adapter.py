@@ -61,7 +61,7 @@ class SplittingStatsAdapter(RebenchLogAdapter):
     def fetch_and_parse_split_data(self, run_id, invocation, iteration, benchmark):
         all_results = []
         with open(self.split_stat_file) as file:
-            for line in (file.readlines()[-self.num_split_features-1:]):
+            for line in (file.readlines()[-self.num_split_features:]):
                 if "FROMBENCH" in line:
                     assert line.split("_")[1] == benchmark
                 else:
