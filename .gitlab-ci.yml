@@ -91,7 +91,7 @@ benchmark1:
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
-    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
+    - rebench -d -v -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria
 
     - rm -Rf /tmp/truffleruby
 
@@ -131,6 +131,6 @@ benchmark3:
     - *UPDATE_SUBMODULE
 
     - *INSTALL_GEMS
-    - rebench -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
+    - rebench -d -v -c --experiment="CI ID $CI_PIPELINE_ID" --branch="$CI_COMMIT_REF_NAME" -c rebench.conf all m:yuria3
 
     - rm -Rf /tmp/truffleruby
