@@ -240,7 +240,8 @@ module Utilities
                     elsif @ruby_name.start_with?('/')
                       File.directory?(@ruby_name) ? "#{@ruby_name}/bin/ruby" : @ruby_name
                     elsif @ruby_name == 'rebench'
-                      "/data/home/sk755/ruby-cs-analyser/truffleruby/mxbuild/truffleruby-jvm-ce/languages/ruby/bin/ruby"
+                      "/home/skaleba/ruby-cs-analyser/truffleruby/mxbuild/truffleruby-jvm-ce/languages/ruby/bin/ruby" #yuria1
+                      #"/data/home/sk755/ruby-cs-analyser/truffleruby/mxbuild/truffleruby-jvm-ce/languages/ruby/bin/ruby" #yuria2
                       #"/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
                     elsif @ruby_name == 'rebench-native'
                       "/tmp/truffleruby/truffleruby-native-libgraal/bin/truffleruby"
@@ -1117,7 +1118,8 @@ module Commands
 
     @ruby_name = "rebench"
     vm_args, ruby_args, options = ruby_options(options, args)
-    ruby_launcher = "/data/home/sk755/ruby-cs-analyser/truffleruby/mxbuild/truffleruby-jvm-ce/languages/ruby/bin/ruby"
+    ruby_launcher = "/home/skaleba/ruby-cs-analyser/truffleruby/mxbuild/truffleruby-jvm-ce/languages/ruby/bin/ruby"
+    #ruby_launcher = "/data/home/sk755/ruby-cs-analyser/truffleruby/mxbuild/truffleruby-jvm-ce/languages/ruby/bin/ruby"
     #ruby_launcher = "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
 
     sh env_vars, ruby_launcher, *(vm_args if truffleruby?), *ruby_args, options
