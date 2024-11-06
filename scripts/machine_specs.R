@@ -1,2 +1,0 @@
-hihaho <- "8-core Intel(R) Core(TM) i7-8665U CPU @ 1.90GHz, with 15.4GB RAM, Ubuntu 18.04.6 LTS (kernel 5.4.0-77-generic), and a custom built OpenJDK 1.8.0\\_232 with JVMCI and TruffleGraal CE version 21.3-dev"
-yuria <- "6-core Intel(R) Xeon(R) CPU E5-2620 v3, 2.40GHz, with 15.4GB RAM, Ubuntu 16.04.6 LTS (kernel 4.4.0-184), and a custom built OpenJDK 1.8.0_232 with JVMCI and TruffleGraal CE version 19.3-b04"
