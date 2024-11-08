@@ -162,7 +162,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
     }
 
     public Object doCall(VirtualFrame frame, Object receiverObject, ArgumentsDescriptor descriptor, Object[] rubyArgs,
-            boolean ruby2KeywordsHash) {
+            boolean ruby2KeywordsHash, long contextSignature) {
         // Remove empty kwargs in the caller, so the callee does not need to care about this special case
         if (descriptor instanceof KeywordArgumentsDescriptor && emptyKeywordArguments(rubyArgs)) {
             rubyArgs = removeEmptyKeywordArguments(rubyArgs);
