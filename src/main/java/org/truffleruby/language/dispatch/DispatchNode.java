@@ -298,11 +298,12 @@ public class DispatchNode extends SpecialVariablesSendingNode {
     }
 
     protected final Object dispatchInternal(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
-                                            LiteralCallNode literalCallNode,
-                                            MetaClassNode metaClassNode,
-                                            LookupMethodNode lookupMethodNode,
-                                            ConditionProfile methodMissingProfile,
-                                            CallInternalMethodNode callNode, long contextSignature) {
+                                        LiteralCallNode literalCallNode,
+                                        MetaClassNode metaClassNode,
+                                        LookupMethodNode lookupMethodNode,
+                                        ConditionProfile methodMissingProfile,
+                                        CallInternalMethodNode callNode,
+                                        long contextSignature) {
         assert RubyArguments.getSelf(rubyArgs) == receiver;
 
         final RubyClass metaclass = metaClassNode.execute(receiver);
