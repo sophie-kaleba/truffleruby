@@ -16,6 +16,7 @@ import org.truffleruby.interop.ForeignToRubyArgumentsNode;
 import org.truffleruby.language.RubyDynamicObject;
 import org.truffleruby.language.arguments.EmptyArgumentsDescriptor;
 import org.truffleruby.language.arguments.RubyArguments;
+import org.truffleruby.language.contextualdispatch.ContextSignatureUtils;
 import org.truffleruby.language.methods.CallInternalMethodNode;
 import org.truffleruby.language.methods.InternalMethod;
 import org.truffleruby.language.objects.ObjectGraph;
@@ -73,8 +74,7 @@ public class RubyMethod extends RubyDynamicObject implements ObjectGraphNode {
         final Object[] convertedArguments = foreignToRubyArgumentsNode.executeConvert(arguments);
         final Object[] frameArgs = RubyArguments.pack(null, null, method, null, receiver, nil,
                 EmptyArgumentsDescriptor.INSTANCE, convertedArguments);
-        // TODO - we can get a signature out of the converted arguments
-        long contextSignature = -77;
+        long contextSignature = ContextSignatureUtils.getContextSignature(convertedArguments);
         return callInternalMethodNode.execute(null, method, receiver, frameArgs, null, contextSignature);
     }
     // endregion
