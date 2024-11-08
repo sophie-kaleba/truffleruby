@@ -148,13 +148,14 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
                 receiver,
                 rubyArgs,
                 literalCallNode,
-                isAdoptable());
+                isAdoptable(),
+                contextSignature);
     }
 
     @TruffleBoundary // getUncachedAlwaysInlinedMethodNode(method) and arity are not PE constants
     private Object alwaysInlinedBoundary(
             MaterializedFrame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
-            LiteralCallNode literalCallNode, boolean cachedToUncached) {
+            LiteralCallNode literalCallNode, boolean cachedToUncached, long contextSignature) {
         EncapsulatingNodeReference encapsulating = null;
         Node prev = null;
         if (cachedToUncached) {
@@ -162,7 +163,6 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
             prev = encapsulating.set(this);
         }
         try {
-            long contextSignature = -66;
             return alwaysInlined(
                     frame,
                     method,
