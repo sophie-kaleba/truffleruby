@@ -196,7 +196,9 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         RubyArguments.setSelf(rubyArgs, receiverObject);
         RubyArguments.setBlock(rubyArgs, blockObject);
         RubyArguments.setArguments(rubyArgs, argumentsObjects);
-        return doCall(frame, receiverObject, descriptor, rubyArgs, false);
+
+        long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs));
+        return doCall(frame, receiverObject, descriptor, rubyArgs, false, contextSignature);
     }
 
     private Object executeBlock(VirtualFrame frame) {

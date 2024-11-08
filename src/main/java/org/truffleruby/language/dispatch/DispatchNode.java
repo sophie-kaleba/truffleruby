@@ -33,6 +33,7 @@ import org.truffleruby.language.arguments.ArgumentsDescriptor;
 import org.truffleruby.language.arguments.EmptyArgumentsDescriptor;
 import org.truffleruby.language.arguments.KeywordArgumentsDescriptorManager;
 import org.truffleruby.language.arguments.RubyArguments;
+import org.truffleruby.language.contextualdispatch.ContextSignatureUtils;
 import org.truffleruby.language.control.RaiseException;
 import org.truffleruby.language.methods.CallForeignMethodNode;
 import org.truffleruby.language.methods.CallInternalMethodNode;
@@ -285,7 +286,7 @@ public class DispatchNode extends SpecialVariablesSendingNode {
 
     public Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
                            LiteralCallNode literalCallNode) {
-        long contextSignature = -44;
+        long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs));
         return dispatchInternal(frame, receiver, methodName, rubyArgs, literalCallNode,
                 metaclassNode, methodLookup, methodMissing, callNode, contextSignature);
     }
@@ -440,13 +441,14 @@ public class DispatchNode extends SpecialVariablesSendingNode {
 
         @Override
         public Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
-                               LiteralCallNode literalCallNode) {
-            long contextSignature = -55;
+                           LiteralCallNode literalCallNode) {
+            long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs));
             return dispatchInternal(frame, receiver, methodName, rubyArgs, literalCallNode,
                     MetaClassNodeGen.getUncached(),
                     LookupMethodNodeGen.getUncached(),
                     ConditionProfile.getUncached(),
-                    CallInternalMethodNodeGen.getUncached(), contextSignature);
+                    CallInternalMethodNodeGen.getUncached(),
+                    contextSignature);
         }
 
         @Override
