@@ -121,7 +121,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         ArgumentsDescriptor descriptor = this.descriptor;
         boolean ruby2KeywordsHash = false;
-        executeArguments(frame, rubyArgs);
+        long contextSignature = executeArguments(frame, rubyArgs);
         if (isSplatted) {
             rubyArgs = splatArgs(receiverObject, rubyArgs);
             ruby2KeywordsHash = isRuby2KeywordsHash(rubyArgs, RubyArguments.getRawArgumentsCount(rubyArgs));
@@ -132,7 +132,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
         RubyArguments.setBlock(rubyArgs, executeBlock(frame));
 
-        return doCall(frame, receiverObject, descriptor, rubyArgs, ruby2KeywordsHash);
+        return doCall(frame, receiverObject, descriptor, rubyArgs, ruby2KeywordsHash, contextSignature);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         Object[] rubyArgs = RubyArguments.allocate(arguments.length);
         RubyArguments.setSelf(rubyArgs, receiverObject);
 
-        executeArguments(frame, rubyArgs);
+        long contextSignature = executeArguments(frame, rubyArgs);
         if (isSplatted) {
             rubyArgs = splatArgs(receiverObject, rubyArgs);
         }
@@ -158,7 +158,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         RubyArguments.setBlock(rubyArgs, executeBlock(frame));
 
         // no ruby2_keywords behavior for assign
-        doCall(frame, receiverObject, descriptor, rubyArgs, false);
+        doCall(frame, receiverObject, descriptor, rubyArgs, false, contextSignature);
     }
 
     public Object doCall(VirtualFrame frame, Object receiverObject, ArgumentsDescriptor descriptor, Object[] rubyArgs,
@@ -177,7 +177,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         }
 
         final Object returnValue = dispatch.dispatch(frame, receiverObject, methodName, rubyArgs,
-                ruby2KeywordsHash ? this : null);
+                ruby2KeywordsHash ? this : null, contextSignature);
         if (isAttrAssign) {
             final Object value = rubyArgs[rubyArgs.length - 1];
             assert RubyGuards.assertIsValidRubyValue(value);
@@ -220,6 +220,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
             j = i % ContextSignatureUtils.primeForSignature.length;
             contextSignature += ContextSignatureUtils.getArgumentHashcode(value) * ContextSignatureUtils.primeForSignature[j];
         }
+        return contextSignature;
     }
 
     private Object[] splatArgs(Object receiverObject, Object[] rubyArgs) {
