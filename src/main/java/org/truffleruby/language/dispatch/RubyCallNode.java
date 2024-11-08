@@ -15,11 +15,9 @@ import org.truffleruby.RubyLanguage;
 import org.truffleruby.core.array.ArrayAppendOneNode;
 import org.truffleruby.core.array.AssignableNode;
 import org.truffleruby.core.array.RubyArray;
-import org.truffleruby.core.basicobject.RubyBasicObject;
 import org.truffleruby.core.cast.BooleanCastNode;
 import org.truffleruby.core.cast.BooleanCastNodeGen;
 import org.truffleruby.core.inlined.LambdaToProcNode;
-import org.truffleruby.core.proc.RubyProc;
 import org.truffleruby.core.string.FrozenStrings;
 import org.truffleruby.core.symbol.RubySymbol;
 import org.truffleruby.language.RubyBaseNode;
@@ -31,6 +29,7 @@ import org.truffleruby.language.arguments.KeywordArgumentsDescriptor;
 import org.truffleruby.language.arguments.KeywordArgumentsDescriptorManager;
 import org.truffleruby.language.arguments.RubyArguments;
 import org.truffleruby.language.arguments.SplatToArgsNode;
+import org.truffleruby.language.contextualdispatch.ContextSignatureUtils;
 import org.truffleruby.language.literal.NilLiteralNode;
 import org.truffleruby.language.methods.BlockDefinitionNode;
 import org.truffleruby.language.methods.InternalMethod;
@@ -67,7 +66,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
     private final CountingConditionProfile nilProfile;
 
     @Child private SplatToArgsNode splatToArgs;
-    private final int[] primeForSignature = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
+
 
     public RubyCallNode(RubyCallNodeParameters parameters) {
         this(
@@ -212,20 +211,15 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
     @ExplodeLoop
     private long executeArguments(VirtualFrame frame, Object[] rubyArgs) {
-        long contextSignature = -2;
+        long contextSignature = 0;
+        int j;
+
         for (int i = 0; i < arguments.length; i++) {
             Object value = arguments[i].execute(frame);
             RubyArguments.setArgument(rubyArgs, i, value);
-            if (value != null) {
-                int j = i % primeForSignature.length;
-                if (value instanceof RubyBasicObject) {
-                    contextSignature += ((RubyBasicObject) value).getMetaClass().hashCode() * primeForSignature[j];
-                } else if (value instanceof RubyProc){
-                    contextSignature += ((RubyProc) value).callTarget.hashCode() * primeForSignature[j];
-                } else {
-                    contextSignature += value.getClass().hashCode() * primeForSignature[j];
-                }
-            }
+
+            j = i % ContextSignatureUtils.primeForSignature.length;
+            contextSignature += ContextSignatureUtils.getArgumentHashcode(value) * ContextSignatureUtils.primeForSignature[j];
         }
         return contextSignature;
     }
