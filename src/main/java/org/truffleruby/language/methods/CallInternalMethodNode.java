@@ -49,13 +49,10 @@ public abstract class CallInternalMethodNode extends RubyBaseNode {
         return CallInternalMethodNodeGen.create();
     }
 
-//    /** Callers should use {@link RubyArguments#assertFrameArguments} unless they use {@code RubyArguments#pack}.
-//     * {@code literalCallNode} is only non-null if this was called splatted with a ruby2_keyword Hash. */
-//    public abstract Object execute(Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
-//            LiteralCallNode literalCallNode);
-
+    /** Callers should use {@link RubyArguments#assertFrameArguments} unless they use {@code RubyArguments#pack}.
+     * {@code literalCallNode} is only non-null if this was called splatted with a ruby2_keyword Hash. */
     public abstract Object execute(Frame frame, InternalMethod method, Object receiver, Object[] rubyArgs,
-                                   LiteralCallNode literalCallNode, long contextSignature);
+            LiteralCallNode literalCallNode, long contextSignature);
 
     @Specialization(
             guards = {
