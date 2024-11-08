@@ -82,6 +82,10 @@ public abstract class RubyDynamicObject extends DynamicObject {
         return metaClass;
     }
 
+    public long getClassHashCode() {
+        return metaClass.hashCode();
+    }
+
     public void setMetaClass(RubyClass metaClass) {
         SharedObjects.assertPropagateSharing(this, metaClass);
         this.metaClass = metaClass;
