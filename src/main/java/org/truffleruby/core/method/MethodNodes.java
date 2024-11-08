@@ -40,6 +40,7 @@ import org.truffleruby.annotations.Visibility;
 import org.truffleruby.language.arguments.ArgumentDescriptorUtils;
 import org.truffleruby.language.arguments.EmptyArgumentsDescriptor;
 import org.truffleruby.language.arguments.RubyArguments;
+import org.truffleruby.language.contextualdispatch.ContextSignatureUtils;
 import org.truffleruby.language.control.BreakID;
 import org.truffleruby.language.control.RaiseException;
 import org.truffleruby.language.methods.CallInternalMethodNode;
@@ -144,8 +145,8 @@ public abstract class MethodNodes {
             final Object[] newArgs = RubyArguments.repack(callerRubyArgs, receiver);
             RubyArguments.setMethod(newArgs, internalMethod);
             assert RubyArguments.assertFrameArguments(newArgs);
-            // TODO - check signature here, too
-            long contextSignature = -99;
+
+            long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(callerRubyArgs));
             return callInternalMethodNode.execute(frame, internalMethod, receiver, newArgs, null, contextSignature);
         }
     }

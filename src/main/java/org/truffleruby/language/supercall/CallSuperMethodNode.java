@@ -13,6 +13,7 @@ import org.truffleruby.core.array.ArrayUtils;
 import org.truffleruby.language.SpecialVariablesSendingNode;
 import org.truffleruby.language.arguments.ArgumentsDescriptor;
 import org.truffleruby.language.arguments.RubyArguments;
+import org.truffleruby.language.contextualdispatch.ContextSignatureUtils;
 import org.truffleruby.language.dispatch.DispatchNode;
 import org.truffleruby.language.dispatch.LiteralCallNode;
 import org.truffleruby.language.methods.CallInternalMethodNode;
@@ -56,8 +57,7 @@ public class CallSuperMethodNode extends SpecialVariablesSendingNode {
         final Object[] rubyArgs = RubyArguments.pack(
                 null, callerSpecialVariables, superMethod, null, self, block, descriptor, arguments);
 
-        // TODO - check arguments here too
-        long contextSignature = -88;
+        long contextSignature = ContextSignatureUtils.getContextSignature(arguments);
         return getCallMethodNode().execute(frame, superMethod, self, rubyArgs, literalCallNode, contextSignature);
     }
 
