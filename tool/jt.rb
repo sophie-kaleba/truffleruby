@@ -1116,7 +1116,7 @@ module Commands
 
     @ruby_name = "rebench"
     vm_args, ruby_args, options = ruby_options(options, args)
-    ruby_launcher_rebench = "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
+    ruby_launcher = '/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby'
 
     sh env_vars, ruby_launcher_rebench, *(vm_args if truffleruby?), *ruby_args, options
   end
