@@ -67,7 +67,6 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
 
     @Child private SplatToArgsNode splatToArgs;
 
-
     public RubyCallNode(RubyCallNodeParameters parameters) {
         this(
                 parameters.isSplatted(),
