@@ -240,9 +240,9 @@ module Utilities
                     elsif @ruby_name.start_with?('/')
                       File.directory?(@ruby_name) ? "#{@ruby_name}/bin/ruby" : @ruby_name
                     elsif @ruby_name == 'rebench'
-                      "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
+                      '/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby'
                     elsif @ruby_name == 'rebench-native'
-                      "/tmp/truffleruby/truffleruby-native-libgraal/bin/truffleruby"
+                      '/tmp/truffleruby/truffleruby-native-libgraal/bin/truffleruby'
                     elsif @ruby_name == 'ce'
                       "#{TRUFFLERUBY_DIR}/mxbuild/truffleruby-jvm-ce/bin/truffleruby"
                     else
@@ -1103,9 +1103,9 @@ module Commands
     env_vars = args.first.is_a?(Hash) ? args.shift : {}
     options = args.last.is_a?(Hash) ? args.pop : {}
 
-    @ruby_name = "ce"
+    @ruby_name = 'ce'
     vm_args, ruby_args, options = ruby_options(options, args)
-    ruby_launcher = "/home/sopi/Documents/Side_projects/truffleruby/mxbuild/truffleruby-jvm-ce/bin/truffleruby"
+    ruby_launcher = File.read('ruby_launcher_local')
 
     sh env_vars, ruby_launcher, *(vm_args if truffleruby?), *ruby_args, options
   end
@@ -1114,9 +1114,13 @@ module Commands
     env_vars = args.first.is_a?(Hash) ? args.shift : {}
     options = args.last.is_a?(Hash) ? args.pop : {}
 
-    @ruby_name = "rebench"
+    @ruby_name = 'rebench'
     vm_args, ruby_args, options = ruby_options(options, args)
+<<<<<<< HEAD
     ruby_launcher_rebench = "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
+=======
+    ruby_launcher = '/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby'
+>>>>>>> 5ee2174a1d (Fix string formatting and fetch the current ce build path from a file)
 
     sh env_vars, ruby_launcher_rebench, *(vm_args if truffleruby?), *ruby_args, options
   end
@@ -1125,9 +1129,9 @@ module Commands
     env_vars = args.first.is_a?(Hash) ? args.shift : {}
     options = args.last.is_a?(Hash) ? args.pop : {}
 
-    @ruby_name = "rebench-native"
+    @ruby_name = 'rebench-native'
     vm_args, ruby_args, options = ruby_options(options, args)
-    ruby_launcher = "/tmp/truffleruby/truffleruby-native-libgraal/bin/truffleruby"
+    ruby_launcher = '/tmp/truffleruby/truffleruby-native-libgraal/bin/truffleruby'
 
     sh env_vars, ruby_launcher, *(vm_args if truffleruby?), *ruby_args, options
   end
