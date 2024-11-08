@@ -298,12 +298,12 @@ public class DispatchNode extends SpecialVariablesSendingNode {
     }
 
     protected final Object dispatchInternal(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
-                                        LiteralCallNode literalCallNode,
-                                        MetaClassNode metaClassNode,
-                                        LookupMethodNode lookupMethodNode,
-                                        ConditionProfile methodMissingProfile,
-                                        CallInternalMethodNode callNode,
-                                        long contextSignature) {
+            LiteralCallNode literalCallNode,
+            MetaClassNode metaClassNode,
+            LookupMethodNode lookupMethodNode,
+            ConditionProfile methodMissingProfile,
+            CallInternalMethodNode callNode,
+            long contextSignature) {
         assert RubyArguments.getSelf(rubyArgs) == receiver;
 
         final RubyClass metaclass = metaClassNode.execute(receiver);
@@ -442,7 +442,7 @@ public class DispatchNode extends SpecialVariablesSendingNode {
 
         @Override
         public Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
-                           LiteralCallNode literalCallNode) {
+                LiteralCallNode literalCallNode) {
             long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs));
             return dispatchInternal(frame, receiver, methodName, rubyArgs, literalCallNode,
                     MetaClassNodeGen.getUncached(),
