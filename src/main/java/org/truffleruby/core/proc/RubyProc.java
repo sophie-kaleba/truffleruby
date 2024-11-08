@@ -102,6 +102,11 @@ public class RubyProc extends RubyDynamicObject implements ObjectGraphNode {
         ObjectGraph.addProperty(reachable, declaringMethod);
     }
 
+    @Override
+    public long getClassHashCode() {
+        return callTarget.hashCode();
+    }
+
     public boolean isLambda() {
         // The field is public, but the function is needed for use in guards.
         return type == ProcType.LAMBDA;
