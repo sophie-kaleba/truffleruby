@@ -196,7 +196,7 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
         RubyArguments.setBlock(rubyArgs, blockObject);
         RubyArguments.setArguments(rubyArgs, argumentsObjects);
 
-        long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs));
+        long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs), receiverObject);
         return doCall(frame, receiverObject, descriptor, rubyArgs, false, contextSignature);
     }
 
@@ -211,15 +211,17 @@ public class RubyCallNode extends LiteralCallNode implements AssignableNode {
     @ExplodeLoop
     private long executeArguments(VirtualFrame frame, Object[] rubyArgs) {
         long contextSignature = 0;
-        int j;
+        int i, j;
 
-        for (int i = 0; i < arguments.length; i++) {
+        for (i = 0; i < arguments.length; i++) {
             Object value = arguments[i].execute(frame);
             RubyArguments.setArgument(rubyArgs, i, value);
 
             j = i % ContextSignatureUtils.primeForSignature.length;
             contextSignature += ContextSignatureUtils.getArgumentHashcode(value) * ContextSignatureUtils.primeForSignature[j];
         }
+
+        contextSignature += ContextSignatureUtils.getArgumentHashcode(RubyArguments.getSelf(rubyArgs)) * ContextSignatureUtils.primeForSignature[i % ContextSignatureUtils.primeForSignature.length];
         return contextSignature;
     }
 

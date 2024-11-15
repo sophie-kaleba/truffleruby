@@ -286,7 +286,7 @@ public class DispatchNode extends SpecialVariablesSendingNode {
 
     public Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
                            LiteralCallNode literalCallNode) {
-        long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs));
+        long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs), receiver);
         return dispatchInternal(frame, receiver, methodName, rubyArgs, literalCallNode,
                 metaclassNode, methodLookup, methodMissing, callNode, contextSignature);
     }
@@ -443,7 +443,7 @@ public class DispatchNode extends SpecialVariablesSendingNode {
         @Override
         public Object dispatch(Frame frame, Object receiver, String methodName, Object[] rubyArgs,
                 LiteralCallNode literalCallNode) {
-            long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs));
+            long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(rubyArgs), receiver);
             return dispatchInternal(frame, receiver, methodName, rubyArgs, literalCallNode,
                     MetaClassNodeGen.getUncached(),
                     LookupMethodNodeGen.getUncached(),

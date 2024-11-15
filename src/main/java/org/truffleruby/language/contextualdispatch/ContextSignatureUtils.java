@@ -16,7 +16,7 @@ public class ContextSignatureUtils {
         return 0;
     }
 
-    public static long getContextSignature(Object[] args){
+    public static long getContextSignature(Object[] args, Object receiver){
         long contextSignature = 0;
 
         for (int i = 0; i < args.length; i++) {

@@ -146,7 +146,7 @@ public abstract class MethodNodes {
             RubyArguments.setMethod(newArgs, internalMethod);
             assert RubyArguments.assertFrameArguments(newArgs);
 
-            long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(callerRubyArgs));
+            long contextSignature = ContextSignatureUtils.getContextSignature(RubyArguments.getRawArguments(callerRubyArgs), receiver);
             return callInternalMethodNode.execute(frame, internalMethod, receiver, newArgs, null, contextSignature);
         }
     }
