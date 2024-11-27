@@ -6,7 +6,7 @@ stages:
 variables:
   JT: bin/jt
   GIT_SUBMODULE_STRATEGY: normal
-  WORKING_BRANCH: master-with-benchs
+  WORKING_BRANCH: bench/master-bench-ready
   BENCH_BRANCH: no-standalone
 
 .scripts:
