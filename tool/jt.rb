@@ -1116,13 +1116,9 @@ module Commands
 
     @ruby_name = 'rebench'
     vm_args, ruby_args, options = ruby_options(options, args)
-<<<<<<< HEAD
-    ruby_launcher_rebench = "/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby"
-=======
     ruby_launcher = '/tmp/truffleruby/truffleruby-jvm-ce/bin/truffleruby'
->>>>>>> 5ee2174a1d (Fix string formatting and fetch the current ce build path from a file)
 
-    sh env_vars, ruby_launcher_rebench, *(vm_args if truffleruby?), *ruby_args, options
+    sh env_vars, ruby_launcher, *(vm_args if truffleruby?), *ruby_args, options
   end
 
   private def run_ruby_rebench_native(*args)
